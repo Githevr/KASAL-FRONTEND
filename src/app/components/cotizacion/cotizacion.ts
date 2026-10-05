@@ -39,6 +39,11 @@ import {
   ItemCarrito
 } from '../../models/producto';
 
+import {
+  environment
+} from '../../../environments/environment';
+
+
 // =====================================================
 // FORMULARIO
 // =====================================================
@@ -86,6 +91,17 @@ export class CotizacionComponent
 
 
   // =====================================================
+  // BACKEND
+  // =====================================================
+
+  private readonly backendUrl =
+    environment.apiUrl.replace(
+      /\/api\/?$/,
+      ''
+    );
+
+
+  // =====================================================
   // CARRITO
   // =====================================================
 
@@ -126,7 +142,7 @@ export class CotizacionComponent
 
 
   // =====================================================
-  // RESPUESTA COTIZACIÓN
+  // RESPUESTA COTIZACION
   // =====================================================
 
   pedidoId:
@@ -139,7 +155,7 @@ export class CotizacionComponent
 
 
   // =====================================================
-  // SUSCRIPCIÓN CARRITO
+  // SUSCRIPCION CARRITO
   // =====================================================
 
   private carritoSubscription?:
@@ -249,7 +265,7 @@ export class CotizacionComponent
     ) {
 
       return (
-        `http://localhost:3000${imagenUrl}`
+        `${this.backendUrl}${imagenUrl}`
       );
 
     }
@@ -266,7 +282,7 @@ export class CotizacionComponent
     ) {
 
       return (
-        `http://localhost:3000/${imagenUrl}`
+        `${this.backendUrl}/${imagenUrl}`
       );
 
     }
@@ -558,7 +574,7 @@ export class CotizacionComponent
 
 
     // ===================================================
-    // TELÉFONO
+    // TELEFONO
     // ===================================================
 
     if (
@@ -576,7 +592,7 @@ export class CotizacionComponent
 
 
     // ===================================================
-    // TELÉFONO - VALIDACIÓN BÁSICA
+    // TELEFONO - VALIDACION BASICA
     // ===================================================
 
     const telefono =
@@ -716,14 +732,14 @@ export class CotizacionComponent
 
 
   // =====================================================
-  // ENVIAR COTIZACIÓN
+  // ENVIAR COTIZACION
   // =====================================================
 
   enviarCotizacion():
     void {
 
     // ===================================================
-    // EVITAR DOBLE ENVÍO
+    // EVITAR DOBLE ENVIO
     // ===================================================
 
     if (
@@ -751,46 +767,6 @@ export class CotizacionComponent
 
 
     // ===================================================
-    // NORMALIZAR DATOS
-    // ===================================================
-
-    const nombreCliente =
-      this.formulario
-        .nombre_cliente
-        .trim();
-
-
-    const empresaCliente =
-      this.formulario
-        .empresa_cliente
-        .trim();
-
-
-    const rucCliente =
-      this.formulario
-        .ruc_cliente
-        .trim();
-
-
-    const telefonoCliente =
-      this.formulario
-        .telefono_cliente
-        .trim();
-
-
-    const emailCliente =
-      this.formulario
-        .email_cliente
-        .trim();
-
-
-    const mensajeCliente =
-      this.formulario
-        .mensaje_cliente
-        .trim();
-
-
-    // ===================================================
     // PAYLOAD
     //
     // IMPORTANTE:
@@ -799,59 +775,61 @@ export class CotizacionComponent
     // El backend debe consultar MySQL y recalcular todo.
     // ===================================================
 
-    const solicitud: NuevaCotizacion = {
+    const solicitud:
+      NuevaCotizacion = {
 
-  nombre_cliente:
-    this.formulario
-      .nombre_cliente
-      .trim(),
+        nombre_cliente:
+          this.formulario
+            .nombre_cliente
+            .trim(),
 
-  empresa_cliente:
-    this.formulario
-      .empresa_cliente
-      .trim() || null,
+        empresa_cliente:
+          this.formulario
+            .empresa_cliente
+            .trim() || null,
 
-  ruc_cliente:
-    this.formulario
-      .ruc_cliente
-      .trim() || null,
+        ruc_cliente:
+          this.formulario
+            .ruc_cliente
+            .trim() || null,
 
-  telefono_cliente:
-    this.formulario
-      .telefono_cliente
-      .trim(),
+        telefono_cliente:
+          this.formulario
+            .telefono_cliente
+            .trim(),
 
-  email_cliente:
-    this.formulario
-      .email_cliente
-      .trim() || null,
+        email_cliente:
+          this.formulario
+            .email_cliente
+            .trim() || null,
 
-  mensaje_cliente:
-    this.formulario
-      .mensaje_cliente
-      .trim() || null,
+        mensaje_cliente:
+          this.formulario
+            .mensaje_cliente
+            .trim() || null,
 
-  origen:
-    'directo',
+        origen:
+          'directo',
 
-  productos:
-    this.items.map(
-      item => ({
+        productos:
+          this.items.map(
+            item => ({
 
-        variacion_id:
-          Number(
-            item.variacion_id
-          ),
+              variacion_id:
+                Number(
+                  item.variacion_id
+                ),
 
-        cantidad:
-          Number(
-            item.cantidad
+              cantidad:
+                Number(
+                  item.cantidad
+                )
+
+            })
           )
 
-      })
-    )
+      };
 
-};
 
     // ===================================================
     // ESTADO
@@ -867,10 +845,11 @@ export class CotizacionComponent
     // ===================================================
 
     console.log(
-  'SOLICITUD QUE SE ENVIARÁ:',
-  solicitud
-);
-    
+      'SOLICITUD QUE SE ENVIARÁ:',
+      solicitud
+    );
+
+
     this.cotizacionService
       .crearCotizacion(
         solicitud
@@ -878,53 +857,54 @@ export class CotizacionComponent
       .subscribe({
 
         // =================================================
-        // ÉXITO
+        // EXITO
         // =================================================
 
         next: (
-  respuesta: CrearCotizacionResponse
-) => {
+          respuesta:
+            CrearCotizacionResponse
+        ) => {
 
-  console.log(
-    'Cotización creada:',
-    respuesta
-  );
-
-
-  this.enviando = false;
+          console.log(
+            'Cotización creada:',
+            respuesta
+          );
 
 
-  this.pedidoId =
-    Number(
-      respuesta.pedido_id
-    );
+          this.enviando = false;
 
 
-  this.totalConfirmado =
-    Number(
-      respuesta.total
-    ) || 0;
+          this.pedidoId =
+            Number(
+              respuesta.pedido_id
+            );
 
 
-  this.enviado = true;
+          this.totalConfirmado =
+            Number(
+              respuesta.total
+            ) || 0;
 
 
-  this.carritoService
-    .vaciarCarrito();
+          this.enviado = true;
 
 
-  this.cdr.detectChanges();
+          this.carritoService
+            .vaciarCarrito();
 
 
-  window.scrollTo({
+          this.cdr.detectChanges();
 
-    top: 0,
 
-    behavior: 'smooth'
+          window.scrollTo({
 
-  });
+            top: 0,
 
-},
+            behavior: 'smooth'
+
+          });
+
+        },
 
 
         // =================================================
@@ -932,64 +912,65 @@ export class CotizacionComponent
         // =================================================
 
         error: (
-            error: HttpErrorResponse
-            ) => {
+          error:
+            HttpErrorResponse
+        ) => {
 
-            console.error(
-                'Error creando cotización:',
-                error
-            );
-
-
-            this.enviando = false;
+          console.error(
+            'Error creando cotización:',
+            error
+          );
 
 
-            if (
-                error.error?.mensaje
-            ) {
-
-                this.error =
-                error.error.mensaje;
-
-            } else if (
-                error.status === 0
-            ) {
-
-                this.error =
-                'No se pudo conectar con el servidor. Verifica que el backend esté ejecutándose.';
-
-            } else if (
-                error.status === 400
-            ) {
-
-                this.error =
-                'Revisa los datos ingresados y vuelve a intentarlo.';
-
-            } else if (
-                error.status === 404
-            ) {
-
-                this.error =
-                'No se encontró el servicio de cotizaciones.';
-
-            } else if (
-                error.status === 500
-            ) {
-
-                this.error =
-                'Ocurrió un error en el servidor al procesar la cotización.';
-
-            } else {
-
-                this.error =
-                'No se pudo enviar la solicitud de cotización. Inténtalo nuevamente.';
-
-            }
+          this.enviando = false;
 
 
-            this.cdr.detectChanges();
+          if (
+            error.error?.mensaje
+          ) {
 
-            }
+            this.error =
+              error.error.mensaje;
+
+          } else if (
+            error.status === 0
+          ) {
+
+            this.error =
+              'No se pudo conectar con el servidor. Verifica que el backend esté ejecutándose.';
+
+          } else if (
+            error.status === 400
+          ) {
+
+            this.error =
+              'Revisa los datos ingresados y vuelve a intentarlo.';
+
+          } else if (
+            error.status === 404
+          ) {
+
+            this.error =
+              'No se encontró el servicio de cotizaciones.';
+
+          } else if (
+            error.status === 500
+          ) {
+
+            this.error =
+              'Ocurrió un error en el servidor al procesar la cotización.';
+
+          } else {
+
+            this.error =
+              'No se pudo enviar la solicitud de cotización. Inténtalo nuevamente.';
+
+          }
+
+
+          this.cdr.detectChanges();
+
+        }
 
       });
 

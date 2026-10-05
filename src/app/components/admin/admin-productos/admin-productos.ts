@@ -21,6 +21,10 @@ import {
   AdminProducto
 } from '../../../services/admin-productos';
 
+import {
+  environment
+} from '../../../../environments/environment';
+
 
 @Component({
   selector: 'app-admin-productos',
@@ -45,8 +49,11 @@ export class AdminProductosComponent
   // CONFIGURACIÓN
   // =====================================================
 
-  private readonly backendUrl =
-    'http://localhost:3000';
+private readonly backendUrl =
+  environment.apiUrl.replace(
+    /\/api\/?$/,
+    ''
+  );
 
 
   // =====================================================

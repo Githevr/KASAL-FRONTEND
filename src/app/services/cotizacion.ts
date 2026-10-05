@@ -10,6 +10,10 @@ import {
   Observable
 } from 'rxjs';
 
+import {
+  environment
+} from '../../environments/environment';
+
 
 // =====================================================
 // PRODUCTO DE LA SOLICITUD
@@ -25,7 +29,7 @@ export interface ProductoSolicitudCotizacion {
 
 
 // =====================================================
-// NUEVA COTIZACIÓN
+// NUEVA COTIZACION
 // =====================================================
 
 export interface NuevaCotizacion {
@@ -84,7 +88,7 @@ export class CotizacionService {
   // ===================================================
 
   private readonly apiUrl =
-    'http://localhost:3000/api/cotizaciones';
+    `${environment.apiUrl}/cotizaciones`;
 
 
   // ===================================================
@@ -97,7 +101,7 @@ export class CotizacionService {
 
 
   // ===================================================
-  // CREAR COTIZACIÓN
+  // CREAR COTIZACION
   // ===================================================
 
   crearCotizacion(

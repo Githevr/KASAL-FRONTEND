@@ -24,6 +24,9 @@ import {
   OrigenPedido
 } from '../../../services/admin-pedidos';
 
+import {
+  environment
+} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-admin-cotizacion-detalle',
@@ -74,8 +77,11 @@ export class AdminCotizacionDetalleComponent
   // URL BACKEND
   // =====================================================
 
-  private readonly backendUrl =
-    'http://localhost:3000';
+private readonly backendUrl =
+  environment.apiUrl.replace(
+    /\/api\/?$/,
+    ''
+  );
 
 
   // =====================================================

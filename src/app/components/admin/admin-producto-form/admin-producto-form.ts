@@ -24,6 +24,10 @@ import {
 } from 'rxjs';
 
 import {
+  environment
+} from '../../../../environments/environment';
+
+import {
   AdminProductosService,
   AdminCategoria,
   AdminSectorFormulario,
@@ -57,8 +61,11 @@ export class AdminProductoFormComponent
   // CONFIGURACIÓN
   // =====================================================
 
-  readonly backendUrl =
-    'http://localhost:3000';
+ private readonly backendUrl =
+  environment.apiUrl.replace(
+    /\/api\/?$/,
+    ''
+  );
 
 
   // =====================================================
