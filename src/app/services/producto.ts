@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import {
   HttpClient,
   HttpParams
@@ -12,19 +13,23 @@ import {
 
 import { Producto } from '../models/producto';
 
+import {
+  environment
+} from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductoService {
 
-  private apiUrl =
-    'http://localhost:3000/api/productos';
+  private readonly apiUrl =
+    `${environment.apiUrl}/productos`;
 
 
   // =====================================================
-  // CACHÉ GENERAL
-  // Solo almacena el catálogo completo.
+  // CACHE GENERAL
+  // Solo almacena el catalogo completo.
   // Los filtros por sector siempre consultan el backend.
   // =====================================================
 
@@ -82,7 +87,7 @@ export class ProductoService {
 
     // ===================================================
     // SIN SECTOR
-    // Podemos utilizar caché.
+    // Podemos utilizar cache.
     // ===================================================
 
     if (this.productosCache !== null) {
@@ -95,7 +100,7 @@ export class ProductoService {
 
 
     // ===================================================
-    // PRIMERA CARGA DEL CATÁLOGO COMPLETO
+    // PRIMERA CARGA DEL CATALOGO COMPLETO
     // ===================================================
 
     return this.http
@@ -128,7 +133,7 @@ export class ProductoService {
   ): Observable<Producto> {
 
     // ===================================================
-    // BUSCAR PRIMERO EN CACHÉ GENERAL
+    // BUSCAR PRIMERO EN CACHE GENERAL
     // ===================================================
 
     const productoCache =
@@ -148,7 +153,7 @@ export class ProductoService {
 
 
     // ===================================================
-    // SI NO ESTÁ EN CACHÉ
+    // SI NO ESTA EN CACHE
     // CONSULTAR BACKEND
     // ===================================================
 
@@ -160,7 +165,7 @@ export class ProductoService {
 
 
   // =====================================================
-  // LIMPIAR CACHÉ
+  // LIMPIAR CACHE
   // =====================================================
 
   limpiarCache(): void {
