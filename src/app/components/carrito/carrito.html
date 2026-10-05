@@ -1,0 +1,304 @@
+<div
+  class="offcanvas offcanvas-end border-0 shadow-lg"
+  tabindex="-1"
+  id="carritoOffcanvas"
+  style="width: 400px;"
+>
+
+  <!-- ===================================================
+       HEADER
+  ==================================================== -->
+
+  <div class="offcanvas-header bg-dark text-white py-3">
+
+    <h5
+      class="offcanvas-title fw-bold d-flex align-items-center gap-2"
+    >
+      <i class="bi bi-cart3 text-warning"></i>
+
+      Solicitud de Cotización
+    </h5>
+
+
+    <button
+      type="button"
+      class="btn-close btn-close-white"
+      data-bs-dismiss="offcanvas"
+      aria-label="Cerrar"
+    ></button>
+
+  </div>
+
+
+  <!-- ===================================================
+       BODY
+  ==================================================== -->
+
+  <div class="offcanvas-body d-flex flex-column p-4">
+
+
+    <!-- =================================================
+         CARRITO VACÍO
+    ================================================== -->
+
+    <div
+      *ngIf="items.length === 0"
+      class="text-center my-auto py-5"
+    >
+
+      <div
+        class="bg-light rounded-circle d-inline-flex p-4 mb-3"
+      >
+
+        <i
+          class="bi bi-cart-x display-4 text-muted"
+        ></i>
+
+      </div>
+
+
+      <h6 class="fw-bold text-dark">
+
+        Tu carrito está vacío
+
+      </h6>
+
+
+      <p class="text-muted small">
+
+        Agrega productos del catálogo para
+        armar tu solicitud de cotización.
+
+      </p>
+
+    </div>
+
+
+    <!-- =================================================
+         LISTA DE PRODUCTOS
+    ================================================== -->
+
+    <div
+      class="flex-grow-1 overflow-auto pe-1"
+      *ngIf="items.length > 0"
+    >
+
+      <div
+        *ngFor="let item of items"
+        class="card border-0 bg-light mb-3 p-3"
+      >
+
+        <div
+          class="d-flex justify-content-between align-items-start"
+        >
+
+
+          <!-- ===========================================
+               INFORMACIÓN
+          ============================================ -->
+
+          <div>
+
+            <h6
+              class="fw-bold mb-1 text-dark"
+            >
+
+              {{ item.nombre }}
+
+            </h6>
+
+
+            <span
+              class="badge bg-secondary mb-2"
+            >
+
+              Talla:
+              {{ item.talla }}
+
+            </span>
+
+
+            <div
+              class="text-muted small"
+            >
+
+              Cantidad:
+
+              <strong>
+                {{ item.cantidad }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- ===========================================
+               ELIMINAR
+          ============================================ -->
+
+          <button
+            type="button"
+            class="btn btn-link text-danger p-0 border-0"
+            (click)="eliminar(item.variacion_id)"
+            title="Eliminar producto"
+          >
+
+            <i
+              class="bi bi-trash fs-5"
+            ></i>
+
+          </button>
+
+        </div>
+
+
+        <!-- =============================================
+             SUBTOTAL
+        ============================================== -->
+
+        <div
+          class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top"
+        >
+
+          <small class="text-muted">
+
+            Subtotal
+
+          </small>
+
+
+          <span class="fw-bold text-dark">
+
+            S/
+            {{
+              (
+                item.precio *
+                item.cantidad
+              ).toFixed(2)
+            }}
+
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
+
+    <div
+      *ngIf="items.length > 0"
+      class="border-top pt-3 mt-auto"
+    >
+
+
+      <!-- ===============================================
+           TOTAL
+      ================================================ -->
+
+      <div
+        class="bg-light p-3 rounded-3 mb-3"
+      >
+
+        <div
+          class="d-flex justify-content-between align-items-center"
+        >
+
+          <span class="text-muted">
+
+            Total Estimado:
+
+          </span>
+
+
+          <span
+            class="fs-4 fw-bold text-dark"
+          >
+
+            S/
+            {{ total.toFixed(2) }}
+
+          </span>
+
+        </div>
+
+
+        <small
+          class="text-muted d-block mt-1"
+          style="font-size: 0.75rem;"
+        >
+
+          * Sujeto a confirmación de stock
+          por asesor.
+
+        </small>
+
+      </div>
+
+
+      <!-- ===============================================
+           CONTINUAR COTIZACIÓN
+      ================================================ -->
+
+      <a
+        routerLink="/cotizacion"
+        class="btn btn-warning w-100 py-3 rounded-3 shadow-sm fw-bold d-flex align-items-center justify-content-center gap-2 mb-2"
+        data-bs-dismiss="offcanvas"
+      >
+
+        <i class="bi bi-file-earmark-text fs-5"></i>
+
+        CONTINUAR COTIZACIÓN
+
+      </a>
+
+
+      <!-- ===============================================
+           SEPARADOR
+      ================================================ -->
+
+      <div
+        class="d-flex align-items-center gap-2 my-3"
+      >
+
+        <div class="flex-grow-1 border-top"></div>
+
+        <small class="text-muted">
+
+          o
+
+        </small>
+
+        <div class="flex-grow-1 border-top"></div>
+
+      </div>
+
+
+      <!-- ===============================================
+           WHATSAPP
+      ================================================ -->
+
+      <button
+        type="button"
+        class="btn btn-whatsapp w-100 py-3 rounded-3 shadow-sm fs-6 d-flex align-items-center justify-content-center gap-2"
+        (click)="enviarWhatsApp()"
+      >
+
+        <i
+          class="bi bi-whatsapp fs-5"
+        ></i>
+
+        Consultar por WhatsApp
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

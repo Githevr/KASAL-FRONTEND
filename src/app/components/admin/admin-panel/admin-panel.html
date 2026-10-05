@@ -1,0 +1,723 @@
+<div class="admin-page">
+
+
+  <!-- =====================================================
+       CONTENIDO
+  ====================================================== -->
+
+  <main class="admin-content">
+
+
+    <!-- CABECERA -->
+
+    <section class="dashboard-heading">
+
+      <div>
+
+        <span class="dashboard-etiqueta">
+          PANEL DE CONTROL
+        </span>
+
+        <h2>
+          Dashboard
+        </h2>
+
+        <p>
+          Resumen general de cotizaciones,
+          productos y actividad comercial.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- =================================================
+         ERROR
+    ================================================== -->
+
+    <div
+      class="dashboard-error"
+      *ngIf="error"
+    >
+
+      <i class="bi bi-exclamation-triangle-fill"></i>
+
+      {{ error }}
+
+    </div>
+
+
+    <!-- =================================================
+         CARGANDO
+    ================================================== -->
+
+    <div
+      class="dashboard-cargando"
+      *ngIf="cargando"
+    >
+
+      <div
+        class="spinner-border"
+        role="status"
+      ></div>
+
+      <span>
+        Cargando información...
+      </span>
+
+    </div>
+
+
+    <!-- =================================================
+         DASHBOARD
+    ================================================== -->
+
+        <ng-container *ngIf="!cargando && !error">
+
+      <!-- ===============================================
+           MÉTRICAS PRINCIPALES
+      ================================================ -->
+
+      <section class="metricas-grid">
+
+
+        <!-- TOTAL COTIZACIONES -->
+
+        <article class="metrica-card">
+
+          <div class="metrica-icono metrica-total">
+
+            <i class="bi bi-receipt-cutoff"></i>
+
+          </div>
+
+          <div class="metrica-contenido">
+
+            <span>
+              Cotizaciones
+            </span>
+
+            <strong>
+              {{ totalCotizaciones }}
+            </strong>
+
+            <small>
+              Total registradas
+            </small>
+
+          </div>
+
+        </article>
+
+
+        <!-- NUEVAS -->
+
+        <article class="metrica-card">
+
+          <div class="metrica-icono metrica-nueva">
+
+            <i class="bi bi-inbox-fill"></i>
+
+          </div>
+
+          <div class="metrica-contenido">
+
+            <span>
+              Nuevas
+            </span>
+
+            <strong>
+              {{ totalNuevas }}
+            </strong>
+
+            <small>
+              Pendientes de revisar
+            </small>
+
+          </div>
+
+        </article>
+
+
+        <!-- CONFIRMADAS -->
+
+        <article class="metrica-card">
+
+          <div class="metrica-icono metrica-confirmada">
+
+            <i class="bi bi-check-circle-fill"></i>
+
+          </div>
+
+          <div class="metrica-contenido">
+
+            <span>
+              Confirmadas
+            </span>
+
+            <strong>
+              {{ totalConfirmadas }}
+            </strong>
+
+            <small>
+              Pedidos confirmados
+            </small>
+
+          </div>
+
+        </article>
+
+
+        <!-- VALOR -->
+
+        <article class="metrica-card">
+
+          <div class="metrica-icono metrica-valor">
+
+            <i class="bi bi-cash-stack"></i>
+
+          </div>
+
+          <div class="metrica-contenido">
+
+            <span>
+              Valor registrado
+            </span>
+
+            <strong class="metrica-dinero">
+
+              S/
+              {{
+                montoTotal
+                  | number:'1.2-2'
+              }}
+
+            </strong>
+
+            <small>
+              Suma de cotizaciones
+            </small>
+
+          </div>
+
+        </article>
+
+      </section>
+
+
+      <!-- ===============================================
+           ESTADOS
+      ================================================ -->
+
+      <section class="dashboard-seccion">
+
+        <div class="seccion-header">
+
+          <div>
+
+            <span>
+              COTIZACIONES
+            </span>
+
+            <h3>
+              Estado de solicitudes
+            </h3>
+
+          </div>
+
+
+          <a
+            routerLink="/admin/cotizaciones"
+            class="seccion-link"
+          >
+            Ver todas
+
+            <i class="bi bi-arrow-right"></i>
+          </a>
+
+        </div>
+
+
+        <div class="estados-grid">
+
+
+          <div class="estado-card estado-nuevo">
+
+            <span>
+              Nuevas
+            </span>
+
+            <strong>
+              {{ totalNuevas }}
+            </strong>
+
+          </div>
+
+
+          <div class="estado-card estado-revision">
+
+            <span>
+              En revisión
+            </span>
+
+            <strong>
+              {{ totalRevision }}
+            </strong>
+
+          </div>
+
+
+          <div class="estado-card estado-cotizado">
+
+            <span>
+              Cotizadas
+            </span>
+
+            <strong>
+              {{ totalCotizadas }}
+            </strong>
+
+          </div>
+
+
+          <div class="estado-card estado-confirmado">
+
+            <span>
+              Confirmadas
+            </span>
+
+            <strong>
+              {{ totalConfirmadas }}
+            </strong>
+
+          </div>
+
+
+          <div class="estado-card estado-cancelado">
+
+            <span>
+              Canceladas
+            </span>
+
+            <strong>
+              {{ totalCanceladas }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===============================================
+           ACCESOS RÁPIDOS
+      ================================================ -->
+
+      <section class="dashboard-seccion">
+
+        <div class="seccion-header">
+
+          <div>
+
+            <span>
+              ADMINISTRACIÓN
+            </span>
+
+            <h3>
+              Accesos rápidos
+            </h3>
+
+          </div>
+
+        </div>
+
+
+        <div class="accesos-grid">
+
+
+          <a
+            routerLink="/admin/cotizaciones"
+            class="acceso-card"
+          >
+
+            <div class="acceso-icono">
+              <i class="bi bi-receipt"></i>
+            </div>
+
+            <div>
+
+              <strong>
+                Cotizaciones
+              </strong>
+
+              <span>
+                Gestionar solicitudes
+              </span>
+
+            </div>
+
+            <i class="bi bi-chevron-right acceso-flecha"></i>
+
+          </a>
+
+
+          <a
+            routerLink="/admin/productos"
+            class="acceso-card"
+          >
+
+            <div class="acceso-icono">
+              <i class="bi bi-box-seam"></i>
+            </div>
+
+            <div>
+
+              <strong>
+                Productos
+              </strong>
+
+              <span>
+                Catálogo y stock
+              </span>
+
+            </div>
+
+            <i class="bi bi-chevron-right acceso-flecha"></i>
+
+          </a>
+
+
+          <a
+            routerLink="/admin/categorias"
+            class="acceso-card"
+          >
+
+            <div class="acceso-icono">
+              <i class="bi bi-tags"></i>
+            </div>
+
+            <div>
+
+              <strong>
+                Categorías
+              </strong>
+
+              <span>
+                Organizar catálogo
+              </span>
+
+            </div>
+
+            <i class="bi bi-chevron-right acceso-flecha"></i>
+
+          </a>
+
+
+          <a
+            routerLink="/admin/sectores"
+            class="acceso-card"
+          >
+
+            <div class="acceso-icono">
+              <i class="bi bi-buildings"></i>
+            </div>
+
+            <div>
+
+              <strong>
+                Sectores
+              </strong>
+
+              <span>
+                Sectores industriales
+              </span>
+
+            </div>
+
+            <i class="bi bi-chevron-right acceso-flecha"></i>
+
+          </a>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===============================================
+           ÚLTIMAS COTIZACIONES
+      ================================================ -->
+
+      <section class="dashboard-seccion">
+
+        <div class="seccion-header">
+
+          <div>
+
+            <span>
+              ACTIVIDAD RECIENTE
+            </span>
+
+            <h3>
+              Últimas cotizaciones
+            </h3>
+
+          </div>
+
+
+          <a
+            routerLink="/admin/cotizaciones"
+            class="seccion-link"
+          >
+            Ver historial
+
+            <i class="bi bi-arrow-right"></i>
+          </a>
+
+        </div>
+
+
+        <!-- TABLA -->
+
+        <div
+          class="tabla-wrapper"
+          *ngIf="ultimasCotizaciones.length > 0"
+        >
+
+          <table class="dashboard-tabla">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  #
+                </th>
+
+                <th>
+                  Cliente
+                </th>
+
+                <th>
+                  Fecha
+                </th>
+
+                <th>
+                  Estado
+                </th>
+
+                <th>
+                  Total
+                </th>
+
+                <th></th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr
+                *ngFor="
+                  let pedido
+                  of ultimasCotizaciones
+                "
+              >
+
+                <td>
+
+                  <strong>
+                    #{{ pedido.id }}
+                  </strong>
+
+                </td>
+
+
+                <td>
+
+                  <div class="cliente-tabla">
+
+                    <strong>
+
+                      {{
+                        pedido.empresa_cliente ||
+                        pedido.nombre_cliente ||
+                        'Cliente'
+                      }}
+
+                    </strong>
+
+                    <span
+                      *ngIf="
+                        pedido.empresa_cliente &&
+                        pedido.nombre_cliente
+                      "
+                    >
+
+                      {{ pedido.nombre_cliente }}
+
+                    </span>
+
+                  </div>
+
+                </td>
+
+
+                <td>
+
+                  {{
+                    pedido.fecha
+                      | date:'dd/MM/yyyy HH:mm'
+                  }}
+
+                </td>
+
+
+                <td>
+
+                  <span
+                    class="badge-estado"
+                    [ngClass]="
+                      obtenerClaseEstado(
+                        pedido.estado
+                      )
+                    "
+                  >
+
+                    {{
+                      obtenerNombreEstado(
+                        pedido.estado
+                      )
+                    }}
+
+                  </span>
+
+                </td>
+
+
+                <td>
+
+                  <strong>
+
+                    S/
+                    {{
+                      pedido.total
+                        | number:'1.2-2'
+                    }}
+
+                  </strong>
+
+                </td>
+
+
+                <td>
+
+                  <a
+                    [routerLink]="[
+                      '/admin/cotizaciones',
+                      pedido.id
+                    ]"
+                    class="btn-ver"
+                    title="Ver cotización"
+                  >
+
+                    <i class="bi bi-arrow-right"></i>
+
+                  </a>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+        <!-- SIN DATOS -->
+
+        <div
+          class="sin-datos"
+          *ngIf="
+            ultimasCotizaciones.length === 0
+          "
+        >
+
+          <i class="bi bi-inbox"></i>
+
+          <strong>
+            No hay cotizaciones registradas
+          </strong>
+
+          <span>
+            Las nuevas solicitudes aparecerán aquí.
+          </span>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===============================================
+           RESUMEN ECONÓMICO
+      ================================================ -->
+
+      <section class="resumen-economico">
+
+        <div>
+
+          <span>
+            VALOR TOTAL REGISTRADO
+          </span>
+
+          <strong>
+
+            S/
+            {{
+              montoTotal
+                | number:'1.2-2'
+            }}
+
+          </strong>
+
+          <small>
+            Todas las cotizaciones
+          </small>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            VALOR CONFIRMADO
+          </span>
+
+          <strong>
+
+            S/
+            {{
+              montoConfirmado
+                | number:'1.2-2'
+            }}
+
+          </strong>
+
+          <small>
+            Solo cotizaciones confirmadas
+          </small>
+
+        </div>
+
+      </section>
+
+    </ng-container>
+
+  </main>
+
+</div>

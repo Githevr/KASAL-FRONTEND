@@ -1,0 +1,497 @@
+<div class="container py-5" *ngIf="producto">
+
+  <!-- ============================================ -->
+  <!-- MIGAS DE PAN -->
+  <!-- ============================================ -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb text-uppercase small fw-bold">
+
+      <li class="breadcrumb-item">
+        <a
+          routerLink="/"
+          class="text-decoration-none text-muted"
+        >
+          Inicio
+        </a>
+      </li>
+
+      <li class="breadcrumb-item">
+        <a
+          routerLink="/tienda"
+          class="text-decoration-none text-muted"
+        >
+          Tienda
+        </a>
+      </li>
+
+      <li class="breadcrumb-item active text-dark">
+        {{ producto.nombre }}
+      </li>
+
+    </ol>
+  </nav>
+
+
+  <!-- ============================================ -->
+  <!-- DETALLE DEL PRODUCTO -->
+  <!-- ============================================ -->
+  <div class="row g-4">
+
+    <!-- ========================================== -->
+    <!-- COLUMNA IZQUIERDA: IMAGEN -->
+    <!-- ========================================== -->
+    <div class="col-md-6">
+
+      <div
+        class="bg-white border rounded-3 p-4 text-center shadow-sm"
+      >
+
+        <img
+          [src]="producto.imagen_url || 'https://via.placeholder.com/400'"
+          [alt]="producto.nombre"
+          class="img-fluid"
+          style="
+            max-height: 380px;
+            width: 100%;
+            object-fit: contain;
+          "
+        >
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- COLUMNA DERECHA: INFORMACIÓN -->
+    <!-- ========================================== -->
+    <div class="col-md-6 d-flex flex-column">
+
+      <!-- Categoría -->
+      <span
+        class="badge bg-dark text-uppercase px-3 py-2 w-auto me-auto mb-2"
+      >
+        <i class="bi bi-tag-fill me-1 text-warning"></i>
+
+        {{ producto.categoria }}
+      </span>
+
+
+      <!-- Nombre -->
+      <h2 class="fw-bold text-dark text-uppercase mb-2">
+        {{ producto.nombre }}
+      </h2>
+
+
+      <!-- Descripción -->
+      <p
+        class="text-muted mb-4"
+        style="line-height: 1.6;"
+      >
+        {{ producto.descripcion }}
+      </p>
+
+
+      <!-- ======================================== -->
+      <!-- SELECCIÓN DE TALLA -->
+      <!-- ======================================== -->
+
+      <div
+        class="mb-4"
+        *ngIf="
+          producto.variaciones &&
+          producto.variaciones.length > 0
+        "
+      >
+
+        <label
+          class="fw-bold text-uppercase small mb-2 d-block"
+        >
+          Seleccionar talla
+        </label>
+
+
+        <div class="d-flex flex-wrap gap-2">
+
+          <button
+            *ngFor="let variacion of producto.variaciones"
+            type="button"
+            class="btn px-4 fw-bold"
+            [ngClass]="
+              variacionSeleccionada?.variacion_id ===
+              variacion.variacion_id
+                ? 'btn-dark'
+                : 'btn-outline-dark'
+            "
+            [disabled]="variacion.stock <= 0"
+            (click)="seleccionarVariacion(variacion)"
+          >
+
+            {{ variacion.talla }}
+
+          </button>
+
+        </div>
+
+
+        <!-- Aviso cuando no hay variaciones -->
+        <small
+          class="text-muted d-block mt-2"
+          *ngIf="producto.variaciones.length === 1"
+        >
+          Talla disponible:
+          {{ producto.variaciones[0].talla }}
+        </small>
+
+      </div>
+
+
+      <!-- ======================================== -->
+      <!-- PRECIO Y STOCK -->
+      <!-- ======================================== -->
+
+      <div
+        class="p-3 bg-light rounded-3 border mb-4"
+        *ngIf="variacionSeleccionada"
+      >
+
+        <div
+          class="d-flex justify-content-between align-items-end gap-3"
+        >
+
+          <!-- Precio -->
+          <div>
+
+            <span
+              class="text-uppercase fw-bold text-secondary small d-block mb-1"
+            >
+              Precio unitario
+            </span>
+
+            <span class="fs-2 fw-bold text-dark">
+
+              S/
+              {{
+                variacionSeleccionada.precio
+                  | number:'1.2-2'
+              }}
+
+            </span>
+
+          </div>
+
+
+          <!-- Stock -->
+          <div class="text-end">
+
+            <span class="small text-muted d-block">
+              Stock disponible
+            </span>
+
+            <span
+              class="fw-bold"
+              [ngClass]="{
+                'text-success':
+                  variacionSeleccionada.stock > 10,
+
+                'text-warning':
+                  variacionSeleccionada.stock > 0 &&
+                  variacionSeleccionada.stock <= 10,
+
+                'text-danger':
+                  variacionSeleccionada.stock === 0
+              }"
+            >
+
+              {{ variacionSeleccionada.stock }}
+              unidades
+
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================== -->
+      <!-- CANTIDAD + BOTÓN AGREGAR -->
+      <!-- ======================================== -->
+
+      <div
+        class="d-flex gap-3 align-items-center mb-4"
+        *ngIf="variacionSeleccionada"
+      >
+
+        <!-- Control de cantidad -->
+        <div
+          class="input-group"
+          style="width: 130px;"
+        >
+
+          <!-- Restar -->
+          <button
+            class="btn btn-outline-secondary fw-bold"
+            type="button"
+            (click)="cambiarCantidad(-1)"
+            [disabled]="cantidad <= 1"
+          >
+            -
+          </button>
+
+
+          <!-- Cantidad -->
+          <input
+            type="text"
+            class="form-control text-center fw-bold bg-white"
+            [value]="cantidad"
+            readonly
+          >
+
+
+          <!-- Sumar -->
+          <button
+            class="btn btn-outline-secondary fw-bold"
+            type="button"
+            (click)="cambiarCantidad(1)"
+            [disabled]="
+              cantidad >= variacionSeleccionada.stock
+            "
+          >
+            +
+          </button>
+
+        </div>
+
+
+        <!-- Botón agregar -->
+        <button
+          class="
+            btn
+            btn-safety-orange
+            btn-lg
+            flex-grow-1
+            fw-bold
+            text-uppercase
+            d-flex
+            align-items-center
+            justify-content-center
+            gap-2
+            shadow-sm
+          "
+          type="button"
+          (click)="agregarAlCarrito()"
+          [disabled]="variacionSeleccionada.stock <= 0"
+        >
+
+          <i class="bi bi-cart-plus-fill"></i>
+
+          <span
+            *ngIf="variacionSeleccionada.stock > 0"
+          >
+            Añadir a cotización
+          </span>
+
+          <span
+            *ngIf="variacionSeleccionada.stock <= 0"
+          >
+            Sin stock
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <!-- ======================================== -->
+      <!-- MENSAJE SIN VARIACIONES -->
+      <!-- ======================================== -->
+
+      <div
+        class="alert alert-warning"
+        *ngIf="
+          !producto.variaciones ||
+          producto.variaciones.length === 0
+        "
+      >
+
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+        Este producto no tiene presentaciones disponibles
+        actualmente.
+
+      </div>
+
+
+      <!-- ======================================== -->
+      <!-- FICHA TÉCNICA -->
+      <!-- ======================================== -->
+
+      <div class="mt-auto border-top pt-4">
+
+        <h6 class="fw-bold text-uppercase mb-3">
+
+          <i
+            class="
+              bi
+              bi-file-earmark-text-fill
+              me-2
+              text-warning
+            "
+          ></i>
+
+          Ficha Técnica de Seguridad
+
+        </h6>
+
+
+        <ul class="list-group list-group-flush small">
+
+          <!-- Sector -->
+          <li
+            class="
+              list-group-item
+              bg-transparent
+              px-0
+            "
+          >
+
+            <strong>
+              Sector Recomendado:
+            </strong>
+
+            {{ producto.categoria }}
+
+          </li>
+
+
+          <!-- Talla seleccionada -->
+          <li
+            class="
+              list-group-item
+              bg-transparent
+              px-0
+            "
+            *ngIf="variacionSeleccionada"
+          >
+
+            <strong>
+              Talla seleccionada:
+            </strong>
+
+            {{ variacionSeleccionada.talla }}
+
+          </li>
+
+
+          <!-- Stock -->
+          <li
+            class="
+              list-group-item
+              bg-transparent
+              px-0
+            "
+            *ngIf="variacionSeleccionada"
+          >
+
+            <strong>
+              Stock:
+            </strong>
+
+            {{ variacionSeleccionada.stock }}
+            unidades
+
+          </li>
+
+
+          <!-- Certificación -->
+          <li
+            class="
+              list-group-item
+              bg-transparent
+              px-0
+            "
+          >
+
+            <strong>
+              Certificación:
+            </strong>
+
+            Norma de Protección Industrial EN388
+
+          </li>
+
+
+          <!-- Disponibilidad -->
+          <li
+            class="
+              list-group-item
+              bg-transparent
+              px-0
+            "
+          >
+
+            <strong>
+              Disponibilidad:
+            </strong>
+
+            Envíos a nivel nacional
+            (Atención a Empresas)
+
+          </li>
+
+
+          <!-- Distribuidor -->
+          <li
+            class="
+              list-group-item
+              bg-transparent
+              px-0
+            "
+          >
+
+            <strong>
+              Distribuidor Oficial:
+            </strong>
+
+            KASAL INVERSIONES SAC
+
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ============================================ -->
+<!-- ESTADO DE CARGA -->
+<!-- ============================================ -->
+
+<div
+  class="container py-5 text-center"
+  *ngIf="!producto"
+>
+
+  <div
+    class="spinner-border text-warning mb-3"
+    role="status"
+  >
+
+    <span class="visually-hidden">
+      Cargando...
+    </span>
+
+  </div>
+
+  <p class="text-muted fw-semibold">
+    Cargando producto...
+  </p>
+
+</div>

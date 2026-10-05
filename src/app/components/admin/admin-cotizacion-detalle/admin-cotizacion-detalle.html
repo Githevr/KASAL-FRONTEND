@@ -1,0 +1,881 @@
+<div class="cotizacion-page">
+
+  <div class="container-fluid cotizacion-container">
+
+
+    <!-- =====================================================
+         CARGANDO
+    ====================================================== -->
+
+    <div
+      *ngIf="cargando"
+      class="estado-pantalla"
+    >
+
+      <div
+        class="spinner-border text-primary"
+        role="status"
+      >
+        <span class="visually-hidden">
+          Cargando...
+        </span>
+      </div>
+
+      <h5>
+        Cargando cotización...
+      </h5>
+
+      <p>
+        Estamos obteniendo la información de la solicitud.
+      </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         ERROR
+    ====================================================== -->
+
+    <div
+      *ngIf="!cargando && error && !pedido"
+      class="estado-pantalla"
+    >
+
+      <div class="estado-icono error-icono">
+        <i class="bi bi-exclamation-triangle"></i>
+      </div>
+
+      <h5>
+        No se pudo cargar la cotización
+      </h5>
+
+      <p>
+        {{ error }}
+      </p>
+
+      <button
+        type="button"
+        class="btn btn-dark"
+        (click)="volver()"
+      >
+        <i class="bi bi-arrow-left me-2"></i>
+        Volver a cotizaciones
+      </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         CONTENIDO
+    ====================================================== -->
+
+    <ng-container
+      *ngIf="!cargando && pedido"
+    >
+
+
+      <!-- ===================================================
+           CABECERA
+      ==================================================== -->
+
+      <div class="page-header">
+
+        <div>
+
+          <button
+            type="button"
+            class="boton-volver"
+            (click)="volver()"
+          >
+            <i class="bi bi-arrow-left"></i>
+            Volver a cotizaciones
+          </button>
+
+
+          <div class="titulo-wrapper">
+
+            <div class="titulo-icono">
+              <i class="bi bi-file-earmark-text"></i>
+            </div>
+
+            <div>
+
+              <span class="eyebrow">
+                SOLICITUD DE COTIZACIÓN
+              </span>
+
+              <h1>
+                Cotización #{{ pedido.id }}
+              </h1>
+
+              <p>
+                Registrada el
+                {{ pedido.fecha | date:'dd/MM/yyyy' }}
+                a las
+                {{ pedido.fecha | date:'HH:mm' }}
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ESTADO -->
+
+        <div class="estado-header">
+
+          <label for="estadoPedido">
+            Estado de la cotización
+          </label>
+
+          <div class="estado-select-wrapper">
+
+            <select
+              id="estadoPedido"
+              class="form-select estado-select"
+              [ngModel]="pedido.estado"
+              (ngModelChange)="cambiarEstado($event)"
+              [disabled]="actualizandoEstado"
+            >
+
+              <option value="nuevo">
+                Nuevo
+              </option>
+
+              <option value="en_revision">
+                En revisión
+              </option>
+
+              <option value="cotizado">
+                Cotizado
+              </option>
+
+              <option value="confirmado">
+                Confirmado
+              </option>
+
+              <option value="cancelado">
+                Cancelado
+              </option>
+
+            </select>
+
+
+            <div
+              *ngIf="actualizandoEstado"
+              class="spinner-border spinner-border-sm"
+              role="status"
+            >
+              <span class="visually-hidden">
+                Actualizando...
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================
+           ERROR AL ACTUALIZAR
+      ==================================================== -->
+
+      <div
+        *ngIf="error"
+        class="alert alert-danger detalle-alert"
+      >
+
+        <i class="bi bi-exclamation-circle-fill"></i>
+
+        <span>
+          {{ error }}
+        </span>
+
+      </div>
+
+
+      <!-- ===================================================
+           RESUMEN
+      ==================================================== -->
+
+      <div class="resumen-grid">
+
+        <div class="resumen-card">
+
+          <div class="resumen-icono">
+            <i class="bi bi-box-seam"></i>
+          </div>
+
+          <div>
+            <span>
+              Ítems
+            </span>
+
+            <strong>
+              {{ obtenerTotalItems() }}
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div class="resumen-card">
+
+          <div class="resumen-icono">
+            <i class="bi bi-stack"></i>
+          </div>
+
+          <div>
+            <span>
+              Unidades
+            </span>
+
+            <strong>
+              {{ obtenerTotalUnidades() }}
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div class="resumen-card">
+
+          <div class="resumen-icono">
+            <i class="bi bi-globe2"></i>
+          </div>
+
+          <div>
+            <span>
+              Origen
+            </span>
+
+            <strong>
+              {{ obtenerNombreOrigen(pedido.origen) }}
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div class="resumen-card resumen-total">
+
+          <div class="resumen-icono">
+            <i class="bi bi-cash-stack"></i>
+          </div>
+
+          <div>
+            <span>
+              Total estimado
+            </span>
+
+            <strong>
+              S/ {{ pedido.total | number:'1.2-2' }}
+            </strong>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================
+           CUERPO
+      ==================================================== -->
+
+      <div class="contenido-grid">
+
+
+        <!-- =================================================
+             COLUMNA PRINCIPAL
+        ================================================== -->
+
+        <div class="contenido-principal">
+
+
+          <!-- ===============================================
+               PRODUCTOS
+          ================================================ -->
+
+          <section class="panel-card">
+
+            <div class="panel-header">
+
+              <div>
+
+                <span class="panel-eyebrow">
+                  DETALLE
+                </span>
+
+                <h2>
+                  Productos solicitados
+                </h2>
+
+              </div>
+
+              <span class="contador-productos">
+                {{ obtenerTotalItems() }}
+                {{ obtenerTotalItems() === 1 ? 'producto' : 'productos' }}
+              </span>
+
+            </div>
+
+
+            <!-- SIN PRODUCTOS -->
+
+            <div
+              *ngIf="pedido.detalles.length === 0"
+              class="sin-productos"
+            >
+
+              <i class="bi bi-box"></i>
+
+              <p>
+                Esta cotización no tiene productos registrados.
+              </p>
+
+            </div>
+
+
+            <!-- PRODUCTOS -->
+
+            <div
+              *ngFor="
+                let detalle of pedido.detalles;
+                let ultimo = last
+              "
+              class="producto-item"
+              [class.sin-borde]="ultimo"
+            >
+
+
+              <!-- IMAGEN -->
+
+              <div class="producto-imagen">
+
+                <img
+                  *ngIf="detalle.imagen_url"
+                  [src]="obtenerImagen(detalle.imagen_url)"
+                  [alt]="detalle.producto_nombre"
+                  (error)="imagenError($event)"
+                >
+
+                <div
+                  *ngIf="!detalle.imagen_url"
+                  class="producto-sin-imagen"
+                >
+                  <i class="bi bi-image"></i>
+                </div>
+
+              </div>
+
+
+              <!-- INFORMACIÓN -->
+
+              <div class="producto-info">
+
+                <div class="producto-titulo">
+
+                  <div>
+
+                    <span class="producto-id">
+                      Producto #{{ detalle.producto_id }}
+                    </span>
+
+                    <h3>
+                      {{ detalle.producto_nombre }}
+                    </h3>
+
+                  </div>
+
+                </div>
+
+
+                <div class="producto-datos">
+
+                  <div class="dato-producto">
+
+                    <span>
+                      Talla
+                    </span>
+
+                    <strong>
+                      {{ detalle.talla }}
+                    </strong>
+
+                  </div>
+
+
+                  <div class="dato-producto">
+
+                    <span>
+                      SKU
+                    </span>
+
+                    <strong>
+                      {{ detalle.sku || '—' }}
+                    </strong>
+
+                  </div>
+
+
+                  <div class="dato-producto">
+
+                    <span>
+                      Cantidad
+                    </span>
+
+                    <strong>
+                      {{ detalle.cantidad }}
+                    </strong>
+
+                  </div>
+
+
+                  <div class="dato-producto">
+
+                    <span>
+                      Precio unitario
+                    </span>
+
+                    <strong>
+                      S/
+                      {{ detalle.precio_unitario | number:'1.2-2' }}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <!-- SUBTOTAL -->
+
+              <div class="producto-subtotal">
+
+                <span>
+                  Subtotal
+                </span>
+
+                <strong>
+                  S/
+                  {{
+                    obtenerSubtotal(
+                      detalle.cantidad,
+                      detalle.precio_unitario
+                    )
+                    | number:'1.2-2'
+                  }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <!-- TOTAL -->
+
+            <div class="total-cotizacion">
+
+              <div>
+
+                <span>
+                  Total estimado
+                </span>
+
+                <small>
+                  Precio sujeto a confirmación comercial
+                </small>
+
+              </div>
+
+              <strong>
+                S/ {{ pedido.total | number:'1.2-2' }}
+              </strong>
+
+            </div>
+
+          </section>
+
+
+          <!-- ===============================================
+               MENSAJE
+          ================================================ -->
+
+          <section class="panel-card">
+
+            <div class="panel-header">
+
+              <div>
+
+                <span class="panel-eyebrow">
+                  COMENTARIO
+                </span>
+
+                <h2>
+                  Mensaje del cliente
+                </h2>
+
+              </div>
+
+            </div>
+
+
+            <div
+              *ngIf="pedido.mensaje_cliente; else sinMensaje"
+              class="mensaje-cliente"
+            >
+
+              <i class="bi bi-chat-left-text"></i>
+
+              <p>
+                {{ pedido.mensaje_cliente }}
+              </p>
+
+            </div>
+
+
+            <ng-template #sinMensaje>
+
+              <div class="mensaje-vacio">
+
+                <i class="bi bi-chat-left"></i>
+
+                <span>
+                  El cliente no agregó ningún mensaje.
+                </span>
+
+              </div>
+
+            </ng-template>
+
+          </section>
+
+        </div>
+
+
+        <!-- =================================================
+             CLIENTE
+        ================================================== -->
+
+        <aside class="contenido-lateral">
+
+          <section class="panel-card cliente-card">
+
+            <div class="panel-header">
+
+              <div>
+
+                <span class="panel-eyebrow">
+                  CLIENTE
+                </span>
+
+                <h2>
+                  Datos de contacto
+                </h2>
+
+              </div>
+
+            </div>
+
+
+            <!-- PERSONA -->
+
+            <div class="cliente-principal">
+
+              <div class="cliente-avatar">
+
+                {{
+                  (pedido.nombre_cliente || 'C')
+                    .charAt(0)
+                    .toUpperCase()
+                }}
+
+              </div>
+
+              <div>
+
+                <h3>
+                  {{ pedido.nombre_cliente || 'Cliente' }}
+                </h3>
+
+                <p>
+                  {{ pedido.empresa_cliente || 'Sin empresa registrada' }}
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <!-- DATOS -->
+
+            <div class="cliente-datos">
+
+
+              <div class="cliente-dato">
+
+                <div class="cliente-dato-icono">
+                  <i class="bi bi-building"></i>
+                </div>
+
+                <div>
+
+                  <span>
+                    Empresa
+                  </span>
+
+                  <strong>
+                    {{ pedido.empresa_cliente || 'No registrada' }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <div class="cliente-dato">
+
+                <div class="cliente-dato-icono">
+                  <i class="bi bi-card-text"></i>
+                </div>
+
+                <div>
+
+                  <span>
+                    RUC
+                  </span>
+
+                  <strong>
+                    {{ pedido.ruc_cliente || 'No registrado' }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <div class="cliente-dato">
+
+                <div class="cliente-dato-icono">
+                  <i class="bi bi-telephone"></i>
+                </div>
+
+                <div>
+
+                  <span>
+                    Teléfono
+                  </span>
+
+                  <strong>
+                    {{ pedido.telefono_cliente || 'No registrado' }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <div class="cliente-dato">
+
+                <div class="cliente-dato-icono">
+                  <i class="bi bi-envelope"></i>
+                </div>
+
+                <div>
+
+                  <span>
+                    Correo electrónico
+                  </span>
+
+                  <strong class="email-text">
+                    {{ pedido.email_cliente || 'No registrado' }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <div class="cliente-dato">
+
+                <div class="cliente-dato-icono">
+                  <i class="bi bi-megaphone"></i>
+                </div>
+
+                <div>
+
+                  <span>
+                    Origen
+                  </span>
+
+                  <strong>
+                    {{ obtenerNombreOrigen(pedido.origen) }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                    ACCIONES DE CONTACTO
+                ===================================================== -->
+
+                <div class="cliente-acciones">
+
+                <!-- LLAMAR -->
+
+                <a
+                    *ngIf="pedido.telefono_cliente"
+                    class="btn-contacto"
+                    [href]="'tel:' + pedido.telefono_cliente"
+                >
+                    <i class="bi bi-telephone"></i>
+
+                    Llamar
+                </a>
+
+
+                <!-- CORREO -->
+
+                <a
+                    *ngIf="pedido.email_cliente"
+                    class="btn-contacto"
+                    [href]="'mailto:' + pedido.email_cliente"
+                >
+                    <i class="bi bi-envelope"></i>
+
+                    Correo
+                </a>
+
+
+                <!-- WHATSAPP -->
+
+                <button
+                    *ngIf="pedido.telefono_cliente"
+                    type="button"
+                    class="btn-contacto btn-whatsapp"
+                    (click)="abrirWhatsApp()"
+                >
+                    <i class="bi bi-whatsapp"></i>
+
+                    WhatsApp
+                </button>
+
+                </div>
+
+          </section>
+
+
+          <!-- ===============================================
+               INFORMACIÓN DE COTIZACIÓN
+          ================================================ -->
+
+          <section class="panel-card">
+
+            <div class="panel-header">
+
+              <div>
+
+                <span class="panel-eyebrow">
+                  INFORMACIÓN
+                </span>
+
+                <h2>
+                  Cotización
+                </h2>
+
+              </div>
+
+            </div>
+
+
+            <div class="info-lista">
+
+              <div class="info-fila">
+
+                <span>
+                  Número
+                </span>
+
+                <strong>
+                  #{{ pedido.id }}
+                </strong>
+
+              </div>
+
+
+              <div class="info-fila">
+
+                <span>
+                  Fecha
+                </span>
+
+                <strong>
+                  {{ pedido.fecha | date:'dd/MM/yyyy' }}
+                </strong>
+
+              </div>
+
+
+              <div class="info-fila">
+
+                <span>
+                  Hora
+                </span>
+
+                <strong>
+                  {{ pedido.fecha | date:'HH:mm' }}
+                </strong>
+
+              </div>
+
+
+              <div class="info-fila">
+
+                <span>
+                  Estado
+                </span>
+
+                <strong
+                  class="estado-texto"
+                  [attr.data-estado]="pedido.estado"
+                >
+                  {{ obtenerNombreEstado(pedido.estado) }}
+                </strong>
+
+              </div>
+
+
+              <div class="info-fila">
+
+                <span>
+                  Total
+                </span>
+
+                <strong class="info-total">
+                  S/ {{ pedido.total | number:'1.2-2' }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </section>
+
+        </aside>
+
+      </div>
+
+    </ng-container>
+
+  </div>
+
+</div>

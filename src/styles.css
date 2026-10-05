@@ -1,1 +1,139 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap');
+
+/* PALETA OFICIAL INDUSTRIAL DE KASAL INVERSIONES SAC */
+:root {
+  --dark-navy: #0f172a;       /* Azul Marino Corporativo (Dominante) */
+  --slate-dark: #1e293b;      /* Gris Oscuro Industrial */
+  --safety-orange: #ea580c;   /* Naranja Seguridad */
+  --safety-yellow: #f59e0b;   /* Amarillo Vial */
+  --industrial-green: #059669;/* Verde Prevención de Riesgos */
+  --bg-light: #f8fafc;        /* Fondo Neutro */
+  --border-color: #cbd5e1;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--bg-light);
+  color: var(--dark-navy);
+}
+
+/* Tipografía Fuerte y Tipos Angular */
+h1, h2, h3, h4, h5, h6, .brand-font {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+/* Tarjetas de Producto */
+.product-card {
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  border: 2px solid var(--border-color) !important;
+  border-radius: 10px !important;
+  background: #ffffff;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--safety-orange) !important;
+  box-shadow: 0 12px 24px -8px rgba(15, 23, 42, 0.15) !important;
+}
+
+.product-img-container {
+  background-color: #f1f5f9;
+  padding: 1.5rem;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-img-container img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-img-container img {
+  transform: scale(1.05);
+}
+
+/* Botones con Colores Oficiales */
+.btn-safety-orange {
+  background-color: var(--safety-orange);
+  color: #ffffff;
+  font-weight: 800;
+  border: none;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-safety-orange:hover:not(:disabled) {
+  background-color: #c2410c;
+  color: #ffffff;
+}
+
+.btn-navy {
+  background-color: var(--dark-navy);
+  color: #ffffff;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.btn-navy:hover {
+  background-color: var(--slate-dark);
+  color: #ffffff;
+}
+
+/* Badges e Indicadores */
+.badge-safety-orange {
+  background-color: var(--safety-orange);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.badge-safety-yellow {
+  background-color: var(--safety-yellow);
+  color: var(--dark-navy);
+  font-weight: 800;
+}
+
+.badge-industrial-green {
+  background-color: #d1fae5;
+  color: var(--industrial-green);
+  border: 1px solid var(--industrial-green);
+  font-weight: 700;
+}
+
+/* Iconos de Seguridad */
+.icon-industrial-box {
+  width: 52px;
+  height: 52px;
+  background-color: var(--dark-navy);
+  color: var(--safety-orange);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Carrusel Hero */
+.hero-carousel .carousel-item {
+  height: 440px;
+  background-color: var(--dark-navy);
+}
+
+.hero-carousel img {
+  object-fit: cover;
+  opacity: 0.2;
+}
+
+@media (max-width: 768px) {
+  .hero-carousel .carousel-item {
+    height: 360px;
+  }
+}

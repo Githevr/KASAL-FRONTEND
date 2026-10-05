@@ -1,0 +1,938 @@
+<div class="quotes-page">
+
+  <div class="container-fluid admin-container">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="page-header">
+
+      <div>
+
+        <span class="page-eyebrow">
+          GESTIÓN COMERCIAL
+        </span>
+
+        <h1>
+          Cotizaciones
+        </h1>
+
+        <p>
+          Revisa y administra las solicitudes comerciales
+          recibidas desde la tienda.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="refresh-button"
+        (click)="cargarPedidos()"
+        [disabled]="cargando"
+      >
+
+        <i
+          class="bi bi-arrow-clockwise"
+          [class.spin]="cargando"
+        ></i>
+
+        Actualizar
+
+      </button>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         ERROR
+    ====================================================== -->
+
+    <div
+      *ngIf="error"
+      class="alert-panel alert-error"
+    >
+
+      <div class="alert-icon">
+
+        <i class="bi bi-exclamation-circle"></i>
+
+      </div>
+
+      <div>
+
+        <strong>
+          No pudimos completar la operación
+        </strong>
+
+        <p>
+          {{ error }}
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         MÉTRICAS
+    ====================================================== -->
+
+    <section
+      class="metrics-grid"
+      *ngIf="!cargando"
+    >
+
+
+      <!-- NUEVAS -->
+
+      <article class="metric-card">
+
+        <div class="metric-icon metric-icon-new">
+
+          <i class="bi bi-inbox"></i>
+
+        </div>
+
+        <div class="metric-content">
+
+          <span class="metric-label">
+            Nuevas
+          </span>
+
+          <strong class="metric-value">
+            {{ obtenerTotalNuevos() }}
+          </strong>
+
+          <span class="metric-description">
+            Pendientes de revisar
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <!-- EN REVISIÓN -->
+
+      <article class="metric-card">
+
+        <div class="metric-icon metric-icon-review">
+
+          <i class="bi bi-hourglass-split"></i>
+
+        </div>
+
+        <div class="metric-content">
+
+          <span class="metric-label">
+            En revisión
+          </span>
+
+          <strong class="metric-value">
+            {{ obtenerTotalRevision() }}
+          </strong>
+
+          <span class="metric-description">
+            En gestión comercial
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <!-- COTIZADAS -->
+
+      <article class="metric-card">
+
+        <div class="metric-icon metric-icon-quoted">
+
+          <i class="bi bi-file-earmark-check"></i>
+
+        </div>
+
+        <div class="metric-content">
+
+          <span class="metric-label">
+            Cotizadas
+          </span>
+
+          <strong class="metric-value">
+            {{ obtenerTotalCotizados() }}
+          </strong>
+
+          <span class="metric-description">
+            Propuestas enviadas
+          </span>
+
+        </div>
+
+      </article>
+
+
+      <!-- MONTO -->
+
+      <article class="metric-card metric-card-money">
+
+        <div class="metric-icon metric-icon-money">
+
+          <i class="bi bi-cash-stack"></i>
+
+        </div>
+
+        <div class="metric-content">
+
+          <span class="metric-label">
+            Valor registrado
+          </span>
+
+          <strong class="metric-value metric-money">
+
+            S/
+            {{
+              obtenerMontoTotal()
+                | number:'1.2-2'
+            }}
+
+          </strong>
+
+          <span class="metric-description">
+
+            {{ pedidos.length }}
+            solicitudes
+
+          </span>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         PANEL PRINCIPAL
+    ====================================================== -->
+
+    <section class="quotes-panel">
+
+
+      <!-- ===================================================
+           TOOLBAR
+      ==================================================== -->
+
+      <div class="panel-toolbar">
+
+
+        <!-- BUSCADOR -->
+
+        <div class="search-box">
+
+          <i class="bi bi-search"></i>
+
+          <input
+            type="text"
+            [(ngModel)]="busqueda"
+            (ngModelChange)="aplicarFiltros()"
+            placeholder="Buscar por cliente, empresa, RUC, teléfono..."
+          >
+
+          <button
+            *ngIf="busqueda"
+            type="button"
+            class="clear-search"
+            (click)="busqueda = ''; aplicarFiltros()"
+            aria-label="Limpiar búsqueda"
+          >
+
+            <i class="bi bi-x-lg"></i>
+
+          </button>
+
+        </div>
+
+
+        <!-- FILTROS -->
+
+        <div class="filters">
+
+
+          <!-- ESTADO -->
+
+          <div class="filter-control">
+
+            <i class="bi bi-funnel"></i>
+
+            <select
+              [(ngModel)]="filtroEstado"
+              (ngModelChange)="aplicarFiltros()"
+            >
+
+              <option value="todos">
+                Todos los estados
+              </option>
+
+              <option value="nuevo">
+                Nuevas
+              </option>
+
+              <option value="en_revision">
+                En revisión
+              </option>
+
+              <option value="cotizado">
+                Cotizadas
+              </option>
+
+              <option value="confirmado">
+                Confirmadas
+              </option>
+
+              <option value="cancelado">
+                Canceladas
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- ORIGEN -->
+
+          <div class="filter-control">
+
+            <i class="bi bi-megaphone"></i>
+
+            <select
+              [(ngModel)]="filtroOrigen"
+              (ngModelChange)="aplicarFiltros()"
+            >
+
+              <option value="todos">
+                Todos los orígenes
+              </option>
+
+              <option value="directo">
+                Directo
+              </option>
+
+              <option value="instagram">
+                Instagram
+              </option>
+
+              <option value="facebook">
+                Facebook
+              </option>
+
+              <option value="tiktok">
+                TikTok
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- LIMPIAR -->
+
+          <button
+            *ngIf="
+              busqueda ||
+              filtroEstado !== 'todos' ||
+              filtroOrigen !== 'todos'
+            "
+            type="button"
+            class="clear-filters"
+            (click)="limpiarFiltros()"
+          >
+
+            Limpiar filtros
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ===================================================
+           RESUMEN DEL LISTADO
+      ==================================================== -->
+
+      <div
+        class="results-bar"
+        *ngIf="!cargando"
+      >
+
+        <div>
+
+          <strong>
+            {{ pedidosFiltrados.length }}
+          </strong>
+
+          <span>
+            {{
+              pedidosFiltrados.length === 1
+                ? 'cotización encontrada'
+                : 'cotizaciones encontradas'
+            }}
+          </span>
+
+        </div>
+
+        <span
+          class="results-total"
+          *ngIf="
+            pedidosFiltrados.length !==
+            pedidos.length
+          "
+        >
+
+          de {{ pedidos.length }} totales
+
+        </span>
+
+      </div>
+
+
+
+      <!-- ===================================================
+           CARGANDO
+      ==================================================== -->
+
+      <div
+        *ngIf="cargando"
+        class="loading-state"
+      >
+
+        <div class="loading-spinner"></div>
+
+        <strong>
+          Cargando cotizaciones
+        </strong>
+
+        <p>
+          Estamos consultando las solicitudes comerciales.
+        </p>
+
+      </div>
+
+
+
+      <!-- ===================================================
+           ESTADO VACÍO
+      ==================================================== -->
+
+      <div
+        *ngIf="
+          !cargando &&
+          !error &&
+          pedidos.length === 0
+        "
+        class="empty-state"
+      >
+
+        <div class="empty-icon">
+
+          <i class="bi bi-file-earmark-text"></i>
+
+        </div>
+
+        <h3>
+          Aún no hay cotizaciones
+        </h3>
+
+        <p>
+          Las nuevas solicitudes realizadas por tus clientes
+          aparecerán aquí.
+        </p>
+
+      </div>
+
+
+
+      <!-- ===================================================
+           SIN RESULTADOS
+      ==================================================== -->
+
+      <div
+        *ngIf="
+          !cargando &&
+          pedidos.length > 0 &&
+          pedidosFiltrados.length === 0
+        "
+        class="empty-state"
+      >
+
+        <div class="empty-icon">
+
+          <i class="bi bi-search"></i>
+
+        </div>
+
+        <h3>
+          No encontramos resultados
+        </h3>
+
+        <p>
+          Prueba cambiando los filtros o el término de búsqueda.
+        </p>
+
+        <button
+          type="button"
+          class="empty-action"
+          (click)="limpiarFiltros()"
+        >
+
+          Limpiar filtros
+
+        </button>
+
+      </div>
+
+
+
+      <!-- ===================================================
+           TABLA
+      ==================================================== -->
+
+      <div
+        class="table-responsive"
+        *ngIf="
+          !cargando &&
+          pedidosFiltrados.length > 0
+        "
+      >
+
+        <table class="quotes-table">
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Cotización
+              </th>
+
+              <th>
+                Cliente
+              </th>
+
+              <th>
+                Contacto
+              </th>
+
+              <th>
+                Productos
+              </th>
+
+              <th>
+                Total
+              </th>
+
+              <th>
+                Origen
+              </th>
+
+              <th>
+                Estado
+              </th>
+
+              <th class="text-end">
+                Acción
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            <tr
+              *ngFor="
+                let pedido
+                of pedidosFiltrados
+              "
+            >
+
+
+              <!-- =========================================
+                   COTIZACIÓN
+              ========================================== -->
+
+              <td>
+
+                <div class="quote-reference">
+
+                  <strong>
+                    #{{ pedido.id }}
+                  </strong>
+
+                  <span>
+
+                    {{
+                      pedido.fecha
+                        | date:'dd/MM/yyyy'
+                    }}
+
+                  </span>
+
+                  <small>
+
+                    {{
+                      pedido.fecha
+                        | date:'HH:mm'
+                    }}
+
+                  </small>
+
+                </div>
+
+              </td>
+
+
+
+              <!-- =========================================
+                   CLIENTE
+              ========================================== -->
+
+              <td>
+
+                <div class="client-cell">
+
+                  <div class="client-avatar">
+
+                    {{
+                      (
+                        pedido.empresa_cliente ||
+                        pedido.nombre_cliente ||
+                        'C'
+                      )
+                      .charAt(0)
+                      .toUpperCase()
+                    }}
+
+                  </div>
+
+
+                  <div class="client-info">
+
+                    <strong>
+
+                      {{
+                        pedido.empresa_cliente ||
+                        pedido.nombre_cliente ||
+                        'Cliente sin nombre'
+                      }}
+
+                    </strong>
+
+
+                    <span
+                      *ngIf="
+                        pedido.empresa_cliente &&
+                        pedido.nombre_cliente
+                      "
+                    >
+
+                      {{ pedido.nombre_cliente }}
+
+                    </span>
+
+
+                    <small
+                      *ngIf="pedido.ruc_cliente"
+                    >
+
+                      RUC
+                      {{ pedido.ruc_cliente }}
+
+                    </small>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+
+              <!-- =========================================
+                   CONTACTO
+              ========================================== -->
+
+              <td>
+
+                <div class="contact-cell">
+
+                  <span
+                    *ngIf="
+                      pedido.telefono_cliente
+                    "
+                  >
+
+                    <i class="bi bi-telephone"></i>
+
+                    {{
+                      pedido.telefono_cliente
+                    }}
+
+                  </span>
+
+
+                  <span
+                    *ngIf="
+                      pedido.email_cliente
+                    "
+                    class="contact-email"
+                  >
+
+                    <i class="bi bi-envelope"></i>
+
+                    {{
+                      pedido.email_cliente
+                    }}
+
+                  </span>
+
+
+                  <span
+                    *ngIf="
+                      !pedido.telefono_cliente &&
+                      !pedido.email_cliente
+                    "
+                    class="muted-text"
+                  >
+
+                    Sin contacto
+
+                  </span>
+
+                </div>
+
+              </td>
+
+
+
+              <!-- =========================================
+                   PRODUCTOS
+              ========================================== -->
+
+              <td>
+
+                <div class="items-cell">
+
+                  <strong>
+
+                    {{
+                      pedido.total_unidades || 0
+                    }}
+
+                  </strong>
+
+                  <span>
+                    unidades
+                  </span>
+
+                  <small>
+
+                    {{
+                      pedido.total_items || 0
+                    }}
+
+                    {{
+                      (pedido.total_items || 0) === 1
+                        ? 'ítem'
+                        : 'ítems'
+                    }}
+
+                  </small>
+
+                </div>
+
+              </td>
+
+
+
+              <!-- =========================================
+                   TOTAL
+              ========================================== -->
+
+              <td>
+
+                <strong class="quote-total">
+
+                  S/
+                  {{
+                    pedido.total
+                      | number:'1.2-2'
+                  }}
+
+                </strong>
+
+              </td>
+
+
+
+              <!-- =========================================
+                   ORIGEN
+              ========================================== -->
+
+              <td>
+
+                <span
+                  class="origin-badge"
+                  [attr.data-origin]="
+                    pedido.origen
+                  "
+                >
+
+                  <i
+                    class="bi"
+                    [class.bi-shop]="
+                      pedido.origen === 'directo'
+                    "
+                    [class.bi-instagram]="
+                      pedido.origen === 'instagram'
+                    "
+                    [class.bi-facebook]="
+                      pedido.origen === 'facebook'
+                    "
+                    [class.bi-music-note-beamed]="
+                      pedido.origen === 'tiktok'
+                    "
+                  ></i>
+
+                  {{
+                    obtenerNombreOrigen(
+                      pedido.origen
+                    )
+                  }}
+
+                </span>
+
+              </td>
+
+
+
+              <!-- =========================================
+                   ESTADO
+              ========================================== -->
+
+              <td>
+
+                <div class="status-control">
+
+                  <span
+                    class="status-dot"
+                    [attr.data-status]="
+                      pedido.estado
+                    "
+                  ></span>
+
+
+                  <select
+
+                    class="status-select"
+
+                    [attr.data-status]="
+                      pedido.estado
+                    "
+
+                    [ngModel]="
+                      pedido.estado
+                    "
+
+                    (ngModelChange)="
+                      cambiarEstado(
+                        pedido,
+                        $event
+                      )
+                    "
+
+                    [disabled]="
+                      actualizandoId ===
+                      pedido.id
+                    "
+                  >
+
+                    <option value="nuevo">
+                      Nuevo
+                    </option>
+
+                    <option value="en_revision">
+                      En revisión
+                    </option>
+
+                    <option value="cotizado">
+                      Cotizado
+                    </option>
+
+                    <option value="confirmado">
+                      Confirmado
+                    </option>
+
+                    <option value="cancelado">
+                      Cancelado
+                    </option>
+
+                  </select>
+
+
+                  <span
+                    *ngIf="
+                      actualizandoId ===
+                      pedido.id
+                    "
+                    class="status-loading"
+                  ></span>
+
+                </div>
+
+              </td>
+
+
+
+              <!-- =========================================
+                   ACCIÓN
+              ========================================== -->
+
+              <td class="text-end">
+
+  <a
+    class="detail-button"
+    [routerLink]="[
+      '/admin/cotizaciones',
+      pedido.id
+    ]"
+    title="Ver detalle"
+    aria-label="Ver detalle de cotización"
+  >
+
+    <i class="bi bi-arrow-right"></i>
+
+  </a>
+
+</td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</div>

@@ -1,0 +1,947 @@
+<div class="cotizacion-page">
+
+  <div class="cotizacion-container">
+
+
+    <!-- =====================================================
+         BREADCRUMB
+         ===================================================== -->
+
+    <nav class="breadcrumb">
+
+      <a
+        routerLink="/"
+        class="breadcrumb-link"
+      >
+        Inicio
+      </a>
+
+      <span class="breadcrumb-separator">
+        ›
+      </span>
+
+      <a
+        routerLink="/tienda"
+        class="breadcrumb-link"
+      >
+        Catálogo
+      </a>
+
+      <span class="breadcrumb-separator">
+        ›
+      </span>
+
+      <span class="breadcrumb-current">
+        Cotización
+      </span>
+
+    </nav>
+
+
+    <!-- =====================================================
+         CABECERA
+         ===================================================== -->
+
+    <header class="cotizacion-header">
+
+      <div>
+
+        <span class="cotizacion-eyebrow">
+          COTIZACIÓN
+        </span>
+
+        <h1>
+          Solicitud de cotización
+        </h1>
+
+        <p>
+          Revisa los productos seleccionados y completa
+          tus datos para enviarnos tu solicitud.
+        </p>
+
+      </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MENSAJE DE ERROR GENERAL
+         ===================================================== -->
+
+    <div
+      *ngIf="error && !enviado"
+      class="alerta alerta-error"
+    >
+
+      <div class="alerta-icono">
+        !
+      </div>
+
+      <div>
+
+        <strong>
+          No pudimos enviar la solicitud
+        </strong>
+
+        <p>
+          {{ error }}
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         COTIZACIÓN ENVIADA
+         ===================================================== -->
+
+    <section
+      *ngIf="enviado"
+      class="cotizacion-exito"
+    >
+
+      <div class="exito-icono">
+        ✓
+      </div>
+
+      <span class="exito-etiqueta">
+        SOLICITUD REGISTRADA
+      </span>
+
+      <h2>
+        Recibimos tu solicitud
+      </h2>
+
+      <p class="exito-texto">
+        Nuestro equipo revisará la disponibilidad,
+        precios y condiciones comerciales para
+        contactarte.
+      </p>
+
+
+      <div class="exito-datos">
+
+        <div class="exito-dato">
+
+          <span>
+            N.º de solicitud
+          </span>
+
+          <strong>
+            #{{ pedidoId }}
+          </strong>
+
+        </div>
+
+
+        <div class="exito-dato">
+
+          <span>
+            Total estimado
+          </span>
+
+          <strong>
+            S/
+            {{ totalConfirmado | number:'1.2-2' }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <div class="exito-aviso">
+
+        <span class="exito-aviso-icono">
+          i
+        </span>
+
+        <p>
+          El monto mostrado es referencial.
+          La cotización final será confirmada por
+          nuestro equipo comercial.
+        </p>
+
+      </div>
+
+
+      <div class="exito-acciones">
+
+        <a
+          routerLink="/tienda"
+          class="btn btn-principal"
+        >
+          Seguir viendo productos
+        </a>
+
+        <a
+          routerLink="/"
+          class="btn btn-secundario"
+        >
+          Ir al inicio
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CONTENIDO
+         ===================================================== -->
+
+    <ng-container *ngIf="!enviado">
+
+
+      <!-- ===================================================
+           CARRITO VACÍO
+           =================================================== -->
+
+      <section
+        *ngIf="items.length === 0"
+        class="carrito-vacio"
+      >
+
+        <div class="carrito-vacio-icono">
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 3h2l2.4 10.2a2 2 0 0 0 2 1.5h7.7a2 2 0 0 0 1.9-1.4L21 7H7"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+
+            <circle
+              cx="10"
+              cy="20"
+              r="1"
+              fill="currentColor"
+            />
+
+            <circle
+              cx="18"
+              cy="20"
+              r="1"
+              fill="currentColor"
+            />
+
+          </svg>
+
+        </div>
+
+        <h2>
+          Aún no tienes productos
+        </h2>
+
+        <p>
+          Agrega productos del catálogo para preparar
+          tu solicitud de cotización.
+        </p>
+
+        <a
+          routerLink="/tienda"
+          class="btn btn-principal"
+        >
+          Ver catálogo
+        </a>
+
+      </section>
+
+
+      <!-- ===================================================
+           GRID PRINCIPAL
+           =================================================== -->
+
+      <div
+        *ngIf="items.length > 0"
+        class="cotizacion-grid"
+      >
+
+
+        <!-- =================================================
+             COLUMNA PRODUCTOS
+             ================================================= -->
+
+        <section class="panel panel-productos">
+
+
+          <!-- ===============================================
+               HEADER PANEL
+               =============================================== -->
+
+          <div class="panel-header">
+
+            <div>
+
+              <span class="panel-numero">
+                01
+              </span>
+
+              <div>
+
+                <h2>
+                  Productos seleccionados
+                </h2>
+
+                <p>
+                  {{ obtenerCantidadTotal() }}
+                  unidad{{
+                    obtenerCantidadTotal() === 1
+                      ? ''
+                      : 'es'
+                  }}
+                  seleccionada{{
+                    obtenerCantidadTotal() === 1
+                      ? ''
+                      : 's'
+                  }}
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ===============================================
+               LISTA PRODUCTOS
+               =============================================== -->
+
+          <div class="productos-lista">
+
+
+            <article
+              *ngFor="let item of items"
+              class="producto-item"
+            >
+
+
+              <!-- ===========================================
+                   IMAGEN
+                   =========================================== -->
+
+              <div class="producto-imagen">
+
+                <img
+                  *ngIf="item.imagen_url"
+                  [src]="obtenerImagen(item.imagen_url)"
+                  [alt]="item.nombre"
+                  (error)="imagenError($event)"
+                >
+
+                <div
+                  *ngIf="!item.imagen_url"
+                  class="producto-sin-imagen"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M4 5h16v14H4zM4 15l4-4 4 4 2-2 6 6M15 9h.01"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+
+              </div>
+
+
+              <!-- ===========================================
+                   INFORMACIÓN
+                   =========================================== -->
+
+              <div class="producto-info">
+
+                <h3>
+                  {{ item.nombre }}
+                </h3>
+
+
+                <div class="producto-meta">
+
+                  <span>
+                    Talla
+                  </span>
+
+                  <strong>
+                    {{ item.talla }}
+                  </strong>
+
+                </div>
+
+
+                <div class="producto-stock">
+
+                  <span
+                    class="stock-indicador"
+                  ></span>
+
+                  {{ item.stock }}
+                  unidades disponibles
+
+                </div>
+
+
+                <!-- =========================================
+                     CANTIDAD MÓVIL / DESKTOP
+                     ========================================= -->
+
+                <div class="producto-controles">
+
+                  <span class="cantidad-label">
+                    Cantidad
+                  </span>
+
+
+                  <div class="cantidad-control">
+
+                    <button
+                      type="button"
+                      class="cantidad-btn"
+                      aria-label="Disminuir cantidad"
+                      [disabled]="item.cantidad <= 1"
+                      (click)="disminuirCantidad(item)"
+                    >
+                      −
+                    </button>
+
+
+                    <input
+                      type="number"
+                      min="1"
+                      [max]="item.stock"
+                      [ngModel]="item.cantidad"
+                      (ngModelChange)="
+                        cambiarCantidad(
+                          item,
+                          $event
+                        )
+                      "
+                    >
+
+
+                    <button
+                      type="button"
+                      class="cantidad-btn"
+                      aria-label="Aumentar cantidad"
+                      [disabled]="
+                        item.cantidad >= item.stock
+                      "
+                      (click)="aumentarCantidad(item)"
+                    >
+                      +
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <!-- ===========================================
+                   PRECIO
+                   =========================================== -->
+
+              <div class="producto-precio">
+
+                <span>
+                  Subtotal
+                </span>
+
+                <strong>
+                  S/
+                  {{
+                    obtenerSubtotal(item)
+                      | number:'1.2-2'
+                  }}
+                </strong>
+
+                <small>
+                  S/
+                  {{
+                    item.precio
+                      | number:'1.2-2'
+                  }}
+                  c/u
+                </small>
+
+              </div>
+
+
+              <!-- ===========================================
+                   ELIMINAR
+                   =========================================== -->
+
+              <button
+                type="button"
+                class="producto-eliminar"
+                aria-label="Eliminar producto"
+                title="Eliminar producto"
+                (click)="eliminarProducto(item)"
+              >
+
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M4 7h16M9 7V4h6v3M8 10v7M12 10v7M16 10v7M6 7l1 14h10l1-14"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+
+              </button>
+
+            </article>
+
+          </div>
+
+
+          <!-- ===============================================
+               RESUMEN
+               =============================================== -->
+
+          <div class="resumen-productos">
+
+            <div class="resumen-fila">
+
+              <span>
+                Productos
+              </span>
+
+              <strong>
+                {{ items.length }}
+              </strong>
+
+            </div>
+
+
+            <div class="resumen-fila">
+
+              <span>
+                Unidades
+              </span>
+
+              <strong>
+                {{ obtenerCantidadTotal() }}
+              </strong>
+
+            </div>
+
+
+            <div class="resumen-separador"></div>
+
+
+            <div class="resumen-total">
+
+              <div>
+
+                <span>
+                  Total estimado
+                </span>
+
+                <small>
+                  Precio referencial
+                </small>
+
+              </div>
+
+              <strong>
+                S/
+                {{
+                  obtenerTotal()
+                    | number:'1.2-2'
+                }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- ===============================================
+               AVISO
+               =============================================== -->
+
+          <div class="aviso-precio">
+
+            <span class="aviso-icono">
+              i
+            </span>
+
+            <p>
+              Los precios mostrados son referenciales.
+              Nuestro equipo confirmará precios,
+              disponibilidad y condiciones comerciales
+              al procesar tu solicitud.
+            </p>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COLUMNA FORMULARIO
+             ================================================= -->
+
+        <section class="panel panel-formulario">
+
+
+          <!-- ===============================================
+               HEADER
+               =============================================== -->
+
+          <div class="panel-header">
+
+            <div>
+
+              <span class="panel-numero">
+                02
+              </span>
+
+              <div>
+
+                <h2>
+                  Datos de contacto
+                </h2>
+
+                <p>
+                  Te contactaremos para confirmar
+                  tu cotización.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ===============================================
+               FORMULARIO
+               =============================================== -->
+
+          <form
+            class="formulario"
+            (ngSubmit)="enviarCotizacion()"
+          >
+
+
+            <!-- =============================================
+                 NOMBRE
+                 ============================================= -->
+
+            <div class="campo campo-completo">
+
+              <label for="nombre_cliente">
+
+                Nombre / contacto
+
+                <span class="requerido">
+                  *
+                </span>
+
+              </label>
+
+              <input
+                id="nombre_cliente"
+                name="nombre_cliente"
+                type="text"
+                [(ngModel)]="
+                  formulario.nombre_cliente
+                "
+                placeholder="Ej. Carlos Mendoza"
+                autocomplete="name"
+                maxlength="150"
+                [disabled]="enviando"
+                required
+              >
+
+            </div>
+
+
+            <!-- =============================================
+                 EMPRESA
+                 ============================================= -->
+
+            <div class="campo campo-completo">
+
+              <label for="empresa_cliente">
+                Empresa
+              </label>
+
+              <input
+                id="empresa_cliente"
+                name="empresa_cliente"
+                type="text"
+                [(ngModel)]="
+                  formulario.empresa_cliente
+                "
+                placeholder="Ej. Constructora ABC SAC"
+                autocomplete="organization"
+                maxlength="150"
+                [disabled]="enviando"
+              >
+
+            </div>
+
+
+            <!-- =============================================
+                 RUC
+                 ============================================= -->
+
+            <div class="campo">
+
+              <label for="ruc_cliente">
+                RUC
+              </label>
+
+              <input
+                id="ruc_cliente"
+                name="ruc_cliente"
+                type="text"
+                [(ngModel)]="
+                  formulario.ruc_cliente
+                "
+                placeholder="20123456789"
+                inputmode="numeric"
+                maxlength="11"
+                [disabled]="enviando"
+              >
+
+              <small class="campo-ayuda">
+                11 dígitos
+              </small>
+
+            </div>
+
+
+            <!-- =============================================
+                 TELÉFONO
+                 ============================================= -->
+
+            <div class="campo">
+
+              <label for="telefono_cliente">
+
+                Teléfono
+
+                <span class="requerido">
+                  *
+                </span>
+
+              </label>
+
+              <input
+                id="telefono_cliente"
+                name="telefono_cliente"
+                type="tel"
+                [(ngModel)]="
+                  formulario.telefono_cliente
+                "
+                placeholder="999 999 999"
+                autocomplete="tel"
+                maxlength="20"
+                [disabled]="enviando"
+                required
+              >
+
+            </div>
+
+
+            <!-- =============================================
+                 EMAIL
+                 ============================================= -->
+
+            <div class="campo campo-completo">
+
+              <label for="email_cliente">
+                Correo electrónico
+              </label>
+
+              <input
+                id="email_cliente"
+                name="email_cliente"
+                type="email"
+                [(ngModel)]="
+                  formulario.email_cliente
+                "
+                placeholder="compras@empresa.com"
+                autocomplete="email"
+                maxlength="150"
+                [disabled]="enviando"
+              >
+
+            </div>
+
+
+            <!-- =============================================
+                 MENSAJE
+                 ============================================= -->
+
+            <div class="campo campo-completo">
+
+              <label for="mensaje_cliente">
+                Comentarios adicionales
+              </label>
+
+              <textarea
+                id="mensaje_cliente"
+                name="mensaje_cliente"
+                [(ngModel)]="
+                  formulario.mensaje_cliente
+                "
+                placeholder="Indícanos cantidades especiales, lugar de entrega, requerimientos técnicos u otra información relevante."
+                rows="5"
+                [disabled]="enviando"
+              ></textarea>
+
+            </div>
+
+
+            <!-- =============================================
+                 ERROR DENTRO DEL FORMULARIO
+                 ============================================= -->
+
+            <div
+              *ngIf="error"
+              class="formulario-error campo-completo"
+            >
+
+              <span>
+                !
+              </span>
+
+              <p>
+                {{ error }}
+              </p>
+
+            </div>
+
+
+            <!-- =============================================
+                 INFORMACIÓN
+                 ============================================= -->
+
+            <div class="formulario-seguridad campo-completo">
+
+              <div class="seguridad-icono">
+
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linejoin="round"
+                  />
+
+                  <path
+                    d="M9 12l2 2 4-4"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+
+              </div>
+
+              <p>
+                Tus datos serán utilizados únicamente
+                para atender esta solicitud comercial.
+              </p>
+
+            </div>
+
+
+            <!-- =============================================
+                 BOTÓN
+                 ============================================= -->
+
+            <div class="formulario-acciones campo-completo">
+
+              <button
+                type="submit"
+                class="btn-enviar"
+                [disabled]="
+                  enviando ||
+                  items.length === 0
+                "
+              >
+
+                <span
+                  *ngIf="enviando"
+                  class="spinner"
+                ></span>
+
+
+                <span>
+                  {{
+                    enviando
+                      ? 'Enviando solicitud...'
+                      : 'Solicitar cotización'
+                  }}
+                </span>
+
+
+                <svg
+                  *ngIf="!enviando"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M5 12h14M14 7l5 5-5 5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+
+              </button>
+
+
+              <p class="formulario-nota">
+                No se realizará ningún cobro.
+                Esta acción únicamente registra
+                una solicitud de cotización.
+              </p>
+
+            </div>
+
+          </form>
+
+        </section>
+
+      </div>
+
+    </ng-container>
+
+  </div>
+
+</div>

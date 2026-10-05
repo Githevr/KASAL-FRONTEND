@@ -1,0 +1,125 @@
+<nav
+  class="navbar navbar-expand-lg navbar-dark bg-dark py-3 sticky-top shadow-sm border-bottom border-warning border-2"
+>
+  <div class="container">
+
+    <!-- Logo -->
+    <a
+      class="navbar-brand d-flex align-items-center fw-bold fs-4 text-uppercase"
+      routerLink="/"
+    >
+      <i class="bi bi-shield-fill-check text-warning fs-3 me-2"></i>
+
+      <span>
+        KASAL
+        <span class="text-warning">
+          INVERSIONES
+        </span>
+      </span>
+    </a>
+
+
+    <!-- Botón Hamburguesa Móvil -->
+    <button
+      class="navbar-toggler border-0"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navMenu"
+      aria-controls="navMenu"
+      aria-expanded="false"
+      aria-label="Abrir menú"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <!-- Menú -->
+    <div
+      class="collapse navbar-collapse"
+      id="navMenu"
+    >
+
+      <ul
+        class="navbar-nav mx-auto mb-2 mb-lg-0 text-uppercase fw-bold small"
+      >
+
+        <li class="nav-item">
+          <a
+            class="nav-link px-3"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Inicio
+          </a>
+        </li>
+
+
+        <li class="nav-item">
+          <a
+            class="nav-link px-3"
+            routerLink="/tienda"
+            routerLinkActive="active"
+          >
+            Tienda / Catálogo
+          </a>
+        </li>
+
+
+        <li class="nav-item">
+          <a
+            class="nav-link px-3"
+            routerLink="/contacto"
+            routerLinkActive="active"
+          >
+            Contacto
+          </a>
+        </li>
+
+      </ul>
+
+
+      <!-- Zona derecha -->
+      <div class="d-flex align-items-center gap-3">
+
+        <!-- Teléfono -->
+        <span
+          class="text-white small fw-bold d-none d-xl-inline"
+        >
+          <i class="bi bi-headset text-warning me-1"></i>
+          +51 999 999 999
+        </span>
+
+
+        <!-- BOTÓN COTIZACIÓN -->
+        <button
+          class="btn btn-warning fw-bold px-3 d-flex align-items-center gap-2 position-relative shadow-sm"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#carritoOffcanvas"
+          aria-controls="carritoOffcanvas"
+        >
+
+          <i class="bi bi-cart3 fs-5"></i>
+
+          <span>
+            Cotización
+          </span>
+
+
+          <!-- CONTADOR -->
+          <span
+            *ngIf="cantidadCarrito > 0"
+            class="badge bg-dark text-white rounded-pill"
+          >
+            {{ cantidadCarrito }}
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+</nav>

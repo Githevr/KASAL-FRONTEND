@@ -1,0 +1,50 @@
+<div class="container py-5">
+  <div class="row g-4">
+    <div class="col-md-6">
+      <span class="text-uppercase fw-bold small" style="color: var(--safety-orange);">Atención a Empresas</span>
+      <h2 class="fw-bold text-dark text-uppercase mb-3">Contacto Comercial</h2>
+      <p class="text-muted mb-4">
+        Escríbenos directamente para solicitudes al por mayor, cotizaciones especiales o consultas sobre homologación de EPP.
+      </p>
+
+      <div class="d-flex flex-column gap-3">
+        <div class="d-flex align-items-center gap-3 p-3 bg-white border rounded-3 shadow-sm">
+          <i class="bi bi-whatsapp fs-2 text-success"></i>
+          <div>
+            <h6 class="fw-bold mb-0">Atención WhatsApp</h6>
+            <a href="https://wa.me/51981327368" target="_blank" class="text-decoration-none text-dark fw-semibold">+51 981 327 368</a>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3 p-3 bg-white border rounded-3 shadow-sm">
+          <i class="bi bi-building fs-2 text-primary"></i>
+          <div>
+            <h6 class="fw-bold mb-0">Razón Social</h6>
+            <span class="text-muted small">KASAL INVERSIONES SAC</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="bg-white p-4 border rounded-3 shadow-sm">
+        <h5 class="fw-bold text-uppercase mb-3">Enviar Consulta Rápida</h5>
+        <form (ngSubmit)="enviarConsulta()">
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-uppercase">Empresa / RUC</label>
+            <input type="text" class="form-control" [(ngModel)]="empresa" name="empresa" placeholder="Nombre de tu empresa">
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-uppercase">Teléfono de contacto</label>
+            <input type="tel" class="form-control" [(ngModel)]="telefono" name="telefono" placeholder="+51 900 000 000">
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-uppercase">Requerimiento</label>
+            <textarea class="form-control" rows="3" [(ngModel)]="mensaje" name="mensaje" placeholder="Indica los modelos de guantes y cantidades estimadas"></textarea>
+          </div>
+          <button type="submit" class="btn btn-navy w-100 py-2">Enviar Solicitud WhatsApp</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

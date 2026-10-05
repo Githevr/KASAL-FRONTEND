@@ -1,0 +1,828 @@
+<div class="categories-page">
+
+  <div class="categories-container">
+
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
+
+    <header class="page-header">
+
+      <div class="page-heading">
+
+        <span class="eyebrow">
+          CATÁLOGO
+        </span>
+
+        <h1>
+          Categorías
+        </h1>
+
+        <p>
+          Organiza los productos del catálogo y mantén
+          una estructura clara para la tienda.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn-new"
+        (click)="nuevaCategoria()"
+      >
+
+        <i class="bi bi-plus-lg"></i>
+
+        Nueva categoría
+
+      </button>
+
+    </header>
+
+
+    <!-- ================================================= -->
+    <!-- MENSAJES -->
+    <!-- ================================================= -->
+
+    <div
+      *ngIf="error"
+      class="message message-error"
+    >
+
+      <i class="bi bi-exclamation-circle"></i>
+
+      <span>
+        {{ error }}
+      </span>
+
+      <button
+        type="button"
+        (click)="error = ''"
+      >
+        <i class="bi bi-x-lg"></i>
+      </button>
+
+    </div>
+
+
+    <div
+      *ngIf="mensajeExito"
+      class="message message-success"
+    >
+
+      <i class="bi bi-check-circle"></i>
+
+      <span>
+        {{ mensajeExito }}
+      </span>
+
+      <button
+        type="button"
+        (click)="mensajeExito = ''"
+      >
+        <i class="bi bi-x-lg"></i>
+      </button>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- LOADING -->
+    <!-- ================================================= -->
+
+    <div
+      *ngIf="cargando"
+      class="loading-state"
+    >
+
+      <div class="spinner-border"></div>
+
+      <strong>
+        Cargando categorías
+      </strong>
+
+      <span>
+        Obteniendo información del catálogo...
+      </span>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- CONTENIDO -->
+    <!-- ================================================= -->
+
+    <ng-container *ngIf="!cargando">
+
+      <!-- =============================================== -->
+      <!-- MÉTRICAS -->
+      <!-- =============================================== -->
+
+      <section class="stats-grid">
+
+        <!-- TOTAL -->
+
+        <article class="stat-card">
+
+          <div class="stat-icon">
+
+            <i class="bi bi-grid"></i>
+
+          </div>
+
+          <div class="stat-content">
+
+            <span>
+              Total categorías
+            </span>
+
+            <strong>
+              {{ categorias.length }}
+            </strong>
+
+            <small>
+              Registradas en el catálogo
+            </small>
+
+          </div>
+
+        </article>
+
+
+        <!-- CON PRODUCTOS -->
+
+        <article class="stat-card">
+
+          <div class="stat-icon">
+
+            <i class="bi bi-box-seam"></i>
+
+          </div>
+
+          <div class="stat-content">
+
+            <span>
+              Con productos
+            </span>
+
+            <strong>
+  {{ obtenerCategoriasConProductos() }}
+</strong>
+
+            <small>
+              Categorías actualmente utilizadas
+            </small>
+
+          </div>
+
+        </article>
+
+
+        <!-- PRODUCTOS -->
+
+        <article class="stat-card">
+
+          <div class="stat-icon">
+
+            <i class="bi bi-boxes"></i>
+
+          </div>
+
+          <div class="stat-content">
+
+            <span>
+              Productos asignados
+            </span>
+
+            <strong>
+              {{ obtenerTotalProductos() }}
+            </strong>
+
+            <small>
+              Distribuidos entre categorías
+            </small>
+
+          </div>
+
+        </article>
+
+      </section>
+
+
+      <!-- =============================================== -->
+      <!-- PANEL PRINCIPAL -->
+      <!-- =============================================== -->
+
+      <section class="catalog-card">
+
+        <!-- ============================================= -->
+        <!-- TOOLBAR -->
+        <!-- ============================================= -->
+
+        <div class="catalog-toolbar">
+
+          <div class="toolbar-heading">
+
+            <h2>
+              Catálogo de categorías
+            </h2>
+
+            <span>
+              {{ categoriasFiltradas.length }}
+              de
+              {{ categorias.length }}
+              categorías
+            </span>
+
+          </div>
+
+
+          <div class="search-box">
+
+            <i class="bi bi-search"></i>
+
+            <input
+              type="text"
+              [(ngModel)]="busqueda"
+              (ngModelChange)="aplicarFiltro()"
+              placeholder="Buscar por nombre, slug o ID..."
+            >
+
+
+            <button
+              *ngIf="busqueda"
+              type="button"
+              class="clear-search"
+              title="Limpiar búsqueda"
+              (click)="
+                busqueda = '';
+                aplicarFiltro()
+              "
+            >
+
+              <i class="bi bi-x-lg"></i>
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- ============================================= -->
+        <!-- SIN CATEGORÍAS -->
+        <!-- ============================================= -->
+
+        <div
+          *ngIf="
+            categorias.length === 0 &&
+            !error
+          "
+          class="empty-state"
+        >
+
+          <div class="empty-icon">
+
+            <i class="bi bi-grid"></i>
+
+          </div>
+
+          <h3>
+            Aún no hay categorías
+          </h3>
+
+          <p>
+            Crea la primera categoría para comenzar
+            a organizar los productos del catálogo.
+          </p>
+
+          <button
+            type="button"
+            class="btn-new"
+            (click)="nuevaCategoria()"
+          >
+
+            <i class="bi bi-plus-lg"></i>
+
+            Crear categoría
+
+          </button>
+
+        </div>
+
+
+        <!-- ============================================= -->
+        <!-- SIN RESULTADOS -->
+        <!-- ============================================= -->
+
+        <div
+          *ngIf="
+            categorias.length > 0 &&
+            categoriasFiltradas.length === 0
+          "
+          class="empty-state compact"
+        >
+
+          <div class="empty-icon">
+
+            <i class="bi bi-search"></i>
+
+          </div>
+
+          <h3>
+            Sin resultados
+          </h3>
+
+          <p>
+            No encontramos categorías que coincidan
+            con “{{ busqueda }}”.
+          </p>
+
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="
+              busqueda = '';
+              aplicarFiltro()
+            "
+          >
+
+            Limpiar búsqueda
+
+          </button>
+
+        </div>
+
+
+        <!-- ============================================= -->
+        <!-- TABLA -->
+        <!-- ============================================= -->
+
+        <div
+          *ngIf="categoriasFiltradas.length > 0"
+          class="table-responsive"
+        >
+
+          <table class="categories-table">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Categoría
+                </th>
+
+                <th>
+                  Slug
+                </th>
+
+                <th>
+                  Productos
+                </th>
+
+                <th class="text-end">
+                  Acciones
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr
+                *ngFor="
+                  let categoria
+                  of categoriasFiltradas
+                "
+              >
+
+                <!-- CATEGORÍA -->
+
+                <td>
+
+                  <div class="category-cell">
+
+                    <div class="category-avatar">
+
+                      {{
+                        categoria.nombre
+                          .charAt(0)
+                          .toUpperCase()
+                      }}
+
+                    </div>
+
+
+                    <div class="category-info">
+
+                      <strong>
+                        {{ categoria.nombre }}
+                      </strong>
+
+                      <span>
+                        ID #{{ categoria.id }}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </td>
+
+
+                <!-- SLUG -->
+
+                <td>
+
+                  <span class="slug-value">
+
+                    {{ categoria.slug }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- PRODUCTOS -->
+
+                <td>
+
+                  <div class="products-count">
+
+                    <strong>
+                      {{
+                        categoria.total_productos
+                      }}
+                    </strong>
+
+                    <span>
+
+                      {{
+                        categoria.total_productos === 1
+                          ? 'producto'
+                          : 'productos'
+                      }}
+
+                    </span>
+
+                  </div>
+
+                </td>
+
+
+                <!-- ACCIONES -->
+
+                <td class="actions-cell">
+
+                  <button
+                    type="button"
+                    class="action-button"
+                    title="Editar categoría"
+                    (click)="
+                      editarCategoria(categoria)
+                    "
+                  >
+
+                    <i class="bi bi-pencil"></i>
+
+                  </button>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+    </ng-container>
+
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- OVERLAY FORMULARIO -->
+  <!-- ================================================= -->
+
+  <div
+    *ngIf="mostrarFormulario"
+    class="drawer-overlay"
+    (click)="cancelarFormulario()"
+  >
+
+
+    <!-- ================================================= -->
+    <!-- PANEL -->
+    <!-- ================================================= -->
+
+    <aside
+      class="category-drawer"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- HEADER -->
+
+      <div class="drawer-header">
+
+        <div>
+
+          <span class="drawer-eyebrow">
+
+            {{
+              modoEdicion
+                ? 'EDITAR CATEGORÍA'
+                : 'NUEVA CATEGORÍA'
+            }}
+
+          </span>
+
+
+          <h2>
+
+            {{
+              modoEdicion
+                ? 'Editar categoría'
+                : 'Crear categoría'
+            }}
+
+          </h2>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="drawer-close"
+          title="Cerrar"
+          [disabled]="guardando"
+          (click)="cancelarFormulario()"
+        >
+
+          <i class="bi bi-x-lg"></i>
+
+        </button>
+
+      </div>
+
+
+      <!-- BODY -->
+
+      <div class="drawer-body">
+
+
+        <div class="drawer-intro">
+
+          <div class="drawer-intro-icon">
+
+            <i class="bi bi-grid"></i>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+
+              {{
+                modoEdicion
+                  ? 'Información de la categoría'
+                  : 'Organiza tu catálogo'
+              }}
+
+            </strong>
+
+            <p>
+
+              {{
+                modoEdicion
+                  ? 'Modifica el nombre o identificador de esta categoría.'
+                  : 'La categoría estará disponible inmediatamente para asignarla a tus productos.'
+              }}
+
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- NOMBRE -->
+
+        <div class="form-group">
+
+          <label for="categoriaNombre">
+
+            Nombre
+
+            <span>*</span>
+
+          </label>
+
+
+          <input
+            id="categoriaNombre"
+            type="text"
+            class="form-control-premium"
+            [(ngModel)]="formulario.nombre"
+            (blur)="
+              !modoEdicion &&
+              !formulario.slug &&
+              generarSlug()
+            "
+            placeholder="Ej. Guantes anticorte"
+            maxlength="150"
+          >
+
+
+          <small>
+            Nombre visible para administradores
+            y clientes.
+          </small>
+
+        </div>
+
+
+        <!-- SLUG -->
+
+        <div class="form-group">
+
+          <div class="label-row">
+
+            <label for="categoriaSlug">
+              Slug
+            </label>
+
+
+            <button
+              type="button"
+              class="generate-slug"
+              (click)="generarSlug()"
+            >
+
+              <i class="bi bi-arrow-repeat"></i>
+
+              Generar
+
+            </button>
+
+          </div>
+
+
+          <div class="slug-input">
+
+            <span>
+              /
+            </span>
+
+            <input
+              id="categoriaSlug"
+              type="text"
+              [(ngModel)]="formulario.slug"
+              placeholder="guantes-anticorte"
+            >
+
+          </div>
+
+
+          <small>
+            Identificador utilizado en URLs
+            y referencias internas.
+          </small>
+
+        </div>
+
+
+        <!-- PREVIEW -->
+
+        <div
+          *ngIf="formulario.nombre"
+          class="category-preview"
+        >
+
+          <span class="preview-label">
+            VISTA PREVIA
+          </span>
+
+
+          <div class="preview-category">
+
+            <div class="category-avatar large">
+
+              {{
+                formulario.nombre
+                  .charAt(0)
+                  .toUpperCase()
+              }}
+
+            </div>
+
+
+            <div>
+
+              <strong>
+                {{ formulario.nombre }}
+              </strong>
+
+              <span>
+
+                {{
+                  formulario.slug ||
+                  'slug-de-la-categoria'
+                }}
+
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ERROR FORMULARIO -->
+
+        <div
+          *ngIf="error"
+          class="drawer-error"
+        >
+
+          <i class="bi bi-exclamation-circle"></i>
+
+          <span>
+            {{ error }}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- FOOTER -->
+
+      <div class="drawer-footer">
+
+        <button
+          type="button"
+          class="btn-cancel"
+          [disabled]="guardando"
+          (click)="cancelarFormulario()"
+        >
+
+          Cancelar
+
+        </button>
+
+
+        <button
+          type="button"
+          class="btn-save"
+          [disabled]="guardando"
+          (click)="guardarCategoria()"
+        >
+
+
+          <ng-container *ngIf="!guardando">
+
+            <i
+              class="bi"
+              [class.bi-check-lg]="modoEdicion"
+              [class.bi-plus-lg]="!modoEdicion"
+            ></i>
+
+
+            {{
+              modoEdicion
+                ? 'Guardar cambios'
+                : 'Crear categoría'
+            }}
+
+          </ng-container>
+
+
+          <ng-container *ngIf="guardando">
+
+            <span
+              class="spinner-border spinner-border-sm"
+            ></span>
+
+            Guardando...
+
+          </ng-container>
+
+        </button>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+</div>

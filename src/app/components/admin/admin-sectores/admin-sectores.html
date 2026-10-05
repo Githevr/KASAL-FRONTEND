@@ -1,0 +1,1185 @@
+<div class="sectores-page">
+
+  <div class="sectores-container">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="page-header">
+
+      <div class="page-heading">
+
+        <span class="eyebrow">
+          CATÁLOGO
+        </span>
+
+        <h1>
+          Sectores
+        </h1>
+
+        <p>
+          Administra los sectores industriales asociados
+          a los productos de tu catálogo.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn-primary-admin"
+        (click)="nuevoSector()"
+      >
+
+        <i class="bi bi-plus-lg"></i>
+
+        <span>
+          Nuevo sector
+        </span>
+
+      </button>
+
+    </header>
+
+
+    <!-- =====================================================
+         MENSAJE DE ERROR
+    ====================================================== -->
+
+    <div
+      *ngIf="error && !mostrarFormulario"
+      class="alert-admin alert-error"
+    >
+
+      <div class="alert-content">
+
+        <i class="bi bi-exclamation-circle"></i>
+
+        <span>
+          {{ error }}
+        </span>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="alert-close"
+        (click)="error = ''"
+        aria-label="Cerrar mensaje"
+      >
+
+        <i class="bi bi-x-lg"></i>
+
+      </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         MENSAJE DE ÉXITO
+    ====================================================== -->
+
+    <div
+      *ngIf="mensajeExito"
+      class="alert-admin alert-success"
+    >
+
+      <div class="alert-content">
+
+        <i class="bi bi-check-circle"></i>
+
+        <span>
+          {{ mensajeExito }}
+        </span>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="alert-close"
+        (click)="mensajeExito = ''"
+        aria-label="Cerrar mensaje"
+      >
+
+        <i class="bi bi-x-lg"></i>
+
+      </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         LOADING
+    ====================================================== -->
+
+    <div
+      *ngIf="cargando"
+      class="loading-card"
+    >
+
+      <div class="loading-spinner">
+
+        <span
+          class="spinner-border"
+          role="status"
+        ></span>
+
+      </div>
+
+
+      <strong>
+        Cargando sectores
+      </strong>
+
+      <span>
+        Obteniendo información del catálogo...
+      </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         CONTENIDO
+    ====================================================== -->
+
+    <ng-container *ngIf="!cargando">
+
+
+      <!-- ===================================================
+           MÉTRICAS
+      ==================================================== -->
+
+      <section class="stats-grid">
+
+
+        <!-- TOTAL -->
+
+        <article class="stat-card">
+
+          <div class="stat-icon">
+
+            <i class="bi bi-buildings"></i>
+
+          </div>
+
+
+          <div class="stat-data">
+
+            <span class="stat-label">
+              Total sectores
+            </span>
+
+            <strong>
+              {{ obtenerTotalSectores() }}
+            </strong>
+
+            <small>
+              Registrados en el catálogo
+            </small>
+
+          </div>
+
+        </article>
+
+
+        <!-- ACTIVOS -->
+
+        <article class="stat-card">
+
+          <div class="stat-icon stat-icon-success">
+
+            <i class="bi bi-check2-circle"></i>
+
+          </div>
+
+
+          <div class="stat-data">
+
+            <span class="stat-label">
+              Sectores activos
+            </span>
+
+            <strong>
+              {{ obtenerSectoresActivos() }}
+            </strong>
+
+            <small>
+              Disponibles para productos
+            </small>
+
+          </div>
+
+        </article>
+
+
+        <!-- CON PRODUCTOS -->
+
+        <article class="stat-card">
+
+          <div class="stat-icon stat-icon-dark">
+
+            <i class="bi bi-box-seam"></i>
+
+          </div>
+
+
+          <div class="stat-data">
+
+            <span class="stat-label">
+              Con productos
+            </span>
+
+            <strong>
+              {{ obtenerSectoresConProductos() }}
+            </strong>
+
+            <small>
+              Sectores actualmente utilizados
+            </small>
+
+          </div>
+
+        </article>
+
+
+        <!-- ASIGNACIONES -->
+
+        <article class="stat-card">
+
+          <div class="stat-icon stat-icon-neutral">
+
+            <i class="bi bi-diagram-3"></i>
+
+          </div>
+
+
+          <div class="stat-data">
+
+            <span class="stat-label">
+              Asignaciones
+            </span>
+
+            <strong>
+              {{ obtenerTotalProductosAsignados() }}
+            </strong>
+
+            <small>
+              Relaciones producto-sector
+            </small>
+
+          </div>
+
+        </article>
+
+      </section>
+
+
+      <!-- ===================================================
+           PANEL PRINCIPAL
+      ==================================================== -->
+
+      <section class="table-card">
+
+
+        <!-- =================================================
+             TOOLBAR
+        ================================================== -->
+
+        <div class="table-toolbar">
+
+          <div class="toolbar-heading">
+
+            <h2>
+              Sectores del catálogo
+            </h2>
+
+            <span>
+              Mostrando
+              {{ sectoresFiltrados.length }}
+              de
+              {{ sectores.length }}
+            </span>
+
+          </div>
+
+
+          <div class="toolbar-actions">
+
+
+            <!-- BUSCADOR -->
+
+            <div class="search-control">
+
+              <i class="bi bi-search"></i>
+
+
+              <input
+                type="text"
+                [(ngModel)]="busqueda"
+                (ngModelChange)="aplicarFiltros()"
+                placeholder="Buscar sector, slug o ID..."
+              >
+
+
+              <button
+                *ngIf="busqueda"
+                type="button"
+                class="search-clear"
+                title="Limpiar búsqueda"
+                (click)="
+                  busqueda = '';
+                  aplicarFiltros()
+                "
+              >
+
+                <i class="bi bi-x-lg"></i>
+
+              </button>
+
+            </div>
+
+
+            <!-- ESTADO -->
+
+            <div class="filter-control">
+
+              <i class="bi bi-sliders"></i>
+
+
+              <select
+                [(ngModel)]="filtroEstado"
+                (ngModelChange)="aplicarFiltros()"
+              >
+
+                <option value="todos">
+                  Todos
+                </option>
+
+                <option value="activos">
+                  Activos
+                </option>
+
+                <option value="inactivos">
+                  Inactivos
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <!-- LIMPIAR -->
+
+            <button
+              *ngIf="
+                busqueda ||
+                filtroEstado !== 'todos'
+              "
+              type="button"
+              class="btn-clear-filters"
+              (click)="limpiarFiltros()"
+            >
+
+              Limpiar
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             VACÍO
+        ================================================== -->
+
+        <div
+          *ngIf="
+            sectores.length === 0 &&
+            !error
+          "
+          class="empty-state"
+        >
+
+          <div class="empty-icon">
+
+            <i class="bi bi-buildings"></i>
+
+          </div>
+
+
+          <h3>
+            Aún no hay sectores
+          </h3>
+
+
+          <p>
+            Crea tu primer sector industrial para
+            comenzar a clasificar los productos.
+          </p>
+
+
+          <button
+            type="button"
+            class="btn-primary-admin"
+            (click)="nuevoSector()"
+          >
+
+            <i class="bi bi-plus-lg"></i>
+
+            Crear sector
+
+          </button>
+
+        </div>
+
+
+        <!-- =================================================
+             SIN RESULTADOS
+        ================================================== -->
+
+        <div
+          *ngIf="
+            sectores.length > 0 &&
+            sectoresFiltrados.length === 0
+          "
+          class="empty-state empty-compact"
+        >
+
+          <div class="empty-icon">
+
+            <i class="bi bi-search"></i>
+
+          </div>
+
+
+          <h3>
+            No encontramos resultados
+          </h3>
+
+
+          <p>
+            No existen sectores que coincidan con
+            los filtros seleccionados.
+          </p>
+
+
+          <button
+            type="button"
+            class="btn-outline-admin"
+            (click)="limpiarFiltros()"
+          >
+
+            Limpiar filtros
+
+          </button>
+
+        </div>
+
+
+        <!-- =================================================
+             TABLA
+        ================================================== -->
+
+        <div
+          *ngIf="sectoresFiltrados.length > 0"
+          class="table-responsive"
+        >
+
+          <table class="admin-table">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Sector
+                </th>
+
+                <th>
+                  Identificador
+                </th>
+
+                <th>
+                  Productos
+                </th>
+
+                <th>
+                  Estado
+                </th>
+
+                <th class="text-end">
+                  Acciones
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr
+                *ngFor="
+                  let sector
+                  of sectoresFiltrados
+                "
+              >
+
+
+                <!-- =========================================
+                     SECTOR
+                ========================================== -->
+
+                <td>
+
+                  <div class="sector-cell">
+
+                    <div
+                      class="sector-symbol"
+                      [class.sector-symbol-inactive]="
+                        sector.activo !== 1
+                      "
+                    >
+
+                      {{
+                        sector.nombre
+                          .charAt(0)
+                          .toUpperCase()
+                      }}
+
+                    </div>
+
+
+                    <div class="sector-name">
+
+                      <strong>
+                        {{ sector.nombre }}
+                      </strong>
+
+                      <span>
+                        ID #{{ sector.id }}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                </td>
+
+
+                <!-- =========================================
+                     SLUG
+                ========================================== -->
+
+                <td>
+
+                  <span class="slug-badge">
+                    {{ sector.slug }}
+                  </span>
+
+                </td>
+
+
+                <!-- =========================================
+                     PRODUCTOS
+                ========================================== -->
+
+                <td>
+
+                  <div class="product-count">
+
+                    <strong>
+                      {{ sector.total_productos || 0 }}
+                    </strong>
+
+                    <span>
+
+                      {{
+                        sector.total_productos === 1
+                          ? 'producto'
+                          : 'productos'
+                      }}
+
+                    </span>
+
+                  </div>
+
+                </td>
+
+
+                <!-- =========================================
+                     ESTADO
+                ========================================== -->
+
+                <td>
+
+                  <span
+                    class="status-badge"
+                    [class.status-active]="
+                      sector.activo === 1
+                    "
+                    [class.status-inactive]="
+                      sector.activo !== 1
+                    "
+                  >
+
+                    <span class="status-dot"></span>
+
+                    {{
+                      obtenerTextoEstado(sector)
+                    }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- =========================================
+                     ACCIONES
+                ========================================== -->
+
+                <td class="actions-cell">
+
+                  <div class="actions-wrapper">
+
+
+                    <!-- EDITAR -->
+
+                    <button
+                      type="button"
+                      class="action-btn"
+                      title="Editar sector"
+                      (click)="editarSector(sector)"
+                    >
+
+                      <i class="bi bi-pencil"></i>
+
+                    </button>
+
+
+                    <!-- ESTADO -->
+
+                    <button
+                      type="button"
+                      class="action-btn"
+                      [class.action-danger]="
+                        sector.activo === 1
+                      "
+                      [class.action-success]="
+                        sector.activo !== 1
+                      "
+                      [disabled]="
+                        estaCambiandoEstado(
+                          sector.id
+                        )
+                      "
+                      [title]="
+                        sector.activo === 1
+                          ? 'Desactivar sector'
+                          : 'Activar sector'
+                      "
+                      (click)="cambiarEstado(sector)"
+                    >
+
+
+                      <span
+                        *ngIf="
+                          estaCambiandoEstado(
+                            sector.id
+                          )
+                        "
+                        class="
+                          spinner-border
+                          spinner-border-sm
+                        "
+                      ></span>
+
+
+                      <i
+                        *ngIf="
+                          !estaCambiandoEstado(
+                            sector.id
+                          )
+                        "
+                        class="bi"
+                        [class.bi-eye-slash]="
+                          sector.activo === 1
+                        "
+                        [class.bi-eye]="
+                          sector.activo !== 1
+                        "
+                      ></i>
+
+                    </button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+    </ng-container>
+
+  </div>
+
+
+  <!-- =====================================================
+       DRAWER / FORMULARIO
+  ====================================================== -->
+
+  <div
+    *ngIf="mostrarFormulario"
+    class="drawer-overlay"
+    (click)="cancelarFormulario()"
+  >
+
+    <aside
+      class="sector-drawer"
+      (click)="$event.stopPropagation()"
+    >
+
+
+      <!-- =================================================
+           DRAWER HEADER
+      ================================================== -->
+
+      <header class="drawer-header">
+
+        <div>
+
+          <span class="drawer-eyebrow">
+
+            {{
+              modoEdicion
+                ? 'EDITAR SECTOR'
+                : 'NUEVO SECTOR'
+            }}
+
+          </span>
+
+
+          <h2>
+
+            {{
+              modoEdicion
+                ? 'Editar sector'
+                : 'Crear sector'
+            }}
+
+          </h2>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="drawer-close"
+          [disabled]="guardando"
+          (click)="cancelarFormulario()"
+          aria-label="Cerrar"
+        >
+
+          <i class="bi bi-x-lg"></i>
+
+        </button>
+
+      </header>
+
+
+      <!-- =================================================
+           BODY
+      ================================================== -->
+
+      <div class="drawer-body">
+
+
+        <!-- INTRO -->
+
+        <div class="drawer-intro">
+
+          <div class="drawer-intro-icon">
+
+            <i class="bi bi-buildings"></i>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+
+              {{
+                modoEdicion
+                  ? 'Información del sector'
+                  : 'Clasificación industrial'
+              }}
+
+            </strong>
+
+
+            <p>
+
+              {{
+                modoEdicion
+                  ? 'Actualiza la información o disponibilidad de este sector.'
+                  : 'Los sectores permiten relacionar productos con las industrias donde se utilizan.'
+              }}
+
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             NOMBRE
+        ================================================== -->
+
+        <div class="form-group">
+
+          <label for="sectorNombre">
+
+            Nombre del sector
+
+            <span class="required">
+              *
+            </span>
+
+          </label>
+
+
+          <input
+            id="sectorNombre"
+            type="text"
+            class="form-control-admin"
+            [(ngModel)]="formulario.nombre"
+            (blur)="
+              !modoEdicion &&
+              !formulario.slug &&
+              generarSlug()
+            "
+            placeholder="Ej. Minería"
+            maxlength="100"
+          >
+
+
+          <small>
+            Nombre que aparecerá en el catálogo
+            y en la administración.
+          </small>
+
+        </div>
+
+
+        <!-- =================================================
+             SLUG
+        ================================================== -->
+
+        <div class="form-group">
+
+          <div class="form-label-row">
+
+            <label for="sectorSlug">
+              Slug
+            </label>
+
+
+            <button
+              type="button"
+              class="generate-button"
+              (click)="generarSlug()"
+            >
+
+              <i class="bi bi-arrow-repeat"></i>
+
+              Generar
+
+            </button>
+
+          </div>
+
+
+          <div class="slug-control">
+
+            <span class="slug-prefix">
+              /
+            </span>
+
+
+            <input
+              id="sectorSlug"
+              type="text"
+              [(ngModel)]="formulario.slug"
+              placeholder="mineria"
+              maxlength="100"
+            >
+
+          </div>
+
+
+          <small>
+            Identificador único utilizado internamente.
+            Se recomienda usar minúsculas y guiones.
+          </small>
+
+        </div>
+
+
+        <!-- =================================================
+             ESTADO
+        ================================================== -->
+
+        <div class="form-group">
+
+          <label>
+            Disponibilidad
+          </label>
+
+
+          <div
+            class="status-setting"
+            [class.status-setting-enabled]="
+              sectorActivo
+            "
+          >
+
+            <div class="status-setting-info">
+
+              <div class="status-setting-icon">
+
+                <i
+                  class="bi"
+                  [class.bi-check-circle]="
+                    sectorActivo
+                  "
+                  [class.bi-pause-circle]="
+                    !sectorActivo
+                  "
+                ></i>
+
+              </div>
+
+
+              <div>
+
+                <strong>
+
+                  {{
+                    sectorActivo
+                      ? 'Sector activo'
+                      : 'Sector inactivo'
+                  }}
+
+                </strong>
+
+
+                <span>
+
+                  {{
+                    sectorActivo
+                      ? 'Disponible para asociarlo a productos.'
+                      : 'No estará disponible para nuevas asociaciones.'
+                  }}
+
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <label class="switch">
+
+              <input
+                type="checkbox"
+                [(ngModel)]="sectorActivo"
+              >
+
+              <span class="switch-slider"></span>
+
+            </label>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PREVIEW
+        ================================================== -->
+
+        <div
+          *ngIf="formulario.nombre"
+          class="preview-section"
+        >
+
+          <span class="preview-title">
+            VISTA PREVIA
+          </span>
+
+
+          <div class="sector-preview">
+
+            <div
+              class="sector-symbol preview-symbol"
+              [class.sector-symbol-inactive]="
+                !sectorActivo
+              "
+            >
+
+              {{
+                formulario.nombre
+                  .charAt(0)
+                  .toUpperCase()
+              }}
+
+            </div>
+
+
+            <div class="preview-info">
+
+              <strong>
+                {{ formulario.nombre }}
+              </strong>
+
+              <span>
+
+                {{
+                  formulario.slug ||
+                  'slug-del-sector'
+                }}
+
+              </span>
+
+            </div>
+
+
+            <span
+              class="preview-status"
+              [class.preview-status-active]="
+                sectorActivo
+              "
+            >
+
+              {{
+                sectorActivo
+                  ? 'Activo'
+                  : 'Inactivo'
+              }}
+
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ERROR DEL FORMULARIO
+        ================================================== -->
+
+        <div
+          *ngIf="error"
+          class="drawer-error"
+        >
+
+          <i class="bi bi-exclamation-circle"></i>
+
+          <span>
+            {{ error }}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           FOOTER
+      ================================================== -->
+
+      <footer class="drawer-footer">
+
+        <button
+          type="button"
+          class="btn-cancel"
+          [disabled]="guardando"
+          (click)="cancelarFormulario()"
+        >
+
+          Cancelar
+
+        </button>
+
+
+        <button
+          type="button"
+          class="btn-save"
+          [disabled]="guardando"
+          (click)="guardarSector()"
+        >
+
+
+          <ng-container *ngIf="!guardando">
+
+            <i
+              class="bi"
+              [class.bi-check-lg]="
+                modoEdicion
+              "
+              [class.bi-plus-lg]="
+                !modoEdicion
+              "
+            ></i>
+
+
+            <span>
+
+              {{
+                modoEdicion
+                  ? 'Guardar cambios'
+                  : 'Crear sector'
+              }}
+
+            </span>
+
+          </ng-container>
+
+
+          <ng-container *ngIf="guardando">
+
+            <span
+              class="
+                spinner-border
+                spinner-border-sm
+              "
+            ></span>
+
+            <span>
+              Guardando...
+            </span>
+
+          </ng-container>
+
+        </button>
+
+      </footer>
+
+    </aside>
+
+  </div>
+
+</div>

@@ -1,0 +1,1524 @@
+<div class="product-form-page">
+
+  <main class="form-container">
+
+
+    <!-- ===================================================== -->
+    <!-- BREADCRUMB -->
+    <!-- ===================================================== -->
+
+    <nav class="breadcrumb">
+
+      <a routerLink="/admin">
+        Administración
+      </a>
+
+      <i class="bi bi-chevron-right"></i>
+
+      <a routerLink="/admin/productos">
+        Productos
+      </a>
+
+      <i class="bi bi-chevron-right"></i>
+
+      <span>
+        {{ tituloFormulario }}
+      </span>
+
+    </nav>
+
+
+    <!-- ===================================================== -->
+    <!-- CABECERA -->
+    <!-- ===================================================== -->
+
+    <header class="form-header">
+
+      <div class="header-copy">
+
+        <span class="eyebrow">
+          CATÁLOGO
+        </span>
+
+        <h1>
+          {{ tituloFormulario }}
+        </h1>
+
+        <p *ngIf="!modoEdicion">
+          Registra un producto, configura su inventario
+          y define los sectores donde será utilizado.
+        </p>
+
+        <p *ngIf="modoEdicion">
+          Actualiza la información, inventario,
+          documentación y presentación del producto.
+        </p>
+
+      </div>
+
+
+      <div class="header-actions">
+
+        <a
+          routerLink="/admin/productos"
+          class="cancel-button"
+        >
+          Cancelar
+        </a>
+
+
+        <button
+          type="button"
+          class="save-button"
+          [disabled]="guardando || cargando"
+          (click)="guardar()"
+        >
+
+          <i
+            *ngIf="!guardando"
+            class="bi bi-check-lg"
+          ></i>
+
+          <i
+            *ngIf="guardando"
+            class="bi bi-arrow-repeat spinning"
+          ></i>
+
+          <span>
+            {{
+              guardando
+                ? 'Guardando...'
+                : textoBotonGuardar
+            }}
+          </span>
+
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- ===================================================== -->
+    <!-- ERROR -->
+    <!-- ===================================================== -->
+
+    <div
+      *ngIf="error"
+      class="form-alert"
+    >
+
+      <i class="bi bi-exclamation-circle"></i>
+
+      <div>
+
+        <strong>
+          No pudimos completar la operación
+        </strong>
+
+        <span>
+          {{ error }}
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- CARGANDO -->
+    <!-- ===================================================== -->
+
+    <section
+      *ngIf="cargando"
+      class="loading-state"
+    >
+
+      <div class="spinner"></div>
+
+      <strong>
+        {{
+          modoEdicion
+            ? 'Cargando producto'
+            : 'Preparando formulario'
+        }}
+      </strong>
+
+      <span>
+        {{
+          modoEdicion
+            ? 'Obteniendo información del producto...'
+            : 'Cargando categorías y sectores...'
+        }}
+      </span>
+
+    </section>
+
+
+    <!-- ===================================================== -->
+    <!-- FORMULARIO -->
+    <!-- ===================================================== -->
+
+    <div
+      *ngIf="!cargando"
+      class="form-layout"
+    >
+
+
+      <!-- =================================================== -->
+      <!-- COLUMNA PRINCIPAL -->
+      <!-- =================================================== -->
+
+      <div class="main-column">
+
+
+        <!-- ================================================= -->
+        <!-- INFORMACIÓN GENERAL -->
+        <!-- ================================================= -->
+
+        <section class="form-card">
+
+          <div class="card-heading">
+
+            <div class="heading-icon">
+              <i class="bi bi-box-seam"></i>
+            </div>
+
+            <div class="heading-copy">
+
+              <h2>
+                Información general
+              </h2>
+
+              <p>
+                Información principal que identificará
+                al producto dentro del catálogo.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-grid">
+
+
+            <!-- NOMBRE -->
+
+            <div class="field full">
+
+              <label for="nombreProducto">
+
+                Nombre del producto
+
+                <span class="required">
+                  *
+                </span>
+
+              </label>
+
+              <input
+                id="nombreProducto"
+                type="text"
+                name="nombreProducto"
+                [(ngModel)]="producto.nombre"
+                (blur)="generarSlug()"
+                autocomplete="off"
+                placeholder="Ej. Guante Anticorte Nivel 5 ANSI"
+              >
+
+            </div>
+
+
+            <!-- CATEGORÍA -->
+
+            <div class="field">
+
+              <label for="categoriaProducto">
+
+                Categoría
+
+                <span class="required">
+                  *
+                </span>
+
+              </label>
+
+              <select
+                id="categoriaProducto"
+                name="categoriaProducto"
+                [(ngModel)]="producto.categoria_id"
+              >
+
+                <option [ngValue]="null">
+                  Seleccionar categoría
+                </option>
+
+                <option
+                  *ngFor="let categoria of categorias"
+                  [ngValue]="categoria.id"
+                >
+                  {{ categoria.nombre }}
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <!-- SLUG -->
+
+            <div class="field">
+
+              <label for="slugProducto">
+                Slug
+              </label>
+
+              <div class="slug-input">
+
+                <span>
+                  /
+                </span>
+
+                <input
+                  id="slugProducto"
+                  type="text"
+                  name="slugProducto"
+                  [(ngModel)]="producto.slug"
+                  autocomplete="off"
+                  placeholder="guante-anticorte-nivel-5"
+                >
+
+              </div>
+
+              <small>
+                Se genera automáticamente a partir del nombre.
+              </small>
+
+            </div>
+
+
+            <!-- DESCRIPCIÓN -->
+
+            <div class="field full">
+
+              <label for="descripcionProducto">
+                Descripción
+              </label>
+
+              <textarea
+                id="descripcionProducto"
+                name="descripcionProducto"
+                [(ngModel)]="producto.descripcion"
+                rows="6"
+                placeholder="Describe materiales, nivel de protección, características y aplicaciones del producto..."
+              ></textarea>
+
+              <small>
+                Utiliza una descripción clara y orientada
+                a las características técnicas del producto.
+              </small>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- VARIACIONES -->
+        <!-- ================================================= -->
+
+        <section class="form-card">
+
+          <div class="card-heading variation-heading">
+
+            <div class="heading-group">
+
+              <div class="heading-icon">
+                <i class="bi bi-grid-3x3-gap"></i>
+              </div>
+
+              <div class="heading-copy">
+
+                <h2>
+                  Variaciones e inventario
+                </h2>
+
+                <p>
+                  Configura tallas, SKU, precios
+                  y existencias disponibles.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="add-variation"
+              (click)="agregarVariacion()"
+            >
+
+              <i class="bi bi-plus-lg"></i>
+
+              <span>
+                Agregar variación
+              </span>
+
+            </button>
+
+          </div>
+
+
+          <!-- TABLA DE VARIACIONES -->
+
+          <div class="variations-container">
+
+            <div class="variation-header">
+
+              <span>
+                Talla
+              </span>
+
+              <span>
+                SKU
+              </span>
+
+              <span>
+                Precio
+              </span>
+
+              <span>
+                Stock
+              </span>
+
+              <span class="variation-status-title">
+                Estado
+              </span>
+
+              <span></span>
+
+            </div>
+
+
+            <div
+              class="variation-row"
+              *ngFor="
+                let variacion of producto.variaciones;
+                let i = index
+              "
+            >
+
+              <!-- TALLA -->
+
+              <div class="variation-field">
+
+                <input
+                  type="text"
+                  [name]="'talla-' + i"
+                  [(ngModel)]="variacion.talla"
+                  autocomplete="off"
+                  placeholder="M"
+                >
+
+              </div>
+
+
+              <!-- SKU -->
+
+              <div class="variation-field">
+
+                <input
+                  type="text"
+                  [name]="'sku-' + i"
+                  [(ngModel)]="variacion.sku"
+                  autocomplete="off"
+                  placeholder="G-ANTI-N5-M"
+                >
+
+              </div>
+
+
+              <!-- PRECIO -->
+
+              <div class="money-input">
+
+                <span>
+                  S/
+                </span>
+
+                <input
+                  type="number"
+                  [name]="'precio-' + i"
+                  [(ngModel)]="variacion.precio"
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                >
+
+              </div>
+
+
+              <!-- STOCK -->
+
+              <div class="variation-field">
+
+                <input
+                  type="number"
+                  [name]="'stock-' + i"
+                  [(ngModel)]="variacion.stock"
+                  min="0"
+                  step="1"
+                  placeholder="0"
+                >
+
+              </div>
+
+
+              <!-- ACTIVO -->
+
+              <div class="variation-active">
+
+                <label
+                  class="small-toggle"
+                  [title]="
+                    variacion.activo
+                      ? 'Variación activa'
+                      : 'Variación inactiva'
+                  "
+                >
+
+                  <input
+                    type="checkbox"
+                    [name]="'activoVariacion-' + i"
+                    [checked]="variacion.activo === 1"
+                    (change)="
+                      variacion.activo =
+                        $any($event.target).checked
+                          ? 1
+                          : 0
+                    "
+                  >
+
+                  <span class="small-toggle-ui"></span>
+
+                </label>
+
+              </div>
+
+
+              <!-- ELIMINAR -->
+
+              <button
+                type="button"
+                class="delete-variation"
+                [disabled]="
+                  producto.variaciones.length === 1
+                "
+                (click)="eliminarVariacion(i)"
+                title="Eliminar variación"
+              >
+
+                <i class="bi bi-trash3"></i>
+
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="inventory-note">
+
+            <i class="bi bi-info-circle"></i>
+
+            <span>
+              Cada variación representa una presentación
+              independiente del producto y puede tener su
+              propio SKU, precio y stock.
+            </span>
+
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <!-- =================================================== -->
+      <!-- COLUMNA LATERAL -->
+      <!-- =================================================== -->
+
+      <aside class="side-column">
+
+
+        <!-- ================================================= -->
+        <!-- PUBLICACIÓN -->
+        <!-- ================================================= -->
+
+        <section class="form-card compact-card">
+
+          <div class="side-heading">
+
+            <span class="side-eyebrow">
+              VISIBILIDAD
+            </span>
+
+            <h2>
+              Publicación
+            </h2>
+
+          </div>
+
+
+          <label class="status-control">
+
+            <div class="status-copy">
+
+              <strong>
+                Producto activo
+              </strong>
+
+              <span>
+                Visible para los clientes
+                en el catálogo.
+              </span>
+
+            </div>
+
+
+            <div class="toggle-wrapper">
+
+              <input
+                type="checkbox"
+                name="productoActivo"
+                [(ngModel)]="productoActivo"
+              >
+
+              <span class="toggle"></span>
+
+            </div>
+
+          </label>
+
+
+          <div
+            class="publication-status"
+            [class.is-active]="productoActivo"
+            [class.is-inactive]="!productoActivo"
+          >
+
+            <span class="publication-dot"></span>
+
+            {{
+              productoActivo
+                ? 'El producto estará activo'
+                : 'El producto permanecerá oculto'
+            }}
+
+          </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- SECTORES -->
+        <!-- ================================================= -->
+
+        <section class="form-card compact-card">
+
+          <div class="side-heading">
+
+            <span class="side-eyebrow">
+              APLICACIONES
+            </span>
+
+            <h2>
+              Sectores
+            </h2>
+
+            <p>
+              Selecciona los sectores industriales
+              donde aplica este producto.
+            </p>
+
+          </div>
+
+
+          <div
+            *ngIf="sectores.length > 0"
+            class="sector-options"
+          >
+
+            <label
+              *ngFor="let sector of sectores"
+              class="sector-option"
+              [class.selected]="
+                sectorSeleccionado(sector.id)
+              "
+            >
+
+              <input
+                type="checkbox"
+                [name]="'sector-' + sector.id"
+                [checked]="
+                  sectorSeleccionado(sector.id)
+                "
+                (change)="
+                  cambiarSector(
+                    sector.id,
+                    $any($event.target).checked
+                  )
+                "
+              >
+
+              <span class="custom-check">
+                <i class="bi bi-check-lg"></i>
+              </span>
+
+              <span class="sector-name">
+                {{ sector.nombre }}
+              </span>
+
+            </label>
+
+          </div>
+
+
+          <div
+            *ngIf="sectores.length === 0"
+            class="no-options"
+          >
+
+            <i class="bi bi-exclamation-circle"></i>
+
+            <span>
+              No existen sectores disponibles.
+            </span>
+
+          </div>
+
+
+          <div
+            *ngIf="producto.sectores.length > 0"
+            class="selected-count"
+          >
+
+            <strong>
+              {{ producto.sectores.length }}
+            </strong>
+
+            {{
+              producto.sectores.length === 1
+                ? 'sector seleccionado'
+                : 'sectores seleccionados'
+            }}
+
+          </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- IMAGEN -->
+        <!-- ================================================= -->
+
+        <section class="form-card compact-card">
+
+          <div class="side-heading">
+
+            <span class="side-eyebrow">
+              PRESENTACIÓN
+            </span>
+
+            <h2>
+              Imagen del producto
+            </h2>
+
+            <p *ngIf="!modoEdicion">
+              Sube la imagen principal que se mostrará
+              en el catálogo y detalle del producto.
+            </p>
+
+            <p *ngIf="modoEdicion">
+              Conserva la imagen actual o reemplázala
+              por una nueva.
+            </p>
+
+          </div>
+
+
+          <!-- ============================================= -->
+          <!-- IMAGEN ACTUAL -->
+          <!-- ============================================= -->
+
+          <div
+            *ngIf="
+              modoEdicion &&
+              imagenActualUrl &&
+              !archivoImagen
+            "
+            class="uploaded-image"
+          >
+
+            <div class="uploaded-image-preview">
+
+              <img
+                [src]="imagenMostrada"
+                [alt]="
+                  producto.nombre ||
+                  'Imagen actual del producto'
+                "
+              >
+
+              <div class="image-preview-overlay">
+
+                <button
+                  type="button"
+                  class="preview-action"
+                  title="Reemplazar imagen"
+                  (click)="inputImagenActual.click()"
+                >
+
+                  <i class="bi bi-arrow-repeat"></i>
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <input
+              #inputImagenActual
+              type="file"
+              accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+              class="upload-input"
+              (change)="seleccionarImagen($event)"
+            >
+
+
+            <div class="uploaded-file-info">
+
+              <div class="file-type-icon image-file">
+                <i class="bi bi-image"></i>
+              </div>
+
+
+              <div class="file-information">
+
+                <strong>
+                  Imagen actual
+                </strong>
+
+                <span>
+                  Guardada en el servidor
+                </span>
+
+              </div>
+
+
+              <span class="file-ready">
+
+                <i class="bi bi-check-circle-fill"></i>
+
+                Actual
+
+              </span>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="upload-button"
+              (click)="inputImagenActual.click()"
+            >
+
+              <i class="bi bi-arrow-repeat"></i>
+
+              Reemplazar imagen
+
+            </button>
+
+          </div>
+
+
+          <!-- ============================================= -->
+          <!-- DROPZONE SIN IMAGEN -->
+          <!-- ============================================= -->
+
+          <div
+            *ngIf="
+              !archivoImagen &&
+              (
+                !modoEdicion ||
+                !imagenActualUrl
+              )
+            "
+            class="upload-zone"
+            [class.is-dragging]="arrastrandoImagen"
+            (dragover)="dragOverImagen($event)"
+            (dragleave)="dragLeaveImagen($event)"
+            (drop)="dropImagen($event)"
+          >
+
+            <input
+              #inputImagen
+              type="file"
+              accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+              class="upload-input"
+              (change)="seleccionarImagen($event)"
+            >
+
+
+            <div class="upload-icon">
+              <i class="bi bi-cloud-arrow-up"></i>
+            </div>
+
+
+            <strong class="upload-title">
+
+              {{
+                modoEdicion
+                  ? 'Agrega una imagen al producto'
+                  : 'Arrastra una imagen aquí'
+              }}
+
+            </strong>
+
+
+            <span class="upload-subtitle">
+              o selecciona un archivo desde tu equipo
+            </span>
+
+
+            <button
+              type="button"
+              class="upload-button"
+              (click)="inputImagen.click()"
+            >
+
+              <i class="bi bi-image"></i>
+
+              Seleccionar imagen
+
+            </button>
+
+
+            <span class="upload-help">
+              JPG, PNG o WEBP · Máximo 5 MB
+            </span>
+
+          </div>
+
+
+          <!-- ============================================= -->
+          <!-- NUEVA IMAGEN SELECCIONADA -->
+          <!-- ============================================= -->
+
+          <div
+            *ngIf="
+              archivoImagen &&
+              previewImagen
+            "
+            class="uploaded-image"
+          >
+
+            <div class="uploaded-image-preview">
+
+              <img
+                [src]="previewImagen"
+                [alt]="
+                  producto.nombre ||
+                  'Vista previa del producto'
+                "
+              >
+
+
+              <div class="image-preview-overlay">
+
+                <button
+                  type="button"
+                  class="preview-action"
+                  title="Cambiar imagen"
+                  (click)="inputImagenCambio.click()"
+                >
+
+                  <i class="bi bi-arrow-repeat"></i>
+
+                </button>
+
+
+                <button
+                  type="button"
+                  class="preview-action danger"
+                  title="Cancelar nueva imagen"
+                  (click)="eliminarImagen()"
+                >
+
+                  <i class="bi bi-trash3"></i>
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <input
+              #inputImagenCambio
+              type="file"
+              accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+              class="upload-input"
+              (change)="seleccionarImagen($event)"
+            >
+
+
+            <div class="uploaded-file-info">
+
+              <div class="file-type-icon image-file">
+                <i class="bi bi-image"></i>
+              </div>
+
+
+              <div class="file-information">
+
+                <strong>
+                  {{ archivoImagen.name }}
+                </strong>
+
+                <span>
+                  {{ formatearTamano(archivoImagen.size) }}
+                </span>
+
+              </div>
+
+
+              <span class="file-ready">
+
+                <i class="bi bi-check-circle-fill"></i>
+
+                {{
+                  modoEdicion && imagenActualUrl
+                    ? 'Reemplazará la actual'
+                    : 'Lista'
+                }}
+
+              </span>
+
+            </div>
+
+
+            <div
+              *ngIf="
+                modoEdicion &&
+                imagenActualUrl
+              "
+              class="inventory-note"
+            >
+
+              <i class="bi bi-info-circle"></i>
+
+              <span>
+                La imagen actual será reemplazada
+                cuando guardes los cambios.
+              </span>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+<!-- FICHA TÉCNICA -->
+<!-- ================================================= -->
+
+<section class="form-card compact-card">
+
+  <div class="side-heading">
+
+    <span class="side-eyebrow">
+      DOCUMENTACIÓN
+    </span>
+
+    <h2>
+      Ficha técnica
+    </h2>
+
+    <p *ngIf="!modoEdicion">
+      Adjunta la documentación técnica
+      correspondiente al producto.
+    </p>
+
+    <p *ngIf="modoEdicion">
+      Conserva la ficha técnica actual
+      o reemplázala por un nuevo PDF.
+    </p>
+
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- INPUT GENERAL PARA REEMPLAZAR FICHA -->
+  <!-- ================================================= -->
+
+  <input
+    #inputFichaActual
+    type="file"
+    accept=".pdf,application/pdf"
+    class="upload-input"
+    (change)="seleccionarFicha($event)"
+  >
+
+
+  <!-- ================================================= -->
+  <!-- FICHA ACTUAL -->
+  <!-- ================================================= -->
+
+  <div
+    *ngIf="
+      modoEdicion &&
+      fichaActualUrl &&
+      !archivoFichaTecnica
+    "
+    class="uploaded-document"
+  >
+
+    <div class="document-file-icon">
+
+      <i class="bi bi-file-earmark-pdf-fill"></i>
+
+    </div>
+
+
+    <div class="document-file-copy">
+
+      <strong>
+        Ficha técnica actual
+      </strong>
+
+      <span>
+        PDF guardado en el servidor
+      </span>
+
+
+      <div class="document-success">
+
+        <i class="bi bi-check-circle-fill"></i>
+
+        Documento actual
+
+      </div>
+
+    </div>
+
+
+    <div class="document-actions">
+
+      <!-- VER PDF ACTUAL -->
+
+      <a
+        *ngIf="fichaActualCompleta"
+        [href]="fichaActualCompleta"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="file-action-button"
+        title="Ver ficha técnica"
+      >
+
+        <i class="bi bi-eye"></i>
+
+      </a>
+
+
+      <!-- REEMPLAZAR PDF -->
+
+      <button
+        type="button"
+        class="file-action-button"
+        title="Reemplazar documento"
+        (click)="inputFichaActual.click()"
+      >
+
+        <i class="bi bi-arrow-repeat"></i>
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- BOTÓN REEMPLAZAR FICHA ACTUAL -->
+  <!-- ================================================= -->
+
+  <button
+    *ngIf="
+      modoEdicion &&
+      fichaActualUrl &&
+      !archivoFichaTecnica
+    "
+    type="button"
+    class="upload-button"
+    (click)="inputFichaActual.click()"
+  >
+
+    <i class="bi bi-file-earmark-arrow-up"></i>
+
+    Reemplazar ficha técnica
+
+  </button>
+
+
+  <!-- ================================================= -->
+  <!-- DROPZONE -->
+  <!-- NUEVO PRODUCTO O PRODUCTO SIN FICHA -->
+  <!-- ================================================= -->
+
+  <div
+    *ngIf="
+      !archivoFichaTecnica &&
+      (
+        !modoEdicion ||
+        !fichaActualUrl
+      )
+    "
+    class="upload-zone document-zone"
+    [class.is-dragging]="arrastrandoFicha"
+    (dragover)="dragOverFicha($event)"
+    (dragleave)="dragLeaveFicha($event)"
+    (drop)="dropFicha($event)"
+  >
+
+    <input
+      #inputFicha
+      type="file"
+      accept=".pdf,application/pdf"
+      class="upload-input"
+      (change)="seleccionarFicha($event)"
+    >
+
+
+    <div class="upload-icon document">
+
+      <i class="bi bi-file-earmark-pdf"></i>
+
+    </div>
+
+
+    <strong class="upload-title">
+
+      {{
+        modoEdicion
+          ? 'Agrega una ficha técnica'
+          : 'Arrastra la ficha técnica'
+      }}
+
+    </strong>
+
+
+    <span class="upload-subtitle">
+
+      o selecciona un documento PDF
+
+    </span>
+
+
+    <button
+      type="button"
+      class="upload-button"
+      (click)="inputFicha.click()"
+    >
+
+      <i class="bi bi-file-earmark-arrow-up"></i>
+
+      Seleccionar PDF
+
+    </button>
+
+
+    <span class="upload-help">
+
+      Solo archivos PDF · Máximo 10 MB
+
+    </span>
+
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- NUEVA FICHA SELECCIONADA -->
+  <!-- ================================================= -->
+
+  <div
+    *ngIf="archivoFichaTecnica"
+    class="uploaded-document"
+  >
+
+    <div class="document-file-icon">
+
+      <i class="bi bi-file-earmark-pdf-fill"></i>
+
+    </div>
+
+
+    <div class="document-file-copy">
+
+      <strong>
+        {{ archivoFichaTecnica.name }}
+      </strong>
+
+
+      <span>
+
+        PDF ·
+
+        {{
+          formatearTamano(
+            archivoFichaTecnica.size
+          )
+        }}
+
+      </span>
+
+
+      <div class="document-success">
+
+        <i class="bi bi-check-circle-fill"></i>
+
+
+        {{
+          modoEdicion &&
+          fichaActualUrl
+
+            ? 'Reemplazará el documento actual'
+
+            : 'Archivo listo para subir'
+        }}
+
+      </div>
+
+    </div>
+
+
+    <div class="document-actions">
+
+
+      <!-- CAMBIAR NUEVAMENTE EL PDF -->
+
+      <button
+        type="button"
+        class="file-action-button"
+        title="Cambiar documento"
+        (click)="inputFichaActual.click()"
+      >
+
+        <i class="bi bi-arrow-repeat"></i>
+
+      </button>
+
+
+      <!-- CANCELAR NUEVO PDF -->
+
+      <button
+        type="button"
+        class="file-action-button danger"
+        title="Cancelar nuevo documento"
+        (click)="eliminarFicha()"
+      >
+
+        <i class="bi bi-trash3"></i>
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- AVISO DE REEMPLAZO -->
+  <!-- ================================================= -->
+
+  <div
+    *ngIf="
+      modoEdicion &&
+      fichaActualUrl &&
+      archivoFichaTecnica
+    "
+    class="inventory-note"
+  >
+
+    <i class="bi bi-info-circle"></i>
+
+    <span>
+      La ficha técnica actual será reemplazada
+      cuando guardes los cambios.
+    </span>
+
+  </div>
+
+</section>
+
+
+        <!-- ================================================= -->
+        <!-- RESUMEN -->
+        <!-- ================================================= -->
+
+        <section class="summary-card">
+
+          <div class="summary-title">
+
+            <i class="bi bi-clipboard-check"></i>
+
+            <span>
+              Resumen
+            </span>
+
+          </div>
+
+
+          <div class="summary-row">
+
+            <span>
+              Variaciones
+            </span>
+
+            <strong>
+              {{ producto.variaciones.length }}
+            </strong>
+
+          </div>
+
+
+          <div class="summary-row">
+
+            <span>
+              Sectores
+            </span>
+
+            <strong>
+              {{ producto.sectores.length }}
+            </strong>
+
+          </div>
+
+
+          <div class="summary-row">
+
+            <span>
+              Estado
+            </span>
+
+            <strong
+              [class.summary-active]="productoActivo"
+            >
+
+              {{
+                productoActivo
+                  ? 'Activo'
+                  : 'Inactivo'
+              }}
+
+            </strong>
+
+          </div>
+
+
+          <div
+            *ngIf="modoEdicion && productoId"
+            class="summary-row"
+          >
+
+            <span>
+              ID
+            </span>
+
+            <strong>
+              #{{ productoId }}
+            </strong>
+
+          </div>
+
+        </section>
+
+      </aside>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- ACCIONES INFERIORES -->
+    <!-- ===================================================== -->
+
+    <footer
+      *ngIf="!cargando"
+      class="form-footer"
+    >
+
+      <div>
+
+        <strong>
+          ¿Todo listo?
+        </strong>
+
+        <span *ngIf="!modoEdicion">
+          Revisa los datos antes de crear el producto.
+        </span>
+
+        <span *ngIf="modoEdicion">
+          Revisa los cambios antes de actualizar el producto.
+        </span>
+
+      </div>
+
+
+      <div class="footer-actions">
+
+        <a
+          routerLink="/admin/productos"
+          class="cancel-button"
+        >
+          Cancelar
+        </a>
+
+
+        <button
+          type="button"
+          class="save-button"
+          [disabled]="guardando || cargando"
+          (click)="guardar()"
+        >
+
+          <i
+            *ngIf="!guardando"
+            class="bi bi-check-lg"
+          ></i>
+
+          <i
+            *ngIf="guardando"
+            class="bi bi-arrow-repeat spinning"
+          ></i>
+
+          {{
+            guardando
+              ? 'Guardando...'
+              : textoBotonGuardar
+          }}
+
+        </button>
+
+      </div>
+
+    </footer>
+
+  </main>
+
+</div>
