@@ -1,4 +1,4 @@
-<!-- ====================================================== -->
+﻿<!-- ====================================================== -->
 <!-- HERO PRINCIPAL -->
 <!-- ====================================================== -->
 
@@ -29,9 +29,9 @@
         </h1>
 
 
-        <!-- DESCRIPCIÓN -->
+        <!-- DESCRIPCION -->
         <p class="hero-description">
-          Guantes de seguridad industrial para minería,
+          Guantes de seguridad industrial para minerí­a,
           construcción, manufactura y operaciones de alto rendimiento.
           Equipamiento confiable para proteger a tu equipo.
         </p>
@@ -119,6 +119,373 @@
 
 <!-- ====================================================== -->
 <!-- PRODUCTOS DESTACADOS -->
+<!-- ====================================================== -->
+
+<section class="sectors-section">
+
+  <div class="container">
+
+
+    <!-- ================================================== -->
+    <!-- CABECERA -->
+    <!-- ================================================== -->
+
+    <div class="sectors-header">
+
+      <div class="sectors-header-content">
+
+        <div class="section-eyebrow light-eyebrow">
+          <span></span>
+          SOLUCIONES INDUSTRIALES
+        </div>
+
+        <h2>
+          Protección para
+          <span>distintos sectores</span>
+        </h2>
+
+        <p>
+          Seleccionamos soluciones de seguridad para operaciones
+          que requieren protección de manos en diferentes entornos
+          de trabajo.
+        </p>
+
+      </div>
+
+
+      <!-- CONTROLES -->
+      <div class="sector-carousel-controls">
+
+        <button
+          type="button"
+          class="sector-carousel-btn"
+          aria-label="Sector anterior"
+          (click)="moverCarruselSectores(-1)"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+
+        <button
+          type="button"
+          class="sector-carousel-btn sector-carousel-btn-active"
+          aria-label="Sector siguiente"
+          (click)="moverCarruselSectores(1)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================================================== -->
+    <!-- CARRUSEL -->
+    <!-- ================================================== -->
+
+    <div
+      #sectorCarousel
+      class="sector-carousel"
+    >
+
+
+      <!-- ================================================= -->
+      <!-- MINERÍA -->
+      <!-- ================================================= -->
+
+      <article class="sector-image-card">
+
+        <img
+          src="/images/sectores/mineria.webp"
+          alt="Protección industrial para minería"
+          loading="lazy"
+        >
+
+        <div class="sector-image-overlay"></div>
+
+        <div class="sector-image-content">
+
+          <div class="sector-icon">
+            <i class="bi bi-gem"></i>
+          </div>
+
+          <h3>
+            Minería
+          </h3>
+
+          <p>
+            Guantes de alta resistencia para condiciones extremas,
+            abración y manipulación de materiales pesados.
+          </p>
+
+          <a
+            routerLink="/tienda"
+            [queryParams]="{ sector: 'mineria' }"
+            class="sector-card-link"
+          >
+            Ver productos
+            <i class="bi bi-arrow-right"></i>
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- ================================================= -->
+      <!-- CONSTRUCCIÓN -->
+      <!-- ================================================= -->
+
+      <article class="sector-image-card">
+
+        <img
+          src="/images/sectores/construccion.jpg"
+          alt="Protección industrial para construcción"
+          loading="lazy"
+        >
+
+        <div class="sector-image-overlay"></div>
+
+        <div class="sector-image-content">
+
+          <div class="sector-icon">
+            <i class="bi bi-building"></i>
+          </div>
+
+          <h3>
+            Construcción
+          </h3>
+
+          <p>
+            Protección y durabilidad para manipulación de materiales,
+            concreto, herramientas y trabajo en obra.
+          </p>
+
+          <a
+            routerLink="/tienda"
+            [queryParams]="{ sector: 'construccion' }"
+            class="sector-card-link"
+          >
+            Ver productos
+            <i class="bi bi-arrow-right"></i>
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- ================================================= -->
+      <!-- MANUFACTURA -->
+      <!-- ================================================= -->
+
+      <article class="sector-image-card">
+
+        <img
+          src="/images/sectores/manufactura.jpg"
+          alt="Protección industrial para manufactura"
+          loading="lazy"
+        >
+
+        <div class="sector-image-overlay"></div>
+
+        <div class="sector-image-content">
+
+          <div class="sector-icon">
+            <i class="bi bi-gear-wide-connected"></i>
+          </div>
+
+          <h3>
+            Manufactura
+          </h3>
+
+          <p>
+            Guantes con precisión, comodidad y protección para
+            líneas de producción, montaje e inspección.
+          </p>
+
+          <a
+            routerLink="/tienda"
+            [queryParams]="{ sector: 'manufactura' }"
+            class="sector-card-link"
+          >
+            Ver productos
+            <i class="bi bi-arrow-right"></i>
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- ================================================= -->
+      <!-- METALMECÁNICA -->
+      <!-- ================================================= -->
+
+      <article class="sector-image-card">
+
+        <img
+          src="/images/sectores/metalmecanica.jpg"
+          alt="Protección industrial para metalmecánica"
+          loading="lazy"
+        >
+
+        <div class="sector-image-overlay"></div>
+
+        <div class="sector-image-content">
+
+          <div class="sector-icon">
+            <i class="bi bi-tools"></i>
+          </div>
+
+          <h3>
+            Metalmecánica
+          </h3>
+
+          <p>
+            Resistencia al calor, cortes y chispas para soldadura,
+            ensamblaje y mantenimiento industrial.
+          </p>
+
+          <a
+            routerLink="/tienda"
+            [queryParams]="{ sector: 'metalmecanica' }"
+            class="sector-card-link"
+          >
+            Ver productos
+            <i class="bi bi-arrow-right"></i>
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- ================================================= -->
+      <!-- AGROINDUSTRIA -->
+      <!-- ================================================= -->
+
+      <article class="sector-image-card">
+
+        <img
+          src="/images/sectores/agroindustria.webp"
+          alt="ProtecciÃ³n industrial para agroindustria"
+          loading="lazy"
+        >
+
+        <div class="sector-image-overlay"></div>
+
+        <div class="sector-image-content">
+
+          <div class="sector-icon">
+            <i class="bi bi-flower1"></i>
+          </div>
+
+          <h3>
+            Agroindustria
+          </h3>
+
+          <p>
+            Guantes resistentes y funcionales para manipulación,
+            selección y procesamiento de productos agrícolas.
+          </p>
+
+          <a
+            routerLink="/tienda"
+            [queryParams]="{ sector: 'agroindustria' }"
+            class="sector-card-link"
+          >
+            Ver productos
+            <i class="bi bi-arrow-right"></i>
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- ================================================= -->
+      <!-- LIMPIEZA -->
+      <!-- ================================================= -->
+
+      <article class="sector-image-card">
+
+        <img
+          src="/images/sectores/limpieza.webp"
+          alt="Protección industrial para limpieza profesional"
+          loading="lazy"
+        >
+
+        <div class="sector-image-overlay"></div>
+
+        <div class="sector-image-content">
+
+          <div class="sector-icon">
+            <i class="bi bi-droplet-fill"></i>
+          </div>
+
+          <h3>
+            Limpieza
+          </h3>
+
+          <p>
+            Protección, comodidad e higiene para tareas de limpieza,
+            mantenimiento y servicios profesionales.
+          </p>
+
+          <a
+            routerLink="/tienda"
+            [queryParams]="{ sector: 'limpieza' }"
+            class="sector-card-link"
+          >
+            Ver productos
+            <i class="bi bi-arrow-right"></i>
+          </a>
+
+        </div>
+
+      </article>
+
+    </div>
+
+
+    <!-- ================================================== -->
+    <!-- INDICADOR -->
+    <!-- ================================================== -->
+
+    <div class="sector-carousel-indicator">
+
+      <span class="active"></span>
+      <span></span>
+      <span></span>
+
+    </div>
+
+
+    <!-- ================================================== -->
+    <!-- BOTÓN CATÁLOGO -->
+    <!-- ================================================== -->
+
+    <div class="sectors-footer">
+
+      <a
+        routerLink="/tienda"
+        class="btn sectors-btn"
+      >
+        Explorar catálogo
+
+        <i class="bi bi-arrow-right ms-2"></i>
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ====================================================== -->
+<!-- SECTORES -->
 <!-- ====================================================== -->
 
 <section class="products-section">
@@ -534,373 +901,6 @@
         class="btn btn-outline-dark fw-bold"
       >
         Ver catálogo
-      </a>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ====================================================== -->
-<!-- SECTORES -->
-<!-- ====================================================== -->
-
-<section class="sectors-section">
-
-  <div class="container">
-
-
-    <!-- ================================================== -->
-    <!-- CABECERA -->
-    <!-- ================================================== -->
-
-    <div class="sectors-header">
-
-      <div class="sectors-header-content">
-
-        <div class="section-eyebrow light-eyebrow">
-          <span></span>
-          SOLUCIONES INDUSTRIALES
-        </div>
-
-        <h2>
-          Protección para
-          <span>distintos sectores</span>
-        </h2>
-
-        <p>
-          Seleccionamos soluciones de seguridad para operaciones
-          que requieren protección de manos en diferentes entornos
-          de trabajo.
-        </p>
-
-      </div>
-
-
-      <!-- CONTROLES -->
-      <div class="sector-carousel-controls">
-
-        <button
-          type="button"
-          class="sector-carousel-btn"
-          aria-label="Sector anterior"
-          (click)="moverCarruselSectores(-1)"
-        >
-          <i class="bi bi-chevron-left"></i>
-        </button>
-
-        <button
-          type="button"
-          class="sector-carousel-btn sector-carousel-btn-active"
-          aria-label="Sector siguiente"
-          (click)="moverCarruselSectores(1)"
-        >
-          <i class="bi bi-chevron-right"></i>
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- ================================================== -->
-    <!-- CARRUSEL -->
-    <!-- ================================================== -->
-
-    <div
-      #sectorCarousel
-      class="sector-carousel"
-    >
-
-
-      <!-- ================================================= -->
-      <!-- MINERÍA -->
-      <!-- ================================================= -->
-
-      <article class="sector-image-card">
-
-        <img
-          src="/images/sectores/mineria.webp"
-          alt="Protección industrial para minería"
-          loading="lazy"
-        >
-
-        <div class="sector-image-overlay"></div>
-
-        <div class="sector-image-content">
-
-          <div class="sector-icon">
-            <i class="bi bi-gem"></i>
-          </div>
-
-          <h3>
-            Minería
-          </h3>
-
-          <p>
-            Guantes de alta resistencia para condiciones extremas,
-            abrasión y manipulación de materiales pesados.
-          </p>
-
-          <a
-            routerLink="/tienda"
-            [queryParams]="{ sector: 'mineria' }"
-            class="sector-card-link"
-          >
-            Ver productos
-            <i class="bi bi-arrow-right"></i>
-          </a>
-
-        </div>
-
-      </article>
-
-
-      <!-- ================================================= -->
-      <!-- CONSTRUCCIÓN -->
-      <!-- ================================================= -->
-
-      <article class="sector-image-card">
-
-        <img
-          src="/images/sectores/construccion.jpg"
-          alt="Protección industrial para construcción"
-          loading="lazy"
-        >
-
-        <div class="sector-image-overlay"></div>
-
-        <div class="sector-image-content">
-
-          <div class="sector-icon">
-            <i class="bi bi-building"></i>
-          </div>
-
-          <h3>
-            Construcción
-          </h3>
-
-          <p>
-            Protección y durabilidad para manipulación de materiales,
-            concreto, herramientas y trabajo en obra.
-          </p>
-
-          <a
-            routerLink="/tienda"
-            [queryParams]="{ sector: 'construccion' }"
-            class="sector-card-link"
-          >
-            Ver productos
-            <i class="bi bi-arrow-right"></i>
-          </a>
-
-        </div>
-
-      </article>
-
-
-      <!-- ================================================= -->
-      <!-- MANUFACTURA -->
-      <!-- ================================================= -->
-
-      <article class="sector-image-card">
-
-        <img
-          src="/images/sectores/manufactura.jpg"
-          alt="Protección industrial para manufactura"
-          loading="lazy"
-        >
-
-        <div class="sector-image-overlay"></div>
-
-        <div class="sector-image-content">
-
-          <div class="sector-icon">
-            <i class="bi bi-gear-wide-connected"></i>
-          </div>
-
-          <h3>
-            Manufactura
-          </h3>
-
-          <p>
-            Guantes con precisión, comodidad y protección para
-            líneas de producción, montaje e inspección.
-          </p>
-
-          <a
-            routerLink="/tienda"
-            [queryParams]="{ sector: 'manufactura' }"
-            class="sector-card-link"
-          >
-            Ver productos
-            <i class="bi bi-arrow-right"></i>
-          </a>
-
-        </div>
-
-      </article>
-
-
-      <!-- ================================================= -->
-      <!-- METALMECÁNICA -->
-      <!-- ================================================= -->
-
-      <article class="sector-image-card">
-
-        <img
-          src="/images/sectores/metalmecanica.jpg"
-          alt="Protección industrial para metalmecánica"
-          loading="lazy"
-        >
-
-        <div class="sector-image-overlay"></div>
-
-        <div class="sector-image-content">
-
-          <div class="sector-icon">
-            <i class="bi bi-tools"></i>
-          </div>
-
-          <h3>
-            Metalmecánica
-          </h3>
-
-          <p>
-            Resistencia al calor, cortes y chispas para soldadura,
-            ensamblaje y mantenimiento industrial.
-          </p>
-
-          <a
-            routerLink="/tienda"
-            [queryParams]="{ sector: 'metalmecanica' }"
-            class="sector-card-link"
-          >
-            Ver productos
-            <i class="bi bi-arrow-right"></i>
-          </a>
-
-        </div>
-
-      </article>
-
-
-      <!-- ================================================= -->
-      <!-- AGROINDUSTRIA -->
-      <!-- ================================================= -->
-
-      <article class="sector-image-card">
-
-        <img
-          src="/images/sectores/agroindustria.webp"
-          alt="Protección industrial para agroindustria"
-          loading="lazy"
-        >
-
-        <div class="sector-image-overlay"></div>
-
-        <div class="sector-image-content">
-
-          <div class="sector-icon">
-            <i class="bi bi-flower1"></i>
-          </div>
-
-          <h3>
-            Agroindustria
-          </h3>
-
-          <p>
-            Guantes resistentes y funcionales para manipulación,
-            selección y procesamiento de productos agrícolas.
-          </p>
-
-          <a
-            routerLink="/tienda"
-            [queryParams]="{ sector: 'agroindustria' }"
-            class="sector-card-link"
-          >
-            Ver productos
-            <i class="bi bi-arrow-right"></i>
-          </a>
-
-        </div>
-
-      </article>
-
-
-      <!-- ================================================= -->
-      <!-- LIMPIEZA -->
-      <!-- ================================================= -->
-
-      <article class="sector-image-card">
-
-        <img
-          src="/images/sectores/limpieza.webp"
-          alt="Protección industrial para limpieza profesional"
-          loading="lazy"
-        >
-
-        <div class="sector-image-overlay"></div>
-
-        <div class="sector-image-content">
-
-          <div class="sector-icon">
-            <i class="bi bi-droplet-fill"></i>
-          </div>
-
-          <h3>
-            Limpieza
-          </h3>
-
-          <p>
-            Protección, comodidad e higiene para tareas de limpieza,
-            mantenimiento y servicios profesionales.
-          </p>
-
-          <a
-            routerLink="/tienda"
-            [queryParams]="{ sector: 'limpieza' }"
-            class="sector-card-link"
-          >
-            Ver productos
-            <i class="bi bi-arrow-right"></i>
-          </a>
-
-        </div>
-
-      </article>
-
-    </div>
-
-
-    <!-- ================================================== -->
-    <!-- INDICADOR -->
-    <!-- ================================================== -->
-
-    <div class="sector-carousel-indicator">
-
-      <span class="active"></span>
-      <span></span>
-      <span></span>
-
-    </div>
-
-
-    <!-- ================================================== -->
-    <!-- BOTÓN CATÁLOGO -->
-    <!-- ================================================== -->
-
-    <div class="sectors-footer">
-
-      <a
-        routerLink="/tienda"
-        class="btn sectors-btn"
-      >
-        Explorar catálogo
-
-        <i class="bi bi-arrow-right ms-2"></i>
       </a>
 
     </div>
