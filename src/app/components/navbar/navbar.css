@@ -1,0 +1,14 @@
+.kasal-navbar-logo {
+  display: block;
+  width: auto;
+  height: 62px;
+  max-width: 280px;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .kasal-navbar-logo {
+    height: 50px;
+    max-width: 210px;
+  }
+}
