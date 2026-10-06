@@ -2,7 +2,8 @@ import {
   Component,
   OnInit,
   ElementRef,
-  ViewChild
+  ViewChild,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
@@ -55,9 +56,10 @@ export class InicioComponent implements OnInit {
   // =====================================================
 
   constructor(
-    private productoService: ProductoService,
-    private carritoService: CarritoService
-  ) {}
+  private productoService: ProductoService,
+  private carritoService: CarritoService,
+  private cdr: ChangeDetectorRef
+) {}
 
 
   // =====================================================
@@ -77,72 +79,71 @@ export class InicioComponent implements OnInit {
 
   private cargarProductosDestacados(): void {
 
-    this.cargandoProductos = true;
+  this.cargandoProductos = true;
 
-    this.productoService
-      .obtenerProductos()
-      .subscribe({
+  this.productoService
+    .obtenerProductos()
+    .subscribe({
 
-        next: (data: Producto[]) => {
+      next: (data: Producto[]) => {
 
-          console.log(
-            'Productos recibidos en Inicio:',
-            data
-          );
+        console.log(
+          'Productos recibidos en Inicio:',
+          data
+        );
 
+        if (
+          Array.isArray(data) &&
+          data.length > 0
+        ) {
 
-          // Validar que la API devuelva un array
-          if (
-            Array.isArray(data) &&
-            data.length > 0
-          ) {
+          this.productosDestacados = [
+            ...data.slice(0, 3)
+          ];
 
-            // Mostrar solamente los primeros 3
-            this.productosDestacados = [
-              ...data.slice(0, 3)
-            ];
+          this.inicializarCantidades();
 
-            this.inicializarCantidades();
+        } else {
 
-          } else {
-
-            console.warn(
-              'La API no devolvió productos. Usando productos demo.'
-            );
-
-            this.cargarDemo();
-
-          }
-
-
-          this.cargandoProductos = false;
-
-
-          console.log(
-            'Productos destacados:',
-            this.productosDestacados.length
-          );
-
-        },
-
-
-        error: (error) => {
-
-          console.error(
-            'Error al cargar productos en Inicio:',
-            error
+          console.warn(
+            'La API no devolvió productos. Usando productos demo.'
           );
 
           this.cargarDemo();
 
-          this.cargandoProductos = false;
-
         }
 
-      });
+        this.cargandoProductos = false;
 
-  }
+        // Forzar actualización de la vista
+        this.cdr.detectChanges();
 
+        console.log(
+          'Productos destacados:',
+          this.productosDestacados.length
+        );
+
+      },
+
+      error: (error) => {
+
+        console.error(
+          'Error al cargar productos en Inicio:',
+          error
+        );
+
+        this.cargarDemo();
+
+        this.cargandoProductos = false;
+
+        // Forzar actualización de la vista
+        this.cdr.detectChanges();
+
+      }
+
+    });
+
+}
 
   // =====================================================
   // INICIALIZAR CANTIDADES
