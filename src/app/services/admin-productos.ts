@@ -123,6 +123,8 @@ export interface AdminSectorFormulario {
 
 export interface NuevaVariacion {
 
+  id?: number;
+
   talla: string;
 
   sku: string | null;

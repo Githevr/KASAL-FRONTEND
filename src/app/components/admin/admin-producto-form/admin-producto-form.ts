@@ -470,6 +470,11 @@ export class AdminProductoFormComponent
         .map(
           variacion => ({
 
+            id:
+              variacion.variacion_id
+              ? Number(variacion.variacion_id)
+              : undefined,
+
             talla:
               variacion.talla || '',
 
@@ -1492,6 +1497,11 @@ export class AdminProductoFormComponent
         this.producto.variaciones
           .map(
             variacion => ({
+
+              id:
+                variacion.id
+                ? Number(variacion.id)
+                : undefined,
 
               talla:
                 variacion.talla
