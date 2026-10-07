@@ -56,50 +56,10 @@
 
       </div>
 
-
-      <div class="header-actions">
-
-        <a
-          routerLink="/admin/productos"
-          class="cancel-button"
-        >
-          Cancelar
-        </a>
-
-
-        <button
-          type="button"
-          class="save-button"
-          [disabled]="guardando || cargando"
-          (click)="guardar()"
-        >
-
-          <i
-            *ngIf="!guardando"
-            class="bi bi-check-lg"
-          ></i>
-
-          <i
-            *ngIf="guardando"
-            class="bi bi-arrow-repeat spinning"
-          ></i>
-
-          <span>
-            {{
-              guardando
-                ? 'Guardando...'
-                : textoBotonGuardar
-            }}
-          </span>
-
-        </button>
-
-      </div>
-
     </header>
 
 
-    <!-- ===================================================== -->
+        <!-- ===================================================== -->
     <!-- ERROR -->
     <!-- ===================================================== -->
 
@@ -119,6 +79,33 @@
         <span>
           {{ error }}
         </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- ÉXITO -->
+    <!-- ===================================================== -->
+
+    <div
+      *ngIf="exito"
+      class="alert alert-success d-flex align-items-center gap-3"
+      role="alert"
+    >
+
+      <i class="bi bi-check-circle-fill fs-5"></i>
+
+      <div>
+
+        <strong>
+          Operación completada
+        </strong>
+
+        <div>
+          {{ exito }}
+        </div>
 
       </div>
 

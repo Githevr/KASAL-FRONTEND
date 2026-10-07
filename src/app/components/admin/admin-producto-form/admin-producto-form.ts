@@ -96,6 +96,8 @@ export class AdminProductoFormComponent
 
   error = '';
 
+  exito = '';
+
 
   // =====================================================
   // ARCHIVOS NUEVOS
@@ -1312,6 +1314,7 @@ export class AdminProductoFormComponent
   guardar(): void {
 
     this.error = '';
+    this.exito = '';
 
 
     // ===================================================
@@ -1676,10 +1679,14 @@ export class AdminProductoFormComponent
           this.guardando =
             false;
 
+          this.error = '';
 
-          this.router.navigate([
-            '/admin/productos'
-          ]);
+          this.exito =
+          respuesta.mensaje ||
+          'Producto actualizado correctamente.';
+
+
+          this.cdr.detectChanges();
 
         },
 
