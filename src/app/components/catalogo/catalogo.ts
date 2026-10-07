@@ -87,24 +87,24 @@ export class CatalogoComponent implements OnInit {
   } = {};
 
 
-  // =====================================================
-  // CATEGORÍAS
-  // =====================================================
+// =====================================================
+// SECTORES INDUSTRIALES
+// =====================================================
 
-  categorias: string[] = [
-    'Todas',
-    'Agroindustria',
-    'Minería',
-    'Manufactura',
-    'Metal/mecánica',
-    'Construcción',
-    'Pesca',
-    'Alimentos',
-    'Limpieza'
-  ];
+sectores: string[] = [
+  'Todos',
+  'Agroindustria',
+  'Minería',
+  'Manufactura',
+  'Metal/mecánica',
+  'Construcción',
+  'Pesca',
+  'Alimentos',
+  'Limpieza'
+];
 
 
-  categoriaActiva: string = 'Todas';
+sectorSeleccionado: string = 'Todos';
 
 
   // =====================================================
@@ -184,11 +184,15 @@ export class CatalogoComponent implements OnInit {
     this.cdr.detectChanges();
 
 
-    // Al cambiar de sector,
-    // regresar al filtro "Todas".
+    // Mantener sincronizado el botón activo
+// con el sector recibido por URL.
 
-    this.categoriaActiva =
-      'Todas';
+this.sectorSeleccionado =
+  this.sectorActivo
+    ? this.obtenerNombreSector(
+        this.sectorActivo
+      )
+    : 'Todos';
 
 
     // ===================================================
@@ -354,70 +358,58 @@ export class CatalogoComponent implements OnInit {
   }
 
 
-  // =====================================================
-  // FILTRAR POR CATEGORÍA
-  // =====================================================
+ // =====================================================
+// FILTRAR POR SECTOR
+// =====================================================
 
-  filtrarPorCategoria(
-    categoria: string
-  ): void {
+filtrarPorSector(
+  sector: string
+): void {
 
-    this.categoriaActiva =
-      categoria;
-
-
-    // ===================================================
-    // TODAS
-    // ===================================================
-
-    if (
-      categoria === 'Todas'
-    ) {
-
-      this.productosFiltrados = [
-        ...this.productos
-      ];
-
-      return;
-
-    }
+  this.sectorSeleccionado =
+    sector;
 
 
-    // ===================================================
-    // NORMALIZAR CATEGORÍA
-    // ===================================================
+  if (sector === 'Todos') {
 
-    const categoriaSeleccionada =
+    this.sectorActivo = '';
+
+  } else {
+
+    this.sectorActivo =
       this.normalizarTexto(
-        categoria
-      );
-
-
-    // ===================================================
-    // FILTRAR
-    // ===================================================
-
-    this.productosFiltrados =
-      this.productos.filter(
-        (producto: Producto) => {
-
-          const categoriaProducto =
-            this.normalizarTexto(
-              producto.categoria || ''
-            );
-
-
-          return (
-            categoriaProducto ===
-            categoriaSeleccionada
-          );
-
-        }
+        sector
       );
 
   }
 
 
+  this.cargarProductos();
+
+}
+
+
+// =====================================================
+// OBTENER NOMBRE VISIBLE DEL SECTOR
+// =====================================================
+
+private obtenerNombreSector(
+  sectorNormalizado: string
+): string {
+
+  const sectorEncontrado =
+    this.sectores.find(
+      sector =>
+        this.normalizarTexto(
+          sector
+        ) === sectorNormalizado
+    );
+
+
+  return sectorEncontrado ||
+    'Todos';
+
+}
   // =====================================================
   // NORMALIZAR TEXTO
   // =====================================================

@@ -236,15 +236,15 @@
   >
 
     <button
-      *ngFor="let cat of categorias"
+      *ngFor="let cat of sectores"
       type="button"
       class="btn rounded-2 px-3 py-2 fw-bold text-nowrap transition-all text-uppercase"
       [ngClass]="
-        categoriaActiva === cat
+        sectorSeleccionado === cat
           ? 'btn-navy shadow-sm'
           : 'btn-outline-secondary bg-white text-dark border shadow-sm'
       "
-      (click)="filtrarPorCategoria(cat)"
+      (click)="filtrarPorSector(cat)"
     >
       {{ cat }}
     </button>
@@ -348,14 +348,6 @@
             {{ p.nombre }}
           </h5>
 
-
-          <!-- Descripción -->
-          <p
-            class="card-text text-muted small mb-3 flex-grow-1"
-            style="line-height: 1.5;"
-          >
-            {{ p.descripcion }}
-          </p>
 
 
           <!-- ============================================= -->
@@ -650,17 +642,17 @@
     ></i>
 
     <p class="text-muted mt-3 fw-semibold mb-1">
-      No hay productos registrados en la categoría
+      No hay productos registrados en el sector
       <strong>
-        {{ categoriaActiva }}
+        {{ sectorSeleccionado }}
       </strong>.
     </p>
 
     <button
-      *ngIf="categoriaActiva !== 'Todas'"
+      *ngIf="sectorSeleccionado !== 'Todos'"
       type="button"
       class="btn btn-outline-dark btn-sm mt-3 fw-bold"
-      (click)="filtrarPorCategoria('Todas')"
+      (click)="filtrarPorSector('Todos')"
     >
       Ver todos los productos
     </button>
