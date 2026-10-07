@@ -326,10 +326,7 @@
 
           <!-- Imagen -->
           <img
-            [src]="
-              p.imagen_url ||
-              'https://placehold.co/600x400?text=KASAL+INVERSIONES'
-            "
+            [src]="obtenerImagenProducto(p.imagen_url)"
             [alt]="p.nombre"
           >
 

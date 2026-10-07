@@ -47,7 +47,7 @@
       >
 
         <img
-          [src]="producto.imagen_url || 'https://via.placeholder.com/400'"
+          [src]="obtenerImagenProducto(producto.imagen_url)"
           [alt]="producto.nombre"
           class="img-fluid"
           style="

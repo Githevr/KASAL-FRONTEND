@@ -6,6 +6,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ProductoService } from '../../services/producto';
 import { CarritoService } from '../../services/carrito';
 import { Producto, Variacion } from '../../models/producto';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-detalle-producto',
@@ -15,6 +16,12 @@ import { Producto, Variacion } from '../../models/producto';
   styleUrl: './detalle-producto.css'
 })
 export class DetalleProductoComponent implements OnInit {
+
+  private readonly backendUrl =
+    environment.apiUrl.replace(
+      /\/api\/?$/,
+      ''
+    );
 
   producto?: Producto;
 
@@ -81,8 +88,51 @@ export class DetalleProductoComponent implements OnInit {
       return;
     }
 
-    this.cantidad = nuevaCantidad;
+        this.cantidad = nuevaCantidad;
   }
+
+
+  // =====================================================
+  // OBTENER URL DE IMAGEN DEL PRODUCTO
+  // =====================================================
+
+  obtenerImagenProducto(
+    imagenUrl: string | null | undefined
+  ): string {
+
+    if (!imagenUrl) {
+      return 'https://placehold.co/600x400?text=KASAL+INVERSIONES';
+    }
+
+    const url =
+      imagenUrl.trim();
+
+    // URL externa completa
+    if (
+      url.startsWith('http://') ||
+      url.startsWith('https://')
+    ) {
+      return url;
+    }
+
+    // Imagen almacenada en el backend
+    if (
+      url.startsWith('/uploads/') ||
+      url.startsWith('uploads/')
+    ) {
+
+      const ruta =
+        url.startsWith('/')
+          ? url
+          : `/${url}`;
+
+      return `${this.backendUrl}${ruta}`;
+    }
+
+    // Imagen pública del frontend
+    return url;
+  }
+
 
   agregarAlCarrito(): void {
 

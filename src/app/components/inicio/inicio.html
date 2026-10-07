@@ -590,13 +590,10 @@
 
 
             <img
-              [src]="
-                producto.imagen_url ||
-                'https://placehold.co/600x400?text=KASAL+INVERSIONES'
-              "
-              [alt]="producto.nombre"
-              (error)="imagenError($event)"
-            >
+                [src]="obtenerImagenProducto(producto.imagen_url)"
+                [alt]="producto.nombre"
+                (error)="imagenError($event)"
+              >
 
           </div>
 

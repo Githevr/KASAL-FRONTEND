@@ -12,6 +12,9 @@ import { RouterLink } from '@angular/router';
 import { ProductoService } from '../../services/producto';
 import { CarritoService } from '../../services/carrito';
 import { Producto } from '../../models/producto';
+import {
+  environment
+} from '../../../environments/environment';
 
 @Component({
   selector: 'app-inicio',
@@ -24,6 +27,16 @@ import { Producto } from '../../models/producto';
   styleUrl: './inicio.css'
 })
 export class InicioComponent implements OnInit {
+
+  // =====================================================
+  // URL DEL BACKEND
+  // =====================================================
+
+  private readonly backendUrl =
+    environment.apiUrl.replace(
+      /\/api\/?$/,
+      ''
+    );
 
   // =====================================================
   // CARRUSEL DE SECTORES
@@ -368,6 +381,53 @@ export class InicioComponent implements OnInit {
   }
 
 
+    // =====================================================
+  // OBTENER URL DE IMAGEN DEL PRODUCTO
+  // =====================================================
+
+  obtenerImagenProducto(
+    imagenUrl: string | null | undefined
+  ): string {
+
+    if (!imagenUrl) {
+      return 'https://placehold.co/600x400?text=KASAL+INVERSIONES';
+    }
+
+
+    const url =
+      imagenUrl.trim();
+
+
+    // URL externa completa
+    if (
+      url.startsWith('http://') ||
+      url.startsWith('https://')
+    ) {
+      return url;
+    }
+
+
+    // Imagen almacenada en el backend
+    if (
+      url.startsWith('/uploads/') ||
+      url.startsWith('uploads/')
+    ) {
+
+      const ruta =
+        url.startsWith('/')
+          ? url
+          : `/${url}`;
+
+      return `${this.backendUrl}${ruta}`;
+    }
+
+
+    // Imagen pública almacenada en Angular
+    return url;
+
+  }
+
+
   // =====================================================
   // IMAGEN ROTA
   // =====================================================
@@ -380,8 +440,6 @@ export class InicioComponent implements OnInit {
       event.target as HTMLImageElement;
 
 
-    // Evitar un bucle si también falla
-    // la imagen alternativa
     img.onerror = null;
 
 
@@ -389,7 +447,6 @@ export class InicioComponent implements OnInit {
       'https://placehold.co/600x400?text=KASAL+INVERSIONES';
 
   }
-
 
   // =====================================================
   // PRODUCTOS DEMO

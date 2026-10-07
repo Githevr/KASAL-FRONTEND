@@ -25,6 +25,10 @@ import {
   Producto
 } from '../../models/producto';
 
+import {
+  environment
+} from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-catalogo',
@@ -39,6 +43,16 @@ import {
   styleUrl: './catalogo.css'
 })
 export class CatalogoComponent implements OnInit {
+
+  // =====================================================
+  // URL DEL BACKEND
+  // =====================================================
+
+  private readonly backendUrl =
+    environment.apiUrl.replace(
+      /\/api\/?$/,
+      ''
+    );
 
 
   // =====================================================
@@ -618,9 +632,71 @@ export class CatalogoComponent implements OnInit {
     // REINICIAR CANTIDAD
     // ===================================================
 
-    this.cantidadSeleccionada[
+        this.cantidadSeleccionada[
       producto.producto_id
     ] = 1;
+
+  }
+
+
+  // =====================================================
+  // OBTENER URL DE IMAGEN DEL PRODUCTO
+  // =====================================================
+
+  obtenerImagenProducto(
+    imagenUrl: string | null | undefined
+  ): string {
+
+    if (!imagenUrl) {
+
+      return 'https://placehold.co/600x400?text=KASAL+INVERSIONES';
+
+    }
+
+
+    const url =
+      imagenUrl.trim();
+
+
+    // ===================================================
+    // URL EXTERNA COMPLETA
+    // ===================================================
+
+    if (
+      url.startsWith('http://') ||
+      url.startsWith('https://')
+    ) {
+
+      return url;
+
+    }
+
+
+    // ===================================================
+    // IMAGEN ALMACENADA EN EL BACKEND
+    // ===================================================
+
+    if (
+      url.startsWith('/uploads/') ||
+      url.startsWith('uploads/')
+    ) {
+
+      const ruta =
+        url.startsWith('/')
+          ? url
+          : `/${url}`;
+
+
+      return `${this.backendUrl}${ruta}`;
+
+    }
+
+
+    // ===================================================
+    // IMAGEN PÚBLICA DEL FRONTEND
+    // ===================================================
+
+    return url;
 
   }
 
