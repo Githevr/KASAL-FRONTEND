@@ -1,0 +1,60 @@
+
+<section class="catalogo-pdf-page">
+
+  <div class="container">
+
+    <div class="catalogo-pdf-header">
+
+      <span class="catalogo-pdf-etiqueta">
+        KASAL INVERSIONES SAC
+      </span>
+
+      <h1>CATÁLOGO DIGITAL</h1>
+
+      <p>
+        Explora nuestro catálogo de seguridad y protección
+        industrial. Consulta los productos y sus
+        características técnicas.
+      </p>
+
+      <div class="catalogo-pdf-acciones">
+
+        <a
+          [href]="pdfUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-ver-pdf"
+        >
+          <i class="bi bi-file-earmark-pdf"></i>
+          Ver catálogo PDF
+        </a>
+
+        <a
+          [href]="pdfUrl"
+          download="KASAL-INVERSIONES.pdf"
+          class="btn-descargar-pdf"
+        >
+          <i class="bi bi-download"></i>
+          Descargar catálogo
+        </a>
+
+      </div>
+
+    </div>
+
+    <div class="catalogo-pdf-visor">
+    <iframe
+        src="/catalogos/KASAL-INVERSIONES.pdf#toolbar=1&navpanes=0"
+        title="Catálogo de KASAL INVERSIONES SAC"
+        loading="eager"
+    ></iframe>
+    </div>
+
+    <p class="catalogo-pdf-ayuda">
+      Si tu navegador no muestra el documento,
+      utiliza el botón «Ver catálogo PDF».
+    </p>
+
+  </div>
+
+</section>

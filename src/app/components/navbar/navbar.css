@@ -1,3 +1,49 @@
+
+/* =========================================
+   BARRA SUPERIOR
+========================================= */
+
+.kasal-topbar {
+  background: #101c2e;
+  padding: 9px 0;
+}
+
+.kasal-topbar-content {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+}
+
+.kasal-topbar-content a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.kasal-topbar-content a i {
+  color: #ffc107;
+}
+
+.kasal-topbar-content a:hover {
+  color: #ffc107;
+}
+
+/* =========================================
+   NAVBAR BLANCO
+========================================= */
+
+.kasal-navbar {
+  background: #ffffff;
+  padding: 12px 0;
+  border-bottom: 1px solid #e9edf1;
+}
+
 .kasal-navbar-logo {
   display: block;
   width: auto;
@@ -6,9 +52,70 @@
   object-fit: contain;
 }
 
+.kasal-navbar .nav-link {
+  color: #101c2e;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  transition: color 0.2s ease;
+}
+
+.kasal-navbar .nav-link:hover,
+.kasal-navbar .nav-link.active {
+  color: #d48a00;
+}
+
+.kasal-navbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+.kasal-cart-btn {
+  background: #ffc107;
+  border: 1px solid #ffc107;
+  color: #101c2e;
+  font-weight: 800;
+  padding: 11px 18px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.kasal-cart-btn:hover {
+  background: #e9b000;
+  border-color: #e9b000;
+  color: #101c2e;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 991.98px) {
+  .kasal-navbar .navbar-collapse {
+    padding-top: 16px;
+  }
+
+  .kasal-navbar .nav-link {
+    padding: 12px 0 !important;
+  }
+
+  .kasal-navbar-actions {
+    padding: 12px 0;
+  }
+}
+
 @media (max-width: 768px) {
   .kasal-navbar-logo {
     height: 50px;
     max-width: 210px;
+  }
+
+  .kasal-topbar-content {
+    justify-content: center;
+    gap: 8px 18px;
+  }
+
+  .kasal-topbar-content a {
+    font-size: 0.73rem;
   }
 }

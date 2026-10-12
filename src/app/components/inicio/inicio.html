@@ -1,122 +1,4 @@
-﻿<!-- ====================================================== -->
-<!-- HERO PRINCIPAL -->
-<!-- ====================================================== -->
-
-<section class="hero-section">
-
-  <div class="hero-overlay"></div>
-
-  <div class="container hero-content">
-
-    <div class="row align-items-center hero-row">
-
-      <div class="col-12 col-lg-8 col-xl-7">
-
-        <!-- BADGE -->
-        <div class="hero-badge">
-          <i class="bi bi-shield-fill-check"></i>
-          <span>Seguridad Industrial Profesional</span>
-        </div>
-
-
-        <!-- TÍTULO -->
-        <h1 class="hero-title">
-          Protección que
-
-          <span class="hero-title-highlight">
-            trabaja contigo
-          </span>
-        </h1>
-
-
-        <!-- DESCRIPCION -->
-        <p class="hero-description">
-          Guantes de seguridad industrial para minerí­a,
-          construcción, manufactura y operaciones de alto rendimiento.
-          Equipamiento confiable para proteger a tu equipo.
-        </p>
-
-
-        <!-- BOTONES -->
-        <div class="hero-actions">
-
-          <a
-            routerLink="/tienda"
-            class="btn hero-btn-primary"
-          >
-            <i class="bi bi-grid-fill"></i>
-            <span>Ver catálogo</span>
-          </a>
-
-
-          <a
-            routerLink="/contacto"
-            class="btn hero-btn-secondary"
-          >
-            <i class="bi bi-headset"></i>
-            <span>Solicitar cotización</span>
-          </a>
-
-        </div>
-
-
-        <!-- BENEFICIOS HERO -->
-        <div class="hero-features">
-
-          <div class="hero-feature">
-
-            <div class="hero-feature-icon">
-              <i class="bi bi-patch-check-fill"></i>
-            </div>
-
-            <div class="hero-feature-text">
-              <strong>Calidad industrial</strong>
-              <span>Productos especializados</span>
-            </div>
-
-          </div>
-
-
-          <div class="hero-feature">
-
-            <div class="hero-feature-icon">
-              <i class="bi bi-building-check"></i>
-            </div>
-
-            <div class="hero-feature-text">
-              <strong>Atención B2B</strong>
-              <span>Ventas corporativas</span>
-            </div>
-
-          </div>
-
-
-          <div class="hero-feature">
-
-            <div class="hero-feature-icon">
-              <i class="bi bi-truck"></i>
-            </div>
-
-            <div class="hero-feature-text">
-              <strong>Despacho nacional</strong>
-              <span>Atención a empresas</span>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-
-
+﻿
 <!-- ====================================================== -->
 <!-- PRODUCTOS DESTACADOS -->
 <!-- ====================================================== -->
@@ -144,6 +26,7 @@
           <span>distintos sectores</span>
         </h2>
 
+        
         <p>
           Seleccionamos soluciones de seguridad para operaciones
           que requieren protección de manos en diferentes entornos
@@ -151,32 +34,24 @@
         </p>
 
       </div>
-
-
-      <!-- CONTROLES -->
-      <div class="sector-carousel-controls">
-
-        <button
-          type="button"
-          class="sector-carousel-btn"
-          aria-label="Sector anterior"
-          (click)="moverCarruselSectores(-1)"
-        >
-          <i class="bi bi-chevron-left"></i>
-        </button>
-
-        <button
-          type="button"
-          class="sector-carousel-btn sector-carousel-btn-active"
-          aria-label="Sector siguiente"
-          (click)="moverCarruselSectores(1)"
-        >
-          <i class="bi bi-chevron-right"></i>
-        </button>
-
-      </div>
+      <!-- FIN sectors-header-content -->
 
     </div>
+    <!-- FIN sectors-header -->
+
+    <!-- CONTENEDOR DEL CARRUSEL Y SUS FLECHAS -->
+    <div class="sector-carousel-wrapper">
+
+
+  <!-- FLECHA IZQUIERDA -->
+  <button
+    type="button"
+    class="sector-carousel-btn sector-carousel-prev"
+    aria-label="Sector anterior"
+    (click)="moverCarruselSectores(-1)"
+  >
+    <i class="bi bi-chevron-left"></i>
+  </button>
 
 
     <!-- ================================================== -->
@@ -444,10 +319,24 @@
 
         </div>
 
-      </article>
+            </article>
 
     </div>
+    <!-- FIN DEL CARRUSEL DE TARJETAS -->
 
+    <!-- FLECHA DERECHA -->
+    <button
+      type="button"
+      class="sector-carousel-btn sector-carousel-btn-active sector-carousel-next"
+      aria-label="Sector siguiente"
+      (click)="moverCarruselSectores(1)"
+    >
+      <i class="bi bi-chevron-right"></i>
+    </button>
+
+  </div>
+  <!-- FIN DEL CONTENEDOR DE FLECHAS -->
+    
 
     <!-- ================================================== -->
     <!-- INDICADOR -->

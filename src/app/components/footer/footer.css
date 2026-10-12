@@ -1,0 +1,171 @@
+
+/* =========================================
+   FOOTER PRINCIPAL
+========================================= */
+
+.kasal-footer {
+  background: #080f1e;
+  color: #d0d8e5;
+  padding: 65px 0 0;
+}
+
+
+/* =========================================
+   LOGO
+========================================= */
+
+.footer-logo-link {
+  display: inline-block;
+  margin-bottom: 18px;
+}
+
+.footer-logo {
+  display: block;
+  width: 180px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+
+/* =========================================
+   TÍTULOS
+========================================= */
+
+.kasal-footer h5 {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.kasal-footer .footer-company-name {
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 22px;
+}
+
+.footer-heading::after {
+  content: "";
+  display: block;
+  width: 42px;
+  height: 2px;
+  background: #ffc107;
+  margin-top: 12px;
+}
+
+
+/* =========================================
+   TEXTO
+========================================= */
+
+.kasal-footer p {
+  color: #bfc8d8;
+  font-size: 0.92rem;
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+
+/* =========================================
+   CONTACTO Y ENLACES
+========================================= */
+
+.footer-contact {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff;
+  text-decoration: none;
+  margin-bottom: 16px;
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease;
+}
+
+.footer-contact i {
+  color: #ffc107;
+  flex-shrink: 0;
+}
+
+.footer-contact:hover {
+  color: #ffc107;
+}
+
+.footer-contact:hover i {
+  color: #ffffff;
+}
+
+
+/* =========================================
+   CATÁLOGO DIGITAL
+========================================= */
+
+.footer-catalogo {
+  margin-top: 36px;
+  padding-top: 26px;
+  border-top: 1px solid #253246;
+}
+
+.footer-catalogo p {
+  margin-bottom: 18px;
+}
+
+.footer-external-icon {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+
+/* =========================================
+   DELIVERY
+========================================= */
+
+.kasal-footer .footer-delivery {
+  margin-top: 36px;
+}
+
+
+/* =========================================
+   DERECHOS RESERVADOS
+========================================= */
+
+.footer-bottom {
+  border-top: 1px solid #253246;
+  margin-top: 55px;
+  padding: 22px 0;
+  text-align: center;
+  color: #aeb9ca;
+  font-size: 0.85rem;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (min-width: 992px) {
+  .kasal-footer .row {
+    align-items: start;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .kasal-footer {
+    padding-top: 45px;
+  }
+
+  .footer-logo {
+    width: 155px;
+  }
+
+  .footer-catalogo {
+    margin-top: 28px;
+  }
+
+  .footer-bottom {
+    margin-top: 35px;
+    font-size: 0.8rem;
+  }
+}

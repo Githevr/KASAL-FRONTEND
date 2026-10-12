@@ -1,7 +1,12 @@
+
 <app-navbar></app-navbar>
 
 <main>
   <router-outlet></router-outlet>
 </main>
+
+@if (!esRutaAdmin) {
+  <app-footer></app-footer>
+}
 
 <app-carrito></app-carrito>

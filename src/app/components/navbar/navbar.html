@@ -1,9 +1,30 @@
+
+<!-- BARRA SUPERIOR DE CONTACTO -->
+<div class="kasal-topbar">
+  <div class="container">
+    <div class="kasal-topbar-content">
+
+      <a href="tel:+51992777951">
+        <i class="bi bi-telephone-fill"></i>
+        +51 992 777 951
+      </a>
+
+      <a href="mailto:ventas@kasalinversiones.com">
+        <i class="bi bi-envelope-fill"></i>
+        ventas@kasalinversiones.com
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<!-- NAVEGACIÓN PRINCIPAL -->
 <nav
-  class="navbar navbar-expand-lg navbar-dark bg-dark py-3 sticky-top shadow-sm border-bottom border-warning border-2"
+  class="navbar navbar-expand-lg navbar-light kasal-navbar sticky-top shadow-sm"
 >
   <div class="container">
 
-    <!-- Logo -->
+    <!-- LOGO -->
     <a
       class="navbar-brand d-flex align-items-center"
       routerLink="/"
@@ -16,10 +37,9 @@
       >
     </a>
 
-
-    <!-- Botón Hamburguesa Móvil -->
+    <!-- MENÚ MÓVIL -->
     <button
-      class="navbar-toggler border-0"
+      class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#navMenu"
@@ -30,15 +50,14 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-
-    <!-- Menú -->
+    <!-- ENLACES -->
     <div
       class="collapse navbar-collapse"
       id="navMenu"
     >
 
       <ul
-        class="navbar-nav mx-auto mb-2 mb-lg-0 text-uppercase fw-bold small"
+        class="navbar-nav mx-auto mb-2 mb-lg-0 text-uppercase fw-bold"
       >
 
         <li class="nav-item">
@@ -52,7 +71,6 @@
           </a>
         </li>
 
-
         <li class="nav-item">
           <a
             class="nav-link px-3"
@@ -63,6 +81,15 @@
           </a>
         </li>
 
+        <li class="nav-item">
+          <a
+            class="nav-link px-3"
+            routerLink="/cotizacion"
+            routerLinkActive="active"
+          >
+            Cotización
+          </a>
+        </li>
 
         <li class="nav-item">
           <a
@@ -76,36 +103,20 @@
 
       </ul>
 
+      <!-- CARRITO / COTIZACIÓN -->
+      <div class="kasal-navbar-actions">
 
-      <!-- Zona derecha -->
-      <div class="d-flex align-items-center gap-3">
-
-        <!-- Teléfono -->
-        <span
-          class="text-white small fw-bold d-none d-xl-inline"
-        >
-          <i class="bi bi-headset text-warning me-1"></i>
-          +51 992 777 951
-        </span>
-
-
-        <!-- BOTÓN COTIZACIÓN -->
         <button
-          class="btn btn-warning fw-bold px-3 d-flex align-items-center gap-2 position-relative shadow-sm"
+          class="btn kasal-cart-btn d-flex align-items-center gap-2 position-relative"
           type="button"
           data-bs-toggle="offcanvas"
           data-bs-target="#carritoOffcanvas"
           aria-controls="carritoOffcanvas"
         >
-
           <i class="bi bi-cart3 fs-5"></i>
 
-          <span>
-            Cotización
-          </span>
+          <span>Mi cotización</span>
 
-
-          <!-- CONTADOR -->
           <span
             *ngIf="cantidadCarrito > 0"
             class="badge bg-dark text-white rounded-pill"

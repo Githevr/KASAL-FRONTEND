@@ -1,0 +1,113 @@
+
+.catalogo-pdf-page {
+  background: #f4f6f9;
+  padding: 65px 0 85px;
+}
+
+.catalogo-pdf-header {
+  text-align: center;
+  max-width: 850px;
+  margin: 0 auto 35px;
+}
+
+.catalogo-pdf-etiqueta {
+  color: #b47d00;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.catalogo-pdf-header h1 {
+  color: #101c2e;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  margin: 12px 0 16px;
+}
+
+.catalogo-pdf-header p {
+  color: #566477;
+  line-height: 1.8;
+}
+
+.catalogo-pdf-acciones {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.btn-ver-pdf,
+.btn-descargar-pdf {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: 6px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.btn-ver-pdf {
+  background: #ffc107;
+  color: #101c2e;
+}
+
+.btn-ver-pdf:hover {
+  background: #e5ac00;
+  color: #101c2e;
+}
+
+.btn-descargar-pdf {
+  background: #101c2e;
+  color: #ffffff;
+}
+
+.btn-descargar-pdf:hover {
+  background: #253a58;
+  color: #ffffff;
+}
+
+.catalogo-pdf-visor {
+  background: #ffffff;
+  border: 1px solid #dce2ea;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.catalogo-pdf-visor iframe {
+  display: block;
+  width: 100%;
+  height: 800px;
+  border: none;
+  border-radius: 6px;
+}
+
+.catalogo-pdf-ayuda {
+  text-align: center;
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-top: 18px;
+}
+
+@media (max-width: 767.98px) {
+  .catalogo-pdf-page {
+    padding: 40px 0 55px;
+  }
+
+  .catalogo-pdf-visor {
+    padding: 5px;
+  }
+
+  .catalogo-pdf-visor iframe {
+    height: 550px;
+  }
+
+  .btn-ver-pdf,
+  .btn-descargar-pdf {
+    width: 100%;
+  }
+}

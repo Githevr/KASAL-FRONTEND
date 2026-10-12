@@ -1409,3 +1409,75 @@
   }
 
 }
+
+
+/* =========================================
+   INICIO - SECTORES COMO PRIMERA SECCIÓN
+========================================= */
+
+.sectors-section {
+  padding-top: 65px;
+}
+
+/* TABLET */
+@media (max-width: 991.98px) {
+  .sectors-section {
+    padding-top: 55px;
+  }
+}
+
+/* CELULARES */
+@media (max-width: 767.98px) {
+  .sectors-section {
+    padding-top: 40px;
+  }
+}
+
+
+/* =========================================
+   FLECHAS LATERALES DEL CARRUSEL
+========================================= */
+
+.sector-carousel-wrapper {
+  position: relative;
+}
+
+.sector-carousel-prev,
+.sector-carousel-next {
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  transform: translateY(-50%);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.sector-carousel-prev {
+  left: 10px;
+}
+
+.sector-carousel-next {
+  right: 10px;
+}
+
+.sector-carousel-prev:hover,
+.sector-carousel-next:hover {
+  transform: translateY(-50%);
+}
+
+/* CELULARES */
+@media (max-width: 767.98px) {
+  .sector-carousel-prev,
+  .sector-carousel-next {
+    width: 40px;
+    height: 40px;
+  }
+
+  .sector-carousel-prev {
+    left: 5px;
+  }
+
+  .sector-carousel-next {
+    right: 5px;
+  }
+}
+

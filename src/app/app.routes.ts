@@ -61,6 +61,10 @@ import {
   AdminCotizacionDetalleComponent
 } from './components/admin/admin-cotizacion-detalle/admin-cotizacion-detalle';
 
+import {
+  CatalogoPdfComponent
+} from './components/catalogo-pdf/catalogo-pdf';
+
 
 // =====================================================
 // GUARD
@@ -121,6 +125,15 @@ export const routes: Routes = [
     path: 'contacto',
     component: ContactoComponent
   },
+
+  // =====================================================
+// CATÁLOGO PDF
+// =====================================================
+
+{
+  path: 'catalogo-pdf',
+  component: CatalogoPdfComponent
+},
 
 
   // =====================================================
