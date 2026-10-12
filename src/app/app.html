@@ -1,12 +1,17 @@
 
-<app-navbar></app-navbar>
+@if (!esRutaAdmin) {
+  <!-- NAVBAR DE LA TIENDA -->
+  <app-navbar></app-navbar>
+}
 
 <main>
   <router-outlet></router-outlet>
 </main>
 
 @if (!esRutaAdmin) {
+  <!-- FOOTER DE LA TIENDA -->
   <app-footer></app-footer>
-}
 
-<app-carrito></app-carrito>
+  <!-- CARRITO DE COTIZACIONES -->
+  <app-carrito></app-carrito>
+}

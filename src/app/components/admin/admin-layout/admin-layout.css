@@ -725,3 +725,92 @@
   }
 
 }
+
+
+/* ==========================================
+   CORRECCIÓN DEL LAYOUT ADMINISTRATIVO
+   ESCRITORIO Y MÓVIL
+========================================== */
+
+/* ESCRITORIO */
+@media (min-width: 901px) {
+
+  /* Reservar espacio para el menú lateral */
+  .admin-layout {
+    padding-left: 290px;
+  }
+
+  /* Menú lateral siempre visible */
+  .admin-sidebar {
+    width: 290px;
+    max-width: none;
+    transform: translateX(0);
+    box-shadow: none;
+  }
+
+  /* Evitar que el menú se desplace al navegar */
+  .admin-sidebar.abierto {
+    transform: translateX(0);
+  }
+
+  /* Ocultar la capa oscura en escritorio */
+  .menu-overlay,
+  .menu-overlay.activo {
+    display: none;
+  }
+
+  /* Ocultar botón hamburguesa */
+  .btn-menu {
+    display: none;
+  }
+
+  /* Ocultar botón X del sidebar */
+  .sidebar-cerrar {
+    display: none;
+  }
+
+  /* El header ocupa solo el área del contenido */
+  .admin-header {
+    width: 100%;
+  }
+
+  /* Dashboard ajustado al espacio disponible */
+  .admin-router-content {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* TABLET Y MÓVIL */
+@media (max-width: 900px) {
+
+  /* Sin espacio reservado para el menú */
+  .admin-layout {
+    padding-left: 0;
+  }
+
+  /* Menú oculto inicialmente */
+  .admin-sidebar {
+    transform: translateX(-105%);
+  }
+
+  /* Mostrar menú al abrirlo */
+  .admin-sidebar.abierto {
+    transform: translateX(0);
+  }
+
+  /* Capa oscura solamente cuando se abre */
+  .menu-overlay {
+    display: block;
+  }
+
+  /* Mostrar botón hamburguesa */
+  .btn-menu {
+    display: flex;
+  }
+
+  /* Mostrar botón de cerrar */
+  .sidebar-cerrar {
+    display: flex;
+  }
+}
