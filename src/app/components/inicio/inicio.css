@@ -1481,3 +1481,282 @@
   }
 }
 
+
+/* ==========================================
+   CATÁLOGO DIGITAL EN INICIO
+========================================== */
+
+.home-catalogo-section {
+  padding: 70px 0;
+  background: #ffffff;
+}
+
+.home-catalogo-content {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  align-items: center;
+  gap: 45px;
+  padding: 50px 55px;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #071321, #142b42);
+  overflow: hidden;
+}
+
+.home-catalogo-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffc107;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 18px;
+}
+
+.home-catalogo-info h2 {
+  color: #ffffff;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.home-catalogo-info h2 span {
+  display: block;
+  color: #ffc107;
+}
+
+.home-catalogo-info p {
+  color: #c5d1df;
+  font-size: 1rem;
+  line-height: 1.8;
+  max-width: 580px;
+  margin-bottom: 28px;
+}
+
+.home-catalogo-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.home-catalogo-btn-primary,
+.home-catalogo-btn-secondary {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.home-catalogo-btn-primary {
+  background: #ffc107;
+  color: #071321;
+}
+
+.home-catalogo-btn-primary:hover {
+  background: #e5ac00;
+  color: #071321;
+  transform: translateY(-2px);
+}
+
+.home-catalogo-btn-secondary {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #72849a;
+}
+
+.home-catalogo-btn-secondary:hover {
+  background: #ffffff;
+  color: #071321;
+}
+
+.home-catalogo-visual {
+  display: flex;
+  justify-content: center;
+}
+
+.home-catalogo-document {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 250px;
+  min-height: 290px;
+  padding: 25px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 9px;
+  border-bottom: 8px solid #ffc107;
+  box-shadow: 15px 15px 0 rgba(255, 193, 7, 0.13);
+}
+
+.home-catalogo-logo {
+  width: 110px;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 15px;
+}
+
+.home-catalogo-pdf-icon {
+  color: #d92d20;
+  font-size: 2.6rem;
+  margin-bottom: 12px;
+}
+
+.home-catalogo-document strong {
+  color: #101c2e;
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.home-catalogo-document > span {
+  color: #667085;
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.home-catalogo-pages {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background: #fff4cf;
+  color: #7a5300;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+@media (max-width: 991.98px) {
+  .home-catalogo-content {
+    grid-template-columns: 1fr;
+    padding: 40px 30px;
+  }
+
+  .home-catalogo-visual {
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .home-catalogo-section {
+    padding: 40px 0;
+  }
+
+  .home-catalogo-content {
+    padding: 32px 20px;
+    gap: 25px;
+  }
+
+  .home-catalogo-buttons {
+    flex-direction: column;
+  }
+
+  .home-catalogo-btn-primary,
+  .home-catalogo-btn-secondary {
+    width: 100%;
+  }
+}
+
+
+/* ==========================================
+   PRODUCTOS DESTACADOS - TARJETAS UNIFORMES
+========================================== */
+
+/* Todas las columnas ocupan la misma altura */
+.products-section .row > [class*="col-"] {
+  display: flex;
+}
+
+/* Tarjeta con distribución vertical */
+.products-section .product-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+/* Contenido de la tarjeta */
+.products-section .product-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 24px;
+}
+
+/* Nombre: espacio uniforme de hasta 2 líneas */
+.products-section .product-body h3 {
+  min-height: 3.1em;
+  margin-bottom: 14px;
+  line-height: 1.55;
+}
+
+/* Descripción: máximo 3 líneas visibles */
+.products-section .product-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+
+  line-height: 1.6;
+  height: 4.8em;
+  min-height: 4.8em;
+  margin-bottom: 18px;
+}
+
+/* Precio y stock */
+.products-section .product-info {
+  margin-top: 0;
+  margin-bottom: 14px;
+}
+
+/* Selector de cantidad */
+.products-section .quantity-section {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+/* Botones al final de cada tarjeta */
+.products-section .product-actions {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Botones con ancho uniforme */
+.products-section .product-actions .btn {
+  width: 100%;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 767.98px) {
+
+  .products-section .product-body {
+    padding: 20px;
+  }
+
+  .products-section .product-body h3 {
+    min-height: auto;
+  }
+
+  .products-section .product-description {
+    height: auto;
+    min-height: 0;
+    max-height: 4.8em;
+  }
+
+}

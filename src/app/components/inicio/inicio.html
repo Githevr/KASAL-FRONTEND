@@ -501,9 +501,13 @@
 
 
             <!-- DESCRIPCIÓN -->
-            <p class="product-description">
-              {{ producto.descripcion }}
-            </p>
+            <!-- DESCRIPCIÓN RESUMIDA EN INICIO -->
+<p
+  class="product-description"
+  [title]="producto.descripcion || ''"
+>
+  {{ producto.descripcion }}
+</p>
 
 
             <!-- =========================================== -->
@@ -794,6 +798,93 @@
   </div>
 
 </section>
+
+
+<!-- ==========================================
+     CATÁLOGO DIGITAL KASAL
+========================================== -->
+
+<section class="home-catalogo-section">
+
+  <div class="container">
+
+    <div class="home-catalogo-content">
+
+      <div class="home-catalogo-info">
+
+        <span class="home-catalogo-eyebrow">
+          <i class="bi bi-file-earmark-pdf"></i>
+          CATÁLOGO OFICIAL KASAL
+        </span>
+
+        <h2>
+          DESCUBRE NUESTRO
+          <span>CATÁLOGO DIGITAL</span>
+        </h2>
+
+        <p>
+          Explora nuestro catálogo de seguridad y protección
+          industrial. Conoce los productos disponibles,
+          sus características y especificaciones técnicas.
+        </p>
+
+        <div class="home-catalogo-buttons">
+
+          <a
+            routerLink="/catalogo-pdf"
+            class="home-catalogo-btn-primary"
+          >
+            <i class="bi bi-book"></i>
+            EXPLORAR CATÁLOGO
+            <i class="bi bi-arrow-right"></i>
+          </a>
+
+          <a
+            href="/catalogos/KASAL-INVERSIONES.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="home-catalogo-btn-secondary"
+          >
+            <i class="bi bi-file-earmark-pdf"></i>
+            VER CATÁLOGO PDF
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="home-catalogo-visual">
+
+        <div class="home-catalogo-document">
+
+          <img
+            src="/images/logo-kasalv1.png"
+            alt="Logo KASAL INVERSIONES SAC"
+            class="home-catalogo-logo"
+            loading="lazy"
+          >
+
+          <i class="bi bi-file-earmark-pdf home-catalogo-pdf-icon"></i>
+
+          <strong>CATÁLOGO DIGITAL</strong>
+
+          <span>SEGURIDAD Y PROTECCIÓN INDUSTRIAL</span>
+
+          <div class="home-catalogo-pages">
+            <i class="bi bi-file-earmark-text"></i>
+            15 PÁGINAS
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
 
 
 <!-- ====================================================== -->
