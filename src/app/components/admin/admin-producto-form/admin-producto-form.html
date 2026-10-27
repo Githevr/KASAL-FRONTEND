@@ -45,13 +45,13 @@
         </h1>
 
         <p *ngIf="!modoEdicion">
-          Registra un producto, configura su inventario
-          y define los sectores donde será utilizado.
+          Registra un producto, define sus presentaciones
+          y los sectores donde será utilizado.
         </p>
 
         <p *ngIf="modoEdicion">
-          Actualiza la información, inventario,
-          documentación y presentación del producto.
+          Actualiza la información, documentación
+          y presentaciones del producto.
         </p>
 
       </div>
@@ -330,12 +330,12 @@
               <div class="heading-copy">
 
                 <h2>
-                  Variaciones e inventario
+                  Presentaciones del producto
                 </h2>
 
                 <p>
-                  Configura tallas, SKU, precios
-                  y existencias disponibles.
+                  Configura las tallas o presentaciones, su SKU opcional
+                  y el estado de cada variación.
                 </p>
 
               </div>
@@ -352,7 +352,7 @@
               <i class="bi bi-plus-lg"></i>
 
               <span>
-                Agregar variación
+                Agregar presentación
               </span>
 
             </button>
@@ -367,19 +367,11 @@
             <div class="variation-header">
 
               <span>
-                Talla
+                Talla / Presentación
               </span>
 
               <span>
                 SKU
-              </span>
-
-              <span>
-                Precio
-              </span>
-
-              <span>
-                Stock
               </span>
 
               <span class="variation-status-title">
@@ -408,7 +400,8 @@
                   [name]="'talla-' + i"
                   [(ngModel)]="variacion.talla"
                   autocomplete="off"
-                  placeholder="M"
+                  placeholder="Ej. Cartucho 300 ml"
+                  maxlength="100"
                 >
 
               </div>
@@ -424,42 +417,6 @@
                   [(ngModel)]="variacion.sku"
                   autocomplete="off"
                   placeholder="G-ANTI-N5-M"
-                >
-
-              </div>
-
-
-              <!-- PRECIO -->
-
-              <div class="money-input">
-
-                <span>
-                  S/
-                </span>
-
-                <input
-                  type="number"
-                  [name]="'precio-' + i"
-                  [(ngModel)]="variacion.precio"
-                  min="0"
-                  step="0.01"
-                  placeholder="0.00"
-                >
-
-              </div>
-
-
-              <!-- STOCK -->
-
-              <div class="variation-field">
-
-                <input
-                  type="number"
-                  [name]="'stock-' + i"
-                  [(ngModel)]="variacion.stock"
-                  min="0"
-                  step="1"
-                  placeholder="0"
                 >
 
               </div>
@@ -523,9 +480,8 @@
             <i class="bi bi-info-circle"></i>
 
             <span>
-              Cada variación representa una presentación
-              independiente del producto y puede tener su
-              propio SKU, precio y stock.
+              Cada variación representa una talla o presentación
+              del producto. El SKU es opcional.
             </span>
 
           </div>

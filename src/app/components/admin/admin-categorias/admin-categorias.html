@@ -1,3 +1,4 @@
+
 <div class="categories-page">
 
   <div class="categories-container">
@@ -25,17 +26,13 @@
 
       </div>
 
-
       <button
         type="button"
         class="btn-new"
         (click)="nuevaCategoria()"
       >
-
         <i class="bi bi-plus-lg"></i>
-
         Nueva categoría
-
       </button>
 
     </header>
@@ -126,9 +123,7 @@
         <article class="stat-card">
 
           <div class="stat-icon">
-
             <i class="bi bi-grid"></i>
-
           </div>
 
           <div class="stat-content">
@@ -155,9 +150,7 @@
         <article class="stat-card">
 
           <div class="stat-icon">
-
             <i class="bi bi-box-seam"></i>
-
           </div>
 
           <div class="stat-content">
@@ -167,8 +160,8 @@
             </span>
 
             <strong>
-  {{ obtenerCategoriasConProductos() }}
-</strong>
+              {{ obtenerCategoriasConProductos() }}
+            </strong>
 
             <small>
               Categorías actualmente utilizadas
@@ -184,9 +177,7 @@
         <article class="stat-card">
 
           <div class="stat-icon">
-
             <i class="bi bi-boxes"></i>
-
           </div>
 
           <div class="stat-content">
@@ -216,9 +207,7 @@
 
       <section class="catalog-card">
 
-        <!-- ============================================= -->
         <!-- TOOLBAR -->
-        <!-- ============================================= -->
 
         <div class="catalog-toolbar">
 
@@ -246,9 +235,8 @@
               type="text"
               [(ngModel)]="busqueda"
               (ngModelChange)="aplicarFiltro()"
-              placeholder="Buscar por nombre, slug o ID..."
+              placeholder="Buscar por nombre, slug, padre o ID..."
             >
-
 
             <button
               *ngIf="busqueda"
@@ -260,9 +248,7 @@
                 aplicarFiltro()
               "
             >
-
               <i class="bi bi-x-lg"></i>
-
             </button>
 
           </div>
@@ -283,9 +269,7 @@
         >
 
           <div class="empty-icon">
-
             <i class="bi bi-grid"></i>
-
           </div>
 
           <h3>
@@ -302,11 +286,8 @@
             class="btn-new"
             (click)="nuevaCategoria()"
           >
-
             <i class="bi bi-plus-lg"></i>
-
             Crear categoría
-
           </button>
 
         </div>
@@ -325,9 +306,7 @@
         >
 
           <div class="empty-icon">
-
             <i class="bi bi-search"></i>
-
           </div>
 
           <h3>
@@ -347,9 +326,7 @@
               aplicarFiltro()
             "
           >
-
             Limpiar búsqueda
-
           </button>
 
         </div>
@@ -427,6 +404,29 @@
                         ID #{{ categoria.id }}
                       </span>
 
+                      <!-- IDENTIFICAR SUBCATEGORÍA -->
+
+                      <span
+                        *ngIf="
+                          categoria.categoria_padre_id !== null
+                        "
+                      >
+                        Subcategoría de:
+                        {{
+                          categoria.categoria_padre_nombre
+                        }}
+                      </span>
+
+                      <!-- IDENTIFICAR CATEGORÍA PRINCIPAL -->
+
+                      <span
+                        *ngIf="
+                          categoria.categoria_padre_id === null
+                        "
+                      >
+                        Categoría principal
+                      </span>
+
                     </div>
 
                   </div>
@@ -439,9 +439,7 @@
                 <td>
 
                   <span class="slug-value">
-
                     {{ categoria.slug }}
-
                   </span>
 
                 </td>
@@ -454,9 +452,7 @@
                   <div class="products-count">
 
                     <strong>
-                      {{
-                        categoria.total_productos
-                      }}
+                      {{ categoria.total_productos }}
                     </strong>
 
                     <span>
@@ -482,13 +478,9 @@
                     type="button"
                     class="action-button"
                     title="Editar categoría"
-                    (click)="
-                      editarCategoria(categoria)
-                    "
+                    (click)="editarCategoria(categoria)"
                   >
-
                     <i class="bi bi-pencil"></i>
-
                   </button>
 
                 </td>
@@ -515,9 +507,8 @@
   <div
     *ngIf="mostrarFormulario"
     class="drawer-overlay"
-    (click)="cancelarFormulario()"
+    (click)="!guardando && cancelarFormulario()"
   >
-
 
     <!-- ================================================= -->
     <!-- PANEL -->
@@ -544,7 +535,6 @@
 
           </span>
 
-
           <h2>
 
             {{
@@ -565,27 +555,23 @@
           [disabled]="guardando"
           (click)="cancelarFormulario()"
         >
-
           <i class="bi bi-x-lg"></i>
-
         </button>
 
       </div>
 
 
+      <!-- =============================================== -->
       <!-- BODY -->
+      <!-- =============================================== -->
 
       <div class="drawer-body">
-
 
         <div class="drawer-intro">
 
           <div class="drawer-intro-icon">
-
             <i class="bi bi-grid"></i>
-
           </div>
-
 
           <div>
 
@@ -603,8 +589,8 @@
 
               {{
                 modoEdicion
-                  ? 'Modifica el nombre o identificador de esta categoría.'
-                  : 'La categoría estará disponible inmediatamente para asignarla a tus productos.'
+                  ? 'Modifica los datos y la categoría principal de esta categoría.'
+                  : 'Crea una categoría principal o una subcategoría para organizar tus productos.'
               }}
 
             </p>
@@ -614,7 +600,9 @@
         </div>
 
 
+        <!-- ============================================= -->
         <!-- NOMBRE -->
+        <!-- ============================================= -->
 
         <div class="form-group">
 
@@ -626,7 +614,6 @@
 
           </label>
 
-
           <input
             id="categoriaNombre"
             type="text"
@@ -637,10 +624,10 @@
               !formulario.slug &&
               generarSlug()
             "
-            placeholder="Ej. Guantes anticorte"
-            maxlength="150"
+            placeholder="Ej. Cascos de seguridad"
+            maxlength="100"
+            [disabled]="guardando"
           >
-
 
           <small>
             Nombre visible para administradores
@@ -650,7 +637,9 @@
         </div>
 
 
+        <!-- ============================================= -->
         <!-- SLUG -->
+        <!-- ============================================= -->
 
         <div class="form-group">
 
@@ -660,21 +649,17 @@
               Slug
             </label>
 
-
             <button
               type="button"
               class="generate-slug"
+              [disabled]="guardando"
               (click)="generarSlug()"
             >
-
               <i class="bi bi-arrow-repeat"></i>
-
               Generar
-
             </button>
 
           </div>
-
 
           <div class="slug-input">
 
@@ -686,11 +671,12 @@
               id="categoriaSlug"
               type="text"
               [(ngModel)]="formulario.slug"
-              placeholder="guantes-anticorte"
+              placeholder="cascos-de-seguridad"
+              maxlength="100"
+              [disabled]="guardando"
             >
 
           </div>
-
 
           <small>
             Identificador utilizado en URLs
@@ -700,7 +686,54 @@
         </div>
 
 
+        <!-- ============================================= -->
+        <!-- CATEGORÍA PRINCIPAL -->
+        <!-- ============================================= -->
+
+        <div class="form-group">
+
+          <label for="categoriaPadre">
+            Categoría principal
+          </label>
+
+          <select
+            id="categoriaPadre"
+            name="categoriaPadre"
+            class="form-control-premium"
+            [(ngModel)]="formulario.categoria_padre_id"
+            [disabled]="guardando"
+          >
+
+            <option [ngValue]="null">
+              Sin categoría principal
+            </option>
+
+            <option
+              *ngFor="
+                let categoriaPadre
+                of obtenerCategoriasPadreDisponibles()
+              "
+              [ngValue]="categoriaPadre.id"
+            >
+              {{ categoriaPadre.nombre }}
+            </option>
+
+          </select>
+
+          <small>
+            Selecciona Guantes, EPPs o Suministros y
+            Consumibles para crear una subcategoría.
+
+            Si seleccionas "Sin categoría principal",
+            crearás una categoría independiente.
+          </small>
+
+        </div>
+
+
+        <!-- ============================================= -->
         <!-- PREVIEW -->
+        <!-- ============================================= -->
 
         <div
           *ngIf="formulario.nombre"
@@ -710,7 +743,6 @@
           <span class="preview-label">
             VISTA PREVIA
           </span>
-
 
           <div class="preview-category">
 
@@ -723,7 +755,6 @@
               }}
 
             </div>
-
 
             <div>
 
@@ -747,7 +778,9 @@
         </div>
 
 
+        <!-- ============================================= -->
         <!-- ERROR FORMULARIO -->
+        <!-- ============================================= -->
 
         <div
           *ngIf="error"
@@ -765,7 +798,9 @@
       </div>
 
 
+      <!-- =============================================== -->
       <!-- FOOTER -->
+      <!-- =============================================== -->
 
       <div class="drawer-footer">
 
@@ -775,9 +810,7 @@
           [disabled]="guardando"
           (click)="cancelarFormulario()"
         >
-
           Cancelar
-
         </button>
 
 
@@ -788,7 +821,6 @@
           (click)="guardarCategoria()"
         >
 
-
           <ng-container *ngIf="!guardando">
 
             <i
@@ -796,7 +828,6 @@
               [class.bi-check-lg]="modoEdicion"
               [class.bi-plus-lg]="!modoEdicion"
             ></i>
-
 
             {{
               modoEdicion

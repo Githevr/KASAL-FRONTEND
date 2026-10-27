@@ -10,17 +10,22 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './contacto.css'
 })
 export class ContactoComponent {
+
   empresa: string = '';
   telefono: string = '';
   mensaje: string = '';
 
   enviarConsulta(): void {
-    const texto = `*CONSULTA CORPORATIVA - KASAL INVERSIONES SAC*\n` +
-                  `Empresa: ${this.empresa}\n` +
-                  `Teléfono: ${this.telefono}\n` +
-                  `Requerimiento: ${this.mensaje}`;
 
-    const url = `https://wa.me/51981327368?text=${encodeURIComponent(texto)}`;
-    window.open(url, '_blank');
+    const texto =
+      `*CONSULTA CORPORATIVA - KASAL INVERSIONES SAC*\n` +
+      `Empresa: ${this.empresa}\n` +
+      `Teléfono: ${this.telefono}\n` +
+      `Requerimiento: ${this.mensaje}`;
+
+    const url =
+      `https://wa.me/51992777951?text=${encodeURIComponent(texto)}`;
+
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 }

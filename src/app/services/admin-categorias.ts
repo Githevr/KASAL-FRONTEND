@@ -1,19 +1,8 @@
-import {
-  Injectable
-} from '@angular/core';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import { Observable} from 'rxjs';
+import {environment} from '../../environments/environment';
 
-import {
-  HttpClient
-} from '@angular/common/http';
-
-import {
-  Observable
-} from 'rxjs';
-
-
-import {
-  environment
-} from '../../environments/environment';
 
 // =====================================================
 // CATEGORÍA
@@ -26,6 +15,13 @@ export interface AdminCategoria {
   nombre: string;
 
   slug: string;
+
+  // ID de la categoría principal.
+  // null significa que esta categoría es principal.
+  categoria_padre_id: number | null;
+
+  // Nombre de la categoría principal.
+  categoria_padre_nombre?: string | null;
 
   total_productos: number;
 
@@ -41,6 +37,9 @@ export interface CategoriaPayload {
   nombre: string;
 
   slug: string;
+
+  // Opcional por compatibilidad con formularios existentes.
+  categoria_padre_id?: number | null;
 
 }
 
@@ -138,11 +137,8 @@ export class AdminCategoriasService {
     return this.http.post<
       CategoriaResponse
     >(
-
       this.apiUrl,
-
       categoria
-
     );
 
   }
@@ -165,11 +161,8 @@ export class AdminCategoriasService {
     return this.http.put<
       CategoriaResponse
     >(
-
       `${this.apiUrl}/${id}`,
-
       categoria
-
     );
 
   }

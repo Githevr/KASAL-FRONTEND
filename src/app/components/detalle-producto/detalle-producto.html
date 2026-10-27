@@ -1,27 +1,39 @@
+
+<!-- ====================================================== -->
+<!-- DETALLE DEL PRODUCTO -->
+<!-- CATÁLOGO PÚBLICO SIN PRECIOS -->
+<!-- ====================================================== -->
+
 <div class="container py-5" *ngIf="producto">
 
-  <!-- ============================================ -->
+  <!-- ==================================================== -->
   <!-- MIGAS DE PAN -->
-  <!-- ============================================ -->
+  <!-- ==================================================== -->
+
   <nav aria-label="breadcrumb" class="mb-4">
+
     <ol class="breadcrumb text-uppercase small fw-bold">
 
       <li class="breadcrumb-item">
+
         <a
           routerLink="/"
           class="text-decoration-none text-muted"
         >
           Inicio
         </a>
+
       </li>
 
       <li class="breadcrumb-item">
+
         <a
           routerLink="/tienda"
           class="text-decoration-none text-muted"
         >
-          Tienda
+          Catálogo
         </a>
+
       </li>
 
       <li class="breadcrumb-item active text-dark">
@@ -29,17 +41,20 @@
       </li>
 
     </ol>
+
   </nav>
 
 
-  <!-- ============================================ -->
-  <!-- DETALLE DEL PRODUCTO -->
-  <!-- ============================================ -->
+  <!-- ==================================================== -->
+  <!-- CONTENIDO PRINCIPAL -->
+  <!-- ==================================================== -->
+
   <div class="row g-4">
 
-    <!-- ========================================== -->
+    <!-- ================================================== -->
     <!-- COLUMNA IZQUIERDA: IMAGEN -->
-    <!-- ========================================== -->
+    <!-- ================================================== -->
+
     <div class="col-md-6">
 
       <div
@@ -62,39 +77,45 @@
     </div>
 
 
-    <!-- ========================================== -->
+    <!-- ================================================== -->
     <!-- COLUMNA DERECHA: INFORMACIÓN -->
-    <!-- ========================================== -->
+    <!-- ================================================== -->
+
     <div class="col-md-6 d-flex flex-column">
 
-      <!-- Categoría -->
+      <!-- CATEGORÍA -->
+
       <span
-        class="badge bg-dark text-uppercase px-3 py-2 w-auto me-auto mb-2"
+        class="badge bg-dark text-uppercase px-3 py-2 w-auto me-auto mb-3"
       >
+
         <i class="bi bi-tag-fill me-1 text-warning"></i>
 
         {{ producto.categoria }}
+
       </span>
 
 
-      <!-- Nombre -->
-      <h2 class="fw-bold text-dark text-uppercase mb-2">
+      <!-- NOMBRE -->
+
+      <h2 class="fw-bold text-dark text-uppercase mb-3">
         {{ producto.nombre }}
       </h2>
 
 
-      <!-- Descripción -->
+      <!-- DESCRIPCIÓN -->
+
       <p
         class="text-muted mb-4"
-        style="line-height: 1.6;"
+        style="line-height: 1.7;"
       >
         {{ producto.descripcion }}
       </p>
 
 
-      <!-- ======================================== -->
-      <!-- SELECCIÓN DE TALLA -->
-      <!-- ======================================== -->
+      <!-- ================================================= -->
+      <!-- PRESENTACIONES O TALLAS DISPONIBLES -->
+      <!-- ================================================= -->
 
       <div
         class="mb-4"
@@ -104,109 +125,59 @@
         "
       >
 
-        <label
-          class="fw-bold text-uppercase small mb-2 d-block"
-        >
-          Seleccionar talla
-        </label>
+        <h6 class="fw-bold text-uppercase mb-3">
+
+          <i class="bi bi-rulers me-2 text-warning"></i>
+
+          Tallas y presentaciones
+
+        </h6>
 
 
         <div class="d-flex flex-wrap gap-2">
 
-          <button
+          <span
             *ngFor="let variacion of producto.variaciones"
-            type="button"
-            class="btn px-4 fw-bold"
-            [ngClass]="
-              variacionSeleccionada?.variacion_id ===
-              variacion.variacion_id
-                ? 'btn-dark'
-                : 'btn-outline-dark'
-            "
-            [disabled]="variacion.stock <= 0"
-            (click)="seleccionarVariacion(variacion)"
+            class="badge border border-secondary text-dark bg-light px-3 py-2"
+            style="font-size: 0.85rem;"
           >
 
             {{ variacion.talla }}
 
-          </button>
+          </span>
 
         </div>
-
-
-        <!-- Aviso cuando no hay variaciones -->
-        <small
-          class="text-muted d-block mt-2"
-          *ngIf="producto.variaciones.length === 1"
-        >
-          Talla disponible:
-          {{ producto.variaciones[0].talla }}
-        </small>
 
       </div>
 
 
-      <!-- ======================================== -->
-      <!-- PRECIO Y STOCK -->
-      <!-- ======================================== -->
+      <!-- ================================================= -->
+      <!-- MENSAJE INFORMATIVO -->
+      <!-- ================================================= -->
 
       <div
-        class="p-3 bg-light rounded-3 border mb-4"
-        *ngIf="variacionSeleccionada"
+        class="rounded-3 border p-3 mb-4"
+        style="background-color: #fff9e8;"
       >
 
-        <div
-          class="d-flex justify-content-between align-items-end gap-3"
-        >
+        <div class="d-flex gap-3 align-items-start">
 
-          <!-- Precio -->
+          <i
+            class="bi bi-info-circle-fill fs-4"
+            style="color: var(--safety-orange);"
+          ></i>
+
           <div>
 
-            <span
-              class="text-uppercase fw-bold text-secondary small d-block mb-1"
-            >
-              Precio unitario
-            </span>
+            <h6 class="fw-bold text-dark mb-2">
+              Información comercial
+            </h6>
 
-            <span class="fs-2 fw-bold text-dark">
-
-              S/
-              {{
-                variacionSeleccionada.precio
-                  | number:'1.2-2'
-              }}
-
-            </span>
-
-          </div>
-
-
-          <!-- Stock -->
-          <div class="text-end">
-
-            <span class="small text-muted d-block">
-              Stock disponible
-            </span>
-
-            <span
-              class="fw-bold"
-              [ngClass]="{
-                'text-success':
-                  variacionSeleccionada.stock > 10,
-
-                'text-warning':
-                  variacionSeleccionada.stock > 0 &&
-                  variacionSeleccionada.stock <= 10,
-
-                'text-danger':
-                  variacionSeleccionada.stock === 0
-              }"
-            >
-
-              {{ variacionSeleccionada.stock }}
-              unidades
-
-            </span>
+            <p class="text-muted small mb-0">
+              Para consultar precios, disponibilidad y
+              condiciones de venta, comunícate con
+              nuestro equipo comercial.
+            </p>
 
           </div>
 
@@ -215,150 +186,33 @@
       </div>
 
 
-      <!-- ======================================== -->
-      <!-- CANTIDAD + BOTÓN AGREGAR -->
-      <!-- ======================================== -->
-
-      <div
-        class="d-flex gap-3 align-items-center mb-4"
-        *ngIf="variacionSeleccionada"
-      >
-
-        <!-- Control de cantidad -->
-        <div
-          class="input-group"
-          style="width: 130px;"
-        >
-
-          <!-- Restar -->
-          <button
-            class="btn btn-outline-secondary fw-bold"
-            type="button"
-            (click)="cambiarCantidad(-1)"
-            [disabled]="cantidad <= 1"
-          >
-            -
-          </button>
-
-
-          <!-- Cantidad -->
-          <input
-            type="text"
-            class="form-control text-center fw-bold bg-white"
-            [value]="cantidad"
-            readonly
-          >
-
-
-          <!-- Sumar -->
-          <button
-            class="btn btn-outline-secondary fw-bold"
-            type="button"
-            (click)="cambiarCantidad(1)"
-            [disabled]="
-              cantidad >= variacionSeleccionada.stock
-            "
-          >
-            +
-          </button>
-
-        </div>
-
-
-        <!-- Botón agregar -->
-        <button
-          class="
-            btn
-            btn-safety-orange
-            btn-lg
-            flex-grow-1
-            fw-bold
-            text-uppercase
-            d-flex
-            align-items-center
-            justify-content-center
-            gap-2
-            shadow-sm
-          "
-          type="button"
-          (click)="agregarAlCarrito()"
-          [disabled]="variacionSeleccionada.stock <= 0"
-        >
-
-          <i class="bi bi-cart-plus-fill"></i>
-
-          <span
-            *ngIf="variacionSeleccionada.stock > 0"
-          >
-            Añadir a cotización
-          </span>
-
-          <span
-            *ngIf="variacionSeleccionada.stock <= 0"
-          >
-            Sin stock
-          </span>
-
-        </button>
-
-      </div>
-
-
-      <!-- ======================================== -->
-      <!-- MENSAJE SIN VARIACIONES -->
-      <!-- ======================================== -->
-
-      <div
-        class="alert alert-warning"
-        *ngIf="
-          !producto.variaciones ||
-          producto.variaciones.length === 0
-        "
-      >
-
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-
-        Este producto no tiene presentaciones disponibles
-        actualmente.
-
-      </div>
-
-
-      <!-- ======================================== -->
-      <!-- FICHA TÉCNICA -->
-      <!-- ======================================== -->
+      <!-- ================================================= -->
+      <!-- FICHA INFORMATIVA -->
+      <!-- ================================================= -->
 
       <div class="mt-auto border-top pt-4">
 
         <h6 class="fw-bold text-uppercase mb-3">
 
           <i
-            class="
-              bi
-              bi-file-earmark-text-fill
-              me-2
-              text-warning
-            "
+            class="bi bi-file-earmark-text-fill me-2 text-warning"
           ></i>
 
-          Ficha Técnica de Seguridad
+          Información del producto
 
         </h6>
 
 
         <ul class="list-group list-group-flush small">
 
-          <!-- Sector -->
+          <!-- CATEGORÍA -->
+
           <li
-            class="
-              list-group-item
-              bg-transparent
-              px-0
-            "
+            class="list-group-item bg-transparent px-0"
           >
 
             <strong>
-              Sector Recomendado:
+              Categoría:
             </strong>
 
             {{ producto.categoria }}
@@ -366,93 +220,55 @@
           </li>
 
 
-          <!-- Talla seleccionada -->
+          <!-- PRESENTACIONES -->
+
           <li
-            class="
-              list-group-item
-              bg-transparent
-              px-0
+            class="list-group-item bg-transparent px-0"
+            *ngIf="
+              producto.variaciones &&
+              producto.variaciones.length > 0
             "
-            *ngIf="variacionSeleccionada"
           >
 
             <strong>
-              Talla seleccionada:
+              Presentaciones:
             </strong>
 
-            {{ variacionSeleccionada.talla }}
+            <span
+              *ngFor="
+                let variacion of producto.variaciones;
+                let ultimo = last
+              "
+            >
+              {{ variacion.talla }}{{ ultimo ? '' : ', ' }}
+            </span>
 
           </li>
 
 
-          <!-- Stock -->
+          <!-- ATENCIÓN -->
+
           <li
-            class="
-              list-group-item
-              bg-transparent
-              px-0
-            "
-            *ngIf="variacionSeleccionada"
+            class="list-group-item bg-transparent px-0"
           >
 
             <strong>
-              Stock:
+              Atención comercial:
             </strong>
 
-            {{ variacionSeleccionada.stock }}
-            unidades
+            Empresas y clientes corporativos
 
           </li>
 
 
-          <!-- Certificación -->
+          <!-- DISTRIBUIDOR -->
+
           <li
-            class="
-              list-group-item
-              bg-transparent
-              px-0
-            "
+            class="list-group-item bg-transparent px-0"
           >
 
             <strong>
-              Certificación:
-            </strong>
-
-            Norma de Protección Industrial EN388
-
-          </li>
-
-
-          <!-- Disponibilidad -->
-          <li
-            class="
-              list-group-item
-              bg-transparent
-              px-0
-            "
-          >
-
-            <strong>
-              Disponibilidad:
-            </strong>
-
-            Envíos a nivel nacional
-            (Atención a Empresas)
-
-          </li>
-
-
-          <!-- Distribuidor -->
-          <li
-            class="
-              list-group-item
-              bg-transparent
-              px-0
-            "
-          >
-
-            <strong>
-              Distribuidor Oficial:
+              Empresa:
             </strong>
 
             KASAL INVERSIONES SAC
@@ -463,6 +279,26 @@
 
       </div>
 
+
+      <!-- ================================================= -->
+      <!-- VOLVER AL CATÁLOGO -->
+      <!-- ================================================= -->
+
+      <div class="mt-4">
+
+        <a
+        routerLink="/tienda"
+        [queryParams]="{
+          categoria: producto.categoria_principal
+        }"
+        class="btn btn-outline-dark fw-bold text-uppercase px-4 py-2"
+      >
+        <i class="bi bi-arrow-left me-2"></i>
+        Volver al catálogo
+      </a>
+
+      </div>
+
     </div>
 
   </div>
@@ -470,9 +306,9 @@
 </div>
 
 
-<!-- ============================================ -->
+<!-- ====================================================== -->
 <!-- ESTADO DE CARGA -->
-<!-- ============================================ -->
+<!-- ====================================================== -->
 
 <div
   class="container py-5 text-center"

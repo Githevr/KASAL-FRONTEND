@@ -1,62 +1,101 @@
 import {
+
   ChangeDetectorRef,
+
   Component,
+
   OnInit
+
 } from '@angular/core';
 
 import {
+
   CommonModule
+
 } from '@angular/common';
 
 import {
+
   ActivatedRoute,
+
   RouterLink
+
 } from '@angular/router';
 
 import {
+
   ProductoService
+
 } from '../../services/producto';
 
 import {
+
+  CategoriaService,
+
+  Categoria
+
+} from '../../services/categoria';
+
+import {
+
   CarritoService
+
 } from '../../services/carrito';
 
 import {
+
   Producto
+
 } from '../../models/producto';
 
 import {
+
   environment
+
 } from '../../../environments/environment';
 
-
 @Component({
+
   selector: 'app-catalogo',
+
   standalone: true,
 
   imports: [
+
     CommonModule,
+
     RouterLink
+
   ],
 
   templateUrl: './catalogo.html',
+
   styleUrl: './catalogo.css'
+
 })
+
 export class CatalogoComponent implements OnInit {
 
   // =====================================================
+
   // URL DEL BACKEND
+
   // =====================================================
 
   private readonly backendUrl =
+
     environment.apiUrl.replace(
+
       /\/api\/?$/,
+
       ''
+
     );
 
-
   // =====================================================
+
   // PRODUCTOS
+
   // =====================================================
 
   productos: Producto[] = [];
@@ -65,100 +104,161 @@ export class CatalogoComponent implements OnInit {
 
   cargando: boolean = true;
 
-
   // =====================================================
+
   // SECTOR ACTIVO
-  //
-  // Ejemplos:
-  // /tienda
-  // /tienda?sector=mineria
-  // /tienda?sector=construccion
+
   // =====================================================
 
   sectorActivo: string = '';
 
+  categoriaActiva: string = '';
 
   // =====================================================
+
+  // CATEGORÍAS Y SUBCATEGORÍAS
+
+  // =====================================================
+
+  categorias: Categoria[] = [];
+
+  subcategorias: Categoria[] = [];
+
+  subcategoriaActiva: string = '';
+
+  cargandoCategorias: boolean = true;
+
+  // =====================================================
+
   // CANTIDADES
+
   // =====================================================
 
   cantidadSeleccionada: {
+
     [producto_id: number]: number
+
   } = {};
 
+  // =====================================================
 
-// =====================================================
-// SECTORES INDUSTRIALES
-// =====================================================
-
-sectores: string[] = [
-  'Todos',
-  'Agroindustria',
-  'Minería',
-  'Manufactura',
-  'Metal/mecánica',
-  'Construcción',
-  'Pesca',
-  'Alimentos',
-  'Limpieza'
-];
-
-
-sectorSeleccionado: string = 'Todos';
-
+  // SECTORES INDUSTRIALES
 
   // =====================================================
+
+  sectores: string[] = [
+
+    'Todos',
+
+    'Agroindustria',
+
+    'Minería',
+
+    'Manufactura',
+
+    'Metal/mecánica',
+
+    'Construcción',
+
+    'Pesca',
+
+    'Alimentos',
+
+    'Limpieza'
+
+  ];
+
+  sectorSeleccionado: string = 'Todos';
+
+  // =====================================================
+
   // CONSTRUCTOR
+
   // =====================================================
 
   constructor(
 
     private productoService:
+
       ProductoService,
 
+    private categoriaService:
+
+      CategoriaService,
+
     private carritoService:
+
       CarritoService,
 
     private route:
+
       ActivatedRoute,
 
     private cdr:
+
       ChangeDetectorRef
 
   ) {}
 
-
   // =====================================================
+
   // INICIALIZACIÓN
+
   // =====================================================
 
   ngOnInit(): void {
 
-    // Escuchar cambios en los parámetros de la URL:
+    // Cargar categorías públicas desde MySQL.
+
+    this.cargarCategorias();
+
+    // Escuchar los parámetros de la URL.
+
     //
+
     // /tienda
+
+    // /tienda?categoria=guantes
+
+    // /tienda?categoria=epps
+
+    // /tienda?categoria=suministros
+
     // /tienda?sector=mineria
-    // /tienda?sector=construccion
-    // /tienda?sector=limpieza
 
     this.route
+
       .queryParamMap
+
       .subscribe(params => {
 
         const sector =
+
           params.get('sector') || '';
 
+        const categoria =
 
-        // Normalizar el sector recibido por URL
+          params.get('categoria') || '';
+
+        this.categoriaActiva =
+
+          this.normalizarTexto(categoria);
+
+        // Actualizar subcategorías cuando
+
+        // cambie la categoría principal.
+
+        this.actualizarSubcategorias();
+
+        // Normalizar sector.
 
         this.sectorActivo =
-          this.normalizarTexto(
-            sector
-          );
 
+          this.normalizarTexto(sector);
 
-        // Cada vez que cambia el sector,
-        // cargar nuevamente los productos.
+        // Mantener el comportamiento original
+
+        // de carga de productos.
 
         this.cargarProductos();
 
@@ -166,73 +266,349 @@ sectorSeleccionado: string = 'Todos';
 
   }
 
+  // =====================================================
+
+  // CARGAR CATEGORÍAS PÚBLICAS
 
   // =====================================================
+
+  private cargarCategorias(): void {
+
+    this.cargandoCategorias = true;
+
+    this.categoriaService
+
+      .obtenerCategorias()
+
+      .subscribe({
+
+        next: (categorias: Categoria[]) => {
+
+          if (!Array.isArray(categorias)) {
+
+            console.error(
+
+              'La API no devolvió un array de categorías:',
+
+              categorias
+
+            );
+
+            this.categorias = [];
+
+          } else {
+
+            this.categorias = [
+
+              ...categorias
+
+            ];
+
+          }
+
+          this.actualizarSubcategorias();
+          this.filtrarProductosPorCategoria();
+
+          this.cargandoCategorias = false;
+
+          console.log(
+
+            'Categorías recibidas:',
+
+            this.categorias
+
+          );
+
+          console.log(
+
+            'Subcategorías disponibles:',
+
+            this.subcategorias
+
+          );
+
+          this.cdr.detectChanges();
+
+        },
+
+        error: (error) => {
+
+          console.error(
+
+            'Error al cargar categorías:',
+
+            error
+
+          );
+
+          this.categorias = [];
+
+          this.subcategorias = [];
+
+          this.cargandoCategorias = false;
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
+
+  }
+
+  // =====================================================
+
+  // OBTENER SUBCATEGORÍAS DE LA CATEGORÍA PRINCIPAL
+
+  // =====================================================
+
+  private actualizarSubcategorias(): void {
+
+    const categoriaPrincipal =
+
+      this.categorias.find(
+
+        categoria =>
+
+          categoria.categoria_padre_id === null &&
+
+          this.normalizarTexto(
+
+            categoria.slug
+
+          ) === this.categoriaActiva
+
+      );
+
+    if (!categoriaPrincipal) {
+
+      this.subcategorias = [];
+
+      return;
+
+    }
+
+    this.subcategorias =
+
+      this.categorias.filter(
+
+        categoria =>
+
+          categoria.categoria_padre_id ===
+
+          categoriaPrincipal.id
+
+      );
+
+  }
+
+  // =====================================================
+
+  // SELECCIONAR SUBCATEGORÍA
+
+  // =====================================================
+
+  seleccionarSubcategoria(
+
+    subcategoria: Categoria
+
+  ): void {
+
+    this.subcategoriaActiva = subcategoria.slug;
+
+    this.filtrarProductosPorCategoria();
+
+    this.cdr.detectChanges();
+
+  }
+
+  // =====================================================
+
+  // VOLVER A LAS SUBCATEGORÍAS
+
+  // =====================================================
+
+  volverASubcategorias(): void {
+
+    this.subcategoriaActiva = '';
+
+    this.filtrarProductosPorCategoria();
+
+    this.cdr.detectChanges();
+
+  }
+
+  // =====================================================
+
+  // FILTRAR PRODUCTOS POR CATEGORÍA Y SUBCATEGORÍA
+
+  // =====================================================
+
+  private filtrarProductosPorCategoria(): void {
+
+    this.productosFiltrados = this.productos.filter(
+
+      (producto: Producto) => {
+
+        const categoriaPrincipal =
+
+          this.normalizarTexto(
+
+            producto.categoria_principal || ''
+
+          );
+
+        const categoriaProducto =
+
+          this.normalizarTexto(
+
+            producto.categoria || ''
+
+          );
+
+        // Filtrar por categoría principal.
+
+        if (this.categoriaActiva) {
+          const categoriaSeleccionada = this.categorias.find(
+            categoria =>
+              categoria.categoria_padre_id === null &&
+              this.normalizarTexto(categoria.slug) === this.categoriaActiva
+          );
+
+          const coincidePrincipal = categoriaPrincipal === this.categoriaActiva;
+          const coincideCategoriaDirecta =
+            !this.subcategoriaActiva &&
+            !!categoriaSeleccionada &&
+            categoriaProducto === this.normalizarTexto(categoriaSeleccionada.nombre);
+
+          if (!coincidePrincipal && !coincideCategoriaDirecta) {
+            return false;
+          }
+        }
+
+        // Filtrar por subcategoría seleccionada.
+
+        if (this.subcategoriaActiva) {
+
+          const subcategoriaSeleccionada =
+
+            this.subcategorias.find(
+
+              subcategoria =>
+
+                subcategoria.slug ===
+
+                this.subcategoriaActiva
+
+            );
+
+          if (!subcategoriaSeleccionada) {
+
+            return false;
+
+          }
+
+          return (
+
+            categoriaProducto ===
+
+            this.normalizarTexto(
+
+              subcategoriaSeleccionada.nombre
+
+            )
+
+          );
+
+        }
+
+        // Si hay subcategorías, mostrar en la página principal
+        // únicamente los productos asignados directamente a ella.
+        // Los productos de subcategorías se muestran al seleccionarlas.
+        if (this.categoriaActiva && this.subcategorias.length > 0) {
+          const categoriaSeleccionada = this.categorias.find(
+            categoria =>
+              categoria.categoria_padre_id === null &&
+              this.normalizarTexto(categoria.slug) === this.categoriaActiva
+          );
+
+          return !!categoriaSeleccionada &&
+            categoriaProducto === this.normalizarTexto(categoriaSeleccionada.nombre);
+        }
+
+        return true;
+
+      }
+
+    );
+
+  }
+
+  // =====================================================
+
   // CARGAR PRODUCTOS
+
   // =====================================================
 
   private cargarProductos(): void {
 
-    // Mostrar loader
-
     this.cargando = true;
-
-
-    // Forzar actualización para mostrar
-    // inmediatamente el estado de carga.
 
     this.cdr.detectChanges();
 
+    // Sincronizar el sector seleccionado.
 
-    // Mantener sincronizado el botón activo
-// con el sector recibido por URL.
+    this.sectorSeleccionado =
 
-this.sectorSeleccionado =
-  this.sectorActivo
-    ? this.obtenerNombreSector(
-        this.sectorActivo
-      )
-    : 'Todos';
+      this.sectorActivo
 
+        ? this.obtenerNombreSector(
 
-    // ===================================================
-    // CONSULTAR PRODUCTOS
-    // ===================================================
+            this.sectorActivo
+
+          )
+
+        : 'Todos';
+
+    // Consultar productos desde el backend.
 
     this.productoService
+
       .obtenerProductos(
+
         this.sectorActivo
+
       )
+
       .subscribe({
 
-        // =================================================
-        // RESPUESTA CORRECTA
-        // =================================================
-
-        next: (
-          data: Producto[]
-        ) => {
+        next: (data: Producto[]) => {
 
           console.log(
+
             'Sector activo:',
+
             this.sectorActivo || 'todos'
+
           );
 
           console.log(
+
             'Productos recibidos:',
+
             data
+
           );
 
-
-          // ===============================================
-          // VALIDAR RESPUESTA
-          // ===============================================
+          // Validar respuesta.
 
           if (!Array.isArray(data)) {
 
             console.error(
+
               'La API no devolvió un array de productos:',
+
               data
+
             );
 
             this.productos = [];
@@ -243,99 +619,99 @@ this.sectorSeleccionado =
 
             this.cargando = false;
 
-
-            // Actualizar vista
-
             this.cdr.detectChanges();
 
             return;
 
           }
 
-
-          // ===============================================
-          // GUARDAR PRODUCTOS
-          // ===============================================
+          // Guardar productos.
 
           this.productos = [
+
             ...data
+
           ];
 
+          // Filtrar por categoría principal.
 
-          // ===============================================
-          // MOSTRAR PRODUCTOS DEL SECTOR
-          // ===============================================
+          //
 
-          this.productosFiltrados = [
-            ...data
-          ];
+          // Se conserva este filtro mientras
 
+          // preparamos la navegación visual
 
-          // ===============================================
-          // REINICIAR CANTIDADES
-          // ===============================================
+          // por subcategorías en catalogo.html.
+
+          // =====================================================
+
+          // FILTRAR POR CATEGORÍA Y SUBCATEGORÍA
+
+          // =====================================================
+
+          this.filtrarProductosPorCategoria();
+
+          // Reiniciar cantidades.
 
           this.cantidadSeleccionada = {};
 
-
           this.productos.forEach(
+
             (producto: Producto) => {
 
               this.cantidadSeleccionada[
+
                 producto.producto_id
+
               ] = 1;
 
             }
+
           );
 
-
-          // ===============================================
-          // TERMINAR CARGA
-          // ===============================================
+          // Terminar carga.
 
           this.cargando = false;
 
-
-          // ===============================================
-          // FORZAR ACTUALIZACIÓN DE LA VISTA
-          // ===============================================
-
           this.cdr.detectChanges();
 
-
-          // ===============================================
-          // LOGS DE COMPROBACIÓN
-          // ===============================================
+          // Logs de comprobación.
 
           console.log(
+
             'cargando:',
+
             this.cargando
+
           );
 
           console.log(
+
             'Total productos:',
+
             this.productos.length
+
           );
 
           console.log(
+
             'Productos visibles:',
+
             this.productosFiltrados.length
+
           );
 
         },
 
-
-        // =================================================
-        // ERROR
-        // =================================================
-
         error: (error) => {
 
           console.error(
-            'Error al obtener productos:',
-            error
-          );
 
+            'Error al obtener productos:',
+
+            error
+
+          );
 
           this.productos = [];
 
@@ -345,10 +721,6 @@ this.sectorSeleccionado =
 
           this.cargando = false;
 
-
-          // Actualizar vista para retirar
-          // el loader incluso si la API falla.
-
           this.cdr.detectChanges();
 
         }
@@ -357,95 +729,121 @@ this.sectorSeleccionado =
 
   }
 
+  // =====================================================
 
- // =====================================================
-// FILTRAR POR SECTOR
-// =====================================================
+  // FILTRAR POR SECTOR
 
-filtrarPorSector(
-  sector: string
-): void {
+  // =====================================================
 
-  this.sectorSeleccionado =
-    sector;
+  filtrarPorSector(
 
+    sector: string
 
-  if (sector === 'Todos') {
+  ): void {
 
-    this.sectorActivo = '';
+    this.sectorSeleccionado =
 
-  } else {
+      sector;
 
-    this.sectorActivo =
-      this.normalizarTexto(
-        sector
-      );
+    if (sector === 'Todos') {
+
+      this.sectorActivo = '';
+
+    } else {
+
+      this.sectorActivo =
+
+        this.normalizarTexto(
+
+          sector
+
+        );
+
+    }
+
+    this.cargarProductos();
 
   }
 
-
-  this.cargarProductos();
-
-}
-
-
-// =====================================================
-// OBTENER NOMBRE VISIBLE DEL SECTOR
-// =====================================================
-
-private obtenerNombreSector(
-  sectorNormalizado: string
-): string {
-
-  const sectorEncontrado =
-    this.sectores.find(
-      sector =>
-        this.normalizarTexto(
-          sector
-        ) === sectorNormalizado
-    );
-
-
-  return sectorEncontrado ||
-    'Todos';
-
-}
   // =====================================================
+
+  // OBTENER NOMBRE VISIBLE DEL SECTOR
+
+  // =====================================================
+
+  private obtenerNombreSector(
+
+    sectorNormalizado: string
+
+  ): string {
+
+    const sectorEncontrado =
+
+      this.sectores.find(
+
+        sector =>
+
+          this.normalizarTexto(
+
+            sector
+
+          ) === sectorNormalizado
+
+      );
+
+    return sectorEncontrado ||
+
+      'Todos';
+
+  }
+
+  // =====================================================
+
   // NORMALIZAR TEXTO
+
   // =====================================================
 
   private normalizarTexto(
+
     texto: string
+
   ): string {
 
     return texto
+
       .trim()
+
       .toLowerCase()
+
       .normalize('NFD')
+
       .replace(
+
         /[\u0300-\u036f]/g,
+
         ''
+
       );
 
   }
 
-
   // =====================================================
+
   // CAMBIAR CANTIDAD
+
   // =====================================================
 
   cambiarCantidad(
+
     producto: Producto,
+
     cambio: number
+
   ): void {
 
     const variacion =
+
       producto.variaciones?.[0];
-
-
-    // ===================================================
-    // VALIDAR VARIACIÓN
-    // ===================================================
 
     if (!variacion) {
 
@@ -453,190 +851,168 @@ private obtenerNombreSector(
 
     }
 
-
-    // ===================================================
-    // VALIDAR STOCK
-    // ===================================================
-
-    if (
-      variacion.stock <= 0
-    ) {
+    if (variacion.stock <= 0) {
 
       return;
 
     }
-
-
-    // ===================================================
-    // CANTIDAD ACTUAL
-    // ===================================================
 
     const cantidadActual =
+
       this.cantidadSeleccionada[
+
         producto.producto_id
+
       ] || 1;
 
-
     const nuevaCantidad =
+
       cantidadActual + cambio;
 
-
-    // ===================================================
-    // MÍNIMO 1
-    // ===================================================
-
-    if (
-      nuevaCantidad < 1
-    ) {
+    if (nuevaCantidad < 1) {
 
       return;
 
     }
 
-
-    // ===================================================
-    // NO SUPERAR STOCK
-    // ===================================================
-
     if (
+
       nuevaCantidad >
+
       variacion.stock
+
     ) {
 
       return;
 
     }
-
-
-    // ===================================================
-    // GUARDAR CANTIDAD
-    // ===================================================
 
     this.cantidadSeleccionada[
+
       producto.producto_id
+
     ] = nuevaCantidad;
 
   }
 
-
   // =====================================================
+
   // AGREGAR AL CARRITO
+
   // =====================================================
 
   agregar(
+
     producto: Producto
+
   ): void {
 
     const variacion =
+
       producto.variaciones?.[0];
-
-
-    // ===================================================
-    // VALIDAR VARIACIÓN
-    // ===================================================
 
     if (!variacion) {
 
       console.warn(
+
         'El producto no tiene variaciones:',
+
         producto.nombre
+
       );
 
       return;
 
     }
 
-
-    // ===================================================
-    // VALIDAR STOCK
-    // ===================================================
-
-    if (
-      variacion.stock <= 0
-    ) {
+    if (variacion.stock <= 0) {
 
       console.warn(
+
         'Producto sin stock:',
+
         producto.nombre
+
       );
 
       return;
 
     }
 
-
-    // ===================================================
-    // CANTIDAD SELECCIONADA
-    // ===================================================
-
     const cantidad =
+
       this.cantidadSeleccionada[
+
         producto.producto_id
+
       ] || 1;
 
-
-    // ===================================================
-    // PROTEGER CONTRA EXCESO DE STOCK
-    // ===================================================
-
     const cantidadFinal =
+
       Math.min(
+
         cantidad,
+
         variacion.stock
+
       );
 
-
-    // ===================================================
-    // AGREGAR AL CARRITO
-    // ===================================================
-
     this.carritoService
+
       .agregarAlCarrito({
 
         variacion_id:
+
           variacion.variacion_id,
 
         producto_id:
+
           producto.producto_id,
 
         nombre:
+
           producto.nombre,
 
         talla:
+
           variacion.talla,
 
         precio:
+
           variacion.precio,
 
         cantidad:
+
           cantidadFinal,
 
         stock:
+
           variacion.stock,
 
         imagen_url:
+
           producto.imagen_url || ''
 
       });
 
+    this.cantidadSeleccionada[
 
-    // ===================================================
-    // REINICIAR CANTIDAD
-    // ===================================================
-
-        this.cantidadSeleccionada[
       producto.producto_id
+
     ] = 1;
 
   }
 
-
   // =====================================================
+
   // OBTENER URL DE IMAGEN DEL PRODUCTO
+
   // =====================================================
 
   obtenerImagenProducto(
+
     imagenUrl: string | null | undefined
+
   ): string {
 
     if (!imagenUrl) {
@@ -645,48 +1021,47 @@ private obtenerNombreSector(
 
     }
 
-
     const url =
+
       imagenUrl.trim();
 
-
-    // ===================================================
-    // URL EXTERNA COMPLETA
-    // ===================================================
+    // URL externa completa.
 
     if (
+
       url.startsWith('http://') ||
+
       url.startsWith('https://')
+
     ) {
 
       return url;
 
     }
 
-
-    // ===================================================
-    // IMAGEN ALMACENADA EN EL BACKEND
-    // ===================================================
+    // Imagen almacenada en el backend.
 
     if (
+
       url.startsWith('/uploads/') ||
+
       url.startsWith('uploads/')
+
     ) {
 
       const ruta =
-        url.startsWith('/')
-          ? url
-          : `/${url}`;
 
+        url.startsWith('/')
+
+          ? url
+
+          : `/${url}`;
 
       return `${this.backendUrl}${ruta}`;
 
     }
 
-
-    // ===================================================
-    // IMAGEN PÚBLICA DEL FRONTEND
-    // ===================================================
+    // Imagen pública del frontend.
 
     return url;
 

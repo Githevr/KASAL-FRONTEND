@@ -9,7 +9,6 @@
   data-bs-interval="5000"
 >
 
-  <!-- Indicadores -->
   <div class="carousel-indicators">
 
     <button
@@ -33,9 +32,7 @@
 
   <div class="carousel-inner">
 
-    <!-- ================================================== -->
     <!-- SLIDE 1 -->
-    <!-- ================================================== -->
 
     <div class="carousel-item active">
 
@@ -58,11 +55,9 @@
             <span>KASAL INVERSIONES SAC</span>
           </div>
 
-
           <h1 class="display-5 text-uppercase mb-2 mb-md-3">
             Protección Industrial Certificada
           </h1>
-
 
           <p
             class="lead opacity-75 fw-medium mb-3 mb-md-4 d-none d-sm-block"
@@ -70,7 +65,6 @@
             Guantes de seguridad para Agroindustria, Minería,
             Metalmecánica y Construcción.
           </p>
-
 
           <a
             href="#catalogo"
@@ -87,9 +81,7 @@
     </div>
 
 
-    <!-- ================================================== -->
     <!-- SLIDE 2 -->
-    <!-- ================================================== -->
 
     <div class="carousel-item">
 
@@ -112,11 +104,9 @@
             <span>VENTAS CORPORATIVAS</span>
           </div>
 
-
           <h1 class="display-5 text-uppercase mb-2 mb-md-3">
             Suministros al por Mayor
           </h1>
-
 
           <p
             class="lead opacity-75 fw-medium mb-3 mb-md-4 d-none d-sm-block"
@@ -124,7 +114,6 @@
             Atención a empresas con emisión de factura SAC y
             despacho nacional.
           </p>
-
 
           <a
             href="https://wa.me/51999999999"
@@ -145,43 +134,31 @@
   </div>
 
 
-  <!-- Anterior -->
   <button
     class="carousel-control-prev"
     type="button"
     data-bs-target="#heroCarousel"
     data-bs-slide="prev"
   >
-
     <span
       class="carousel-control-prev-icon"
       aria-hidden="true"
     ></span>
-
-    <span class="visually-hidden">
-      Anterior
-    </span>
-
+    <span class="visually-hidden">Anterior</span>
   </button>
 
 
-  <!-- Siguiente -->
   <button
     class="carousel-control-next"
     type="button"
     data-bs-target="#heroCarousel"
     data-bs-slide="next"
   >
-
     <span
       class="carousel-control-next-icon"
       aria-hidden="true"
     ></span>
-
-    <span class="visually-hidden">
-      Siguiente
-    </span>
-
+    <span class="visually-hidden">Siguiente</span>
   </button>
 
 </div>
@@ -200,419 +177,304 @@
   <!-- TÍTULO -->
   <!-- ==================================================== -->
 
-  <div
-    class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-end mb-4 gap-2"
-  >
+  <div class="mb-4">
 
-    <div>
-
-      <span
-        class="text-uppercase fw-bold small"
-        style="
-          color: var(--safety-orange);
-          letter-spacing: 0.5px;
-        "
-      >
-        <i class="bi bi-funnel-fill me-1"></i>
-        Sectores Industriales
-      </span>
-
-
-      <h2 class="fw-bold text-dark mb-0">
-        Guantes por Especialidad
-      </h2>
-
-    </div>
-
-  </div>
-
-
-  <!-- ==================================================== -->
-  <!-- FILTROS -->
-  <!-- ==================================================== -->
-
-  <div
-    class="d-flex gap-2 overflow-x-auto pb-3 mb-4 scrollbar-hidden"
-  >
-
-    <button
-      *ngFor="let cat of sectores"
-      type="button"
-      class="btn rounded-2 px-3 py-2 fw-bold text-nowrap transition-all text-uppercase"
-      [ngClass]="
-        sectorSeleccionado === cat
-          ? 'btn-navy shadow-sm'
-          : 'btn-outline-secondary bg-white text-dark border shadow-sm'
+    <span
+      class="text-uppercase fw-bold small"
+      style="
+        color: var(--safety-orange);
+        letter-spacing: 0.5px;
       "
-      (click)="filtrarPorSector(cat)"
     >
-      {{ cat }}
-    </button>
+      <i class="bi bi-grid-fill me-1"></i>
+      CATÁLOGO DIGITAL
+    </span>
 
-  </div>
+    <h2 class="fw-bold text-dark mb-2">
 
+      <ng-container *ngIf="subcategoriaActiva; else tituloPrincipal">
+  Productos de la subcategoría
+</ng-container>
 
-  <!-- ==================================================== -->
-  <!-- ESTADO: CARGANDO -->
-  <!-- ==================================================== -->
+      <ng-template #tituloPrincipal>
+        {{
+          categoriaActiva === 'guantes'
+            ? 'Guantes Industriales'
+            : categoriaActiva === 'epps'
+              ? 'Equipos de Protección Personal'
+              : categoriaActiva === 'suministros'
+                ? 'Suministros y Consumibles'
+                : 'Nuestro Catálogo'
+        }}
+      </ng-template>
 
-  <div
-    *ngIf="cargando"
-    class="text-center py-5 my-4"
-  >
+    </h2>
 
-    <div
-      class="spinner-border text-warning"
-      role="status"
-    >
-      <span class="visually-hidden">
-        Cargando productos...
-      </span>
-    </div>
-
-    <p class="text-muted fw-bold mt-3 mb-0">
-      Cargando productos...
+    <p class="text-muted mb-0">
+      Explora nuestros productos y consulta sus características.
     </p>
 
   </div>
 
 
   <!-- ==================================================== -->
-  <!-- GRID DE PRODUCTOS -->
+  <!-- CARGANDO CATEGORÍAS -->
   <!-- ==================================================== -->
 
   <div
+    *ngIf="cargandoCategorias"
+    class="text-center py-5"
+  >
+    <div
+      class="spinner-border text-warning"
+      role="status"
+    ></div>
+
+    <p class="text-muted mt-3">
+      Cargando categorías...
+    </p>
+  </div>
+
+
+  <!-- ==================================================== -->
+  <!-- SUBCATEGORÍAS -->
+  <!-- ==================================================== -->
+
+  <ng-container
     *ngIf="
-      !cargando &&
-      productosFiltrados.length > 0
+      !cargandoCategorias &&
+      categoriaActiva &&
+      !subcategoriaActiva
     "
-    class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3 g-md-4"
   >
 
     <div
-      class="col"
-      *ngFor="let p of productosFiltrados"
+      *ngIf="subcategorias.length > 0"
+      class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3 g-md-4 mb-4"
     >
 
-      <div class="card h-100 product-card">
+      <div
+        class="col"
+        *ngFor="let subcategoria of subcategorias"
+      >
 
-
-        <!-- =============================================== -->
-        <!-- IMAGEN -->
-        <!-- =============================================== -->
-
-        <div
-          class="product-img-container position-relative"
+        <button
+          type="button"
+          class="card h-100 w-100 text-start border shadow-sm"
+          style="
+            cursor: pointer;
+            transition: transform 0.2s ease;
+          "
+          (click)="seleccionarSubcategoria(subcategoria)"
         >
-
-          <!-- Categoría -->
-          <span
-            class="badge bg-dark rounded-1 position-absolute top-0 start-0 m-3 px-3 py-2 text-uppercase fw-bold"
-            style="
-              font-size: 0.65rem;
-              z-index: 2;
-            "
-          >
-
-            <i
-              class="bi bi-tag-fill me-1"
-              style="color: var(--safety-yellow);"
-            ></i>
-
-            {{ p.categoria }}
-
-          </span>
-
-
-          <!-- Imagen -->
-          <img
-            [src]="obtenerImagenProducto(p.imagen_url)"
-            [alt]="p.nombre"
-          >
-
-        </div>
-
-
-        <!-- =============================================== -->
-        <!-- INFORMACIÓN -->
-        <!-- =============================================== -->
-
-        <div
-          class="card-body d-flex flex-column p-3 p-md-4"
-        >
-
-          <!-- Nombre -->
-          <h5
-            class="card-title fw-bold text-dark mb-2"
-          >
-            {{ p.nombre }}
-          </h5>
-
-
-
-          <!-- ============================================= -->
-          <!-- PRECIO Y STOCK -->
-          <!-- ============================================= -->
 
           <div
-            class="mb-3 p-3 bg-light rounded-2 border"
-            *ngIf="
-              p.variaciones &&
-              p.variaciones.length > 0
-            "
+            class="card-body p-4 text-center d-flex flex-column align-items-center justify-content-center"
+            style="min-height: 190px;"
           >
 
             <div
-              class="d-flex justify-content-between align-items-end gap-2"
+              class="rounded-circle d-flex align-items-center justify-content-center mb-3"
+              style="
+                width: 70px;
+                height: 70px;
+                background-color: #fff3cd;
+              "
             >
-
-              <!-- PRECIO -->
-              <div>
-
-                <span
-                  class="text-uppercase fw-bold text-secondary small d-block"
-                >
-                  Precio unitario
-                </span>
-
-                <span
-                  class="fs-4 fw-bold text-dark"
-                >
-                  S/
-                  {{
-                    p.variaciones[0].precio
-                      | number:'1.2-2'
-                  }}
-                </span>
-
-              </div>
-
-
-              <!-- STOCK -->
-              <div class="text-end">
-
-                <span
-                  class="small text-muted d-block"
-                >
-                  Stock disponible
-                </span>
-
-                <span
-                  class="fw-bold"
-                  [ngClass]="{
-                    'text-success':
-                      p.variaciones[0].stock > 10,
-
-                    'text-warning':
-                      p.variaciones[0].stock > 0 &&
-                      p.variaciones[0].stock <= 10,
-
-                    'text-danger':
-                      p.variaciones[0].stock <= 0
-                  }"
-                >
-
-                  {{ p.variaciones[0].stock }}
-
-                  <span
-                    *ngIf="
-                      p.variaciones[0].stock > 0
-                    "
-                  >
-                    und.
-                  </span>
-
-                </span>
-
-              </div>
-
+              <i
+                class="bi bi-grid-3x3-gap-fill fs-2"
+                style="color: var(--safety-orange);"
+              ></i>
             </div>
 
-          </div>
+            <h5 class="fw-bold text-dark mb-2">
+              {{ subcategoria.nombre }}
+            </h5>
 
-
-          <!-- ============================================= -->
-          <!-- SIN VARIACIONES -->
-          <!-- ============================================= -->
-
-          <div
-            class="alert alert-warning py-2 small mb-3"
-            *ngIf="
-              !p.variaciones ||
-              p.variaciones.length === 0
-            "
-          >
-
-            <i
-              class="bi bi-exclamation-triangle-fill me-1"
-            ></i>
-
-            Producto no disponible.
-
-          </div>
-
-
-          <!-- ============================================= -->
-          <!-- CANTIDAD -->
-          <!-- ============================================= -->
-
-          <div
-            class="mb-3"
-            *ngIf="
-              p.variaciones &&
-              p.variaciones.length > 0 &&
-              p.variaciones[0].stock > 0
-            "
-          >
-
-            <span
-              class="text-uppercase fw-bold text-secondary small d-block mb-2"
-            >
-              Cantidad
+            <span class="small text-muted">
+              Ver productos
+              <i class="bi bi-arrow-right ms-1"></i>
             </span>
 
-
-            <div
-              class="input-group"
-              style="max-width: 150px;"
-            >
-
-              <!-- DISMINUIR -->
-              <button
-                type="button"
-                class="btn btn-outline-secondary fw-bold"
-                (click)="cambiarCantidad(p, -1)"
-                [disabled]="
-                  (cantidadSeleccionada[p.producto_id] || 1)
-                  <= 1
-                "
-              >
-                −
-              </button>
-
-
-              <!-- CANTIDAD ACTUAL -->
-              <input
-                type="text"
-                class="form-control text-center fw-bold bg-white"
-                [value]="
-                  cantidadSeleccionada[p.producto_id] || 1
-                "
-                readonly
-              >
-
-
-              <!-- AUMENTAR -->
-              <button
-                type="button"
-                class="btn btn-outline-secondary fw-bold"
-                (click)="cambiarCantidad(p, 1)"
-                [disabled]="
-                  (cantidadSeleccionada[p.producto_id] || 1)
-                  >= p.variaciones[0].stock
-                "
-              >
-                +
-              </button>
-
-            </div>
-
           </div>
 
+        </button>
 
-          <!-- ============================================= -->
-          <!-- SIN STOCK -->
-          <!-- ============================================= -->
+      </div>
 
-          <div
-            class="alert alert-danger py-2 small fw-bold mb-3"
-            *ngIf="
-              p.variaciones &&
-              p.variaciones.length > 0 &&
-              p.variaciones[0].stock <= 0
-            "
-          >
-
-            <i
-              class="bi bi-x-circle-fill me-1"
-            ></i>
-
-            Producto sin stock
-
-          </div>
+    </div>
 
 
-          <!-- ============================================= -->
-          <!-- ACCIONES -->
-          <!-- ============================================= -->
+  </ng-container>
 
-          <div class="mt-auto">
 
-            <!-- AÑADIR AL CARRITO -->
-            <button
-              type="button"
-              class="
-                btn
-                btn-safety-orange
-                px-3
-                py-2
-                w-100
-                d-flex
-                align-items-center
-                justify-content-center
-                gap-2
-                shadow-sm
-                fw-bold
-                text-uppercase
-                mb-2
-              "
-              (click)="agregar(p)"
-              [disabled]="
-                !p.variaciones ||
-                p.variaciones.length === 0 ||
-                p.variaciones[0].stock <= 0
+  <!-- ==================================================== -->
+  <!-- PRODUCTOS -->
+  <!-- ==================================================== -->
+
+  <ng-container
+    *ngIf="!cargandoCategorias"
+  >
+
+    <!-- VOLVER A SUBCATEGORÍAS -->
+
+    <button
+      *ngIf="subcategoriaActiva"
+      type="button"
+      class="btn btn-outline-secondary fw-bold mb-4"
+      (click)="volverASubcategorias()"
+    >
+      <i class="bi bi-arrow-left me-2"></i>
+      Volver a subcategorías
+    </button>
+
+
+    <!-- FILTROS POR SECTOR -->
+
+    <div
+      class="d-flex gap-2 overflow-x-auto pb-3 mb-4 scrollbar-hidden"
+    >
+
+      <button
+        *ngFor="let cat of sectores"
+        type="button"
+        class="btn rounded-2 px-3 py-2 fw-bold text-nowrap transition-all text-uppercase"
+        [ngClass]="
+          sectorSeleccionado === cat
+            ? 'btn-navy shadow-sm'
+            : 'btn-outline-secondary bg-white text-dark border shadow-sm'
+        "
+        (click)="filtrarPorSector(cat)"
+      >
+        {{ cat }}
+      </button>
+
+    </div>
+
+
+    <!-- CARGANDO PRODUCTOS -->
+
+    <div
+      *ngIf="cargando"
+      class="text-center py-5 my-4"
+    >
+
+      <div
+        class="spinner-border text-warning"
+        role="status"
+      >
+        <span class="visually-hidden">
+          Cargando productos...
+        </span>
+      </div>
+
+      <p class="text-muted fw-bold mt-3 mb-0">
+        Cargando productos...
+      </p>
+
+    </div>
+
+
+    <!-- PRODUCTOS ASIGNADOS DIRECTAMENTE A LA CATEGORÍA -->
+    <h3
+      *ngIf="categoriaActiva && !subcategoriaActiva && subcategorias.length > 0 && !cargando && productosFiltrados.length > 0"
+      class="fw-bold text-dark mb-3"
+    >
+      Otros productos de esta categoría
+    </h3>
+
+    <!-- GRID DE PRODUCTOS -->
+
+    <div
+      *ngIf="
+        !cargando &&
+        productosFiltrados.length > 0
+      "
+      class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3 g-md-4"
+    >
+
+      <div
+        class="col"
+        *ngFor="let p of productosFiltrados"
+      >
+
+        <div class="card h-100 product-card">
+
+          <!-- IMAGEN -->
+
+          <div class="product-img-container position-relative">
+
+            <span
+              class="badge bg-dark rounded-1 position-absolute top-0 start-0 m-3 px-3 py-2 text-uppercase fw-bold"
+              style="
+                font-size: 0.65rem;
+                z-index: 2;
               "
             >
-
               <i
-                class="bi bi-cart-plus-fill"
+                class="bi bi-tag-fill me-1"
+                style="color: var(--safety-yellow);"
               ></i>
 
-              <span>
-                Añadir al carrito
-              </span>
+              {{ p.categoria }}
+            </span>
 
-            </button>
-
-
-            <!-- VER DETALLE -->
-            <a
-              class="
-                btn
-                btn-outline-dark
-                px-3
-                py-2
-                w-100
-                d-flex
-                align-items-center
-                justify-content-center
-                gap-2
-                fw-bold
-                text-uppercase
-              "
-              [routerLink]="[
-                '/producto',
-                p.producto_id
-              ]"
+            <img
+              [src]="obtenerImagenProducto(p.imagen_url)"
+              [alt]="p.nombre"
             >
 
-              <i class="bi bi-eye-fill"></i>
+          </div>
 
-              <span>
-                Ver producto
-              </span>
 
-            </a>
+          <!-- INFORMACIÓN -->
+
+          <div class="card-body d-flex flex-column p-3 p-md-4">
+
+            <h5 class="card-title fw-bold text-dark mb-3">
+              {{ p.nombre }}
+            </h5>
+
+            <p class="text-muted small mb-4">
+              Consulta las características y especificaciones
+              de este producto.
+            </p>
+
+
+            <!-- VER PRODUCTO -->
+
+            <div class="mt-auto">
+
+              <a
+                class="
+                  btn
+                  btn-safety-orange
+                  px-3
+                  py-2
+                  w-100
+                  d-flex
+                  align-items-center
+                  justify-content-center
+                  gap-2
+                  shadow-sm
+                  fw-bold
+                  text-uppercase
+                "
+                [routerLink]="[
+                  '/producto',
+                  p.producto_id
+                ]"
+              >
+
+                <i class="bi bi-eye-fill"></i>
+
+                <span>
+                  Ver producto
+                </span>
+
+              </a>
+
+            </div>
 
           </div>
 
@@ -622,41 +484,47 @@
 
     </div>
 
-  </div>
 
+    <!-- SIN PRODUCTOS -->
 
-  <!-- ==================================================== -->
-  <!-- SIN RESULTADOS -->
-  <!-- ==================================================== -->
-
-  <div
-    *ngIf="
-      !cargando &&
-      productosFiltrados.length === 0
-    "
-    class="text-center py-5 my-4"
-  >
-
-    <i
-      class="bi bi-shield-slash fs-1 text-muted"
-    ></i>
-
-    <p class="text-muted mt-3 fw-semibold mb-1">
-      No hay productos registrados en el sector
-      <strong>
-        {{ sectorSeleccionado }}
-      </strong>.
-    </p>
-
-    <button
-      *ngIf="sectorSeleccionado !== 'Todos'"
-      type="button"
-      class="btn btn-outline-dark btn-sm mt-3 fw-bold"
-      (click)="filtrarPorSector('Todos')"
+    <div
+      *ngIf="
+        !cargando &&
+        productosFiltrados.length === 0 &&
+        (!categoriaActiva || !!subcategoriaActiva || subcategorias.length === 0)
+      "
+      class="text-center py-5 my-4"
     >
-      Ver todos los productos
-    </button>
 
-  </div>
+      <i class="bi bi-box-seam fs-1 text-warning"></i>
+
+      <h3 class="fw-bold text-dark mt-3">
+        Próximamente
+      </h3>
+
+      <p class="text-muted mt-2">
+        Estamos preparando nuevos productos para esta sección.
+      </p>
+
+      <button
+        *ngIf="subcategoriaActiva"
+        type="button"
+        class="btn btn-outline-dark btn-sm mt-3 fw-bold"
+        (click)="volverASubcategorias()"
+      >
+        Volver a subcategorías
+      </button>
+
+      <a
+        *ngIf="!subcategoriaActiva"
+        routerLink="/tienda"
+        class="btn btn-outline-dark btn-sm mt-3 fw-bold"
+      >
+        Ver catálogo general
+      </a>
+
+    </div>
+
+  </ng-container>
 
 </div>

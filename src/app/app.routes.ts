@@ -16,11 +16,6 @@ import {
   ContactoComponent
 } from './components/contacto/contacto';
 
-import {
-  CotizacionComponent
-} from './components/cotizacion/cotizacion';
-
-
 // =====================================================
 // ADMIN
 // =====================================================
@@ -97,16 +92,16 @@ export const routes: Routes = [
   },
 
 
-  // =====================================================
-  // COTIZACIÓN
-  // =====================================================
+// =====================================================
+// COTIZACIÓN PÚBLICA DESHABILITADA
+// Redirigir al catálogo
+// =====================================================
 
-  {
-    path: 'cotizacion',
-    component: CotizacionComponent
-  },
-
-
+{
+  path: 'cotizacion',
+  redirectTo: 'tienda',
+  pathMatch: 'full'
+},
   // =====================================================
   // DETALLE PRODUCTO
   // =====================================================

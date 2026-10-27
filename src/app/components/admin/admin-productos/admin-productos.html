@@ -20,7 +20,6 @@
 
     </div>
 
-
     <!-- ================================================= -->
     <!-- CABECERA -->
     <!-- ================================================= -->
@@ -38,12 +37,10 @@
         </h1>
 
         <p>
-          Gestiona el catálogo, precios,
-          inventario y disponibilidad.
+          Gestiona los productos, presentaciones y disponibilidad del catálogo.
         </p>
 
       </div>
-
 
       <a
         routerLink="/admin/productos/nuevo"
@@ -62,7 +59,6 @@
 
     </header>
 
-
     <!-- ================================================= -->
     <!-- MÉTRICAS -->
     <!-- ================================================= -->
@@ -71,7 +67,6 @@
       class="metrics-grid"
       *ngIf="!cargando"
     >
-
 
       <!-- PRODUCTOS -->
 
@@ -102,37 +97,7 @@
 
       </article>
 
-
-      <!-- INVENTARIO -->
-
-      <article class="metric-card">
-
-        <div class="metric-icon">
-
-          <i class="bi bi-boxes"></i>
-
-        </div>
-
-        <div class="metric-content">
-
-          <span class="metric-label">
-            Inventario
-          </span>
-
-          <strong>
-            {{ obtenerStockGeneral() }}
-          </strong>
-
-          <small>
-            unidades disponibles
-          </small>
-
-        </div>
-
-      </article>
-
-
-      <!-- CATEGORÍAS -->
+<!-- CATEGORÍAS -->
 
       <article class="metric-card">
 
@@ -160,44 +125,7 @@
 
       </article>
 
-
-      <!-- SIN STOCK -->
-
-      <article
-        class="metric-card"
-        [class.metric-warning]="
-          obtenerProductosSinStock() > 0
-        "
-      >
-
-        <div class="metric-icon">
-
-          <i
-            class="bi bi-exclamation-triangle"
-          ></i>
-
-        </div>
-
-        <div class="metric-content">
-
-          <span class="metric-label">
-            Sin stock
-          </span>
-
-          <strong>
-            {{ obtenerProductosSinStock() }}
-          </strong>
-
-          <small>
-            requieren atención
-          </small>
-
-        </div>
-
-      </article>
-
-    </section>
-
+</section>
 
     <!-- ================================================= -->
     <!-- ERROR -->
@@ -218,7 +146,6 @@
 
     </div>
 
-
     <!-- ================================================= -->
     <!-- PANEL PRINCIPAL -->
     <!-- ================================================= -->
@@ -228,13 +155,11 @@
       *ngIf="!cargando"
     >
 
-
       <!-- =============================================== -->
       <!-- TOOLBAR -->
       <!-- =============================================== -->
 
       <div class="products-toolbar">
-
 
         <div class="search-wrapper">
 
@@ -249,9 +174,7 @@
 
         </div>
 
-
         <div class="toolbar-actions">
-
 
           <div class="select-wrapper">
 
@@ -278,7 +201,6 @@
 
           </div>
 
-
           <button
             type="button"
             class="refresh-button"
@@ -293,7 +215,6 @@
         </div>
 
       </div>
-
 
       <!-- =============================================== -->
       <!-- RESUMEN -->
@@ -320,7 +241,6 @@
         </span>
 
       </div>
-
 
       <!-- =============================================== -->
       <!-- TABLA -->
@@ -350,14 +270,6 @@
               </th>
 
               <th>
-                Precio
-              </th>
-
-              <th>
-                Stock
-              </th>
-
-              <th>
                 Sectores
               </th>
 
@@ -373,7 +285,6 @@
 
           </thead>
 
-
           <tbody>
 
             <tr
@@ -383,7 +294,6 @@
               "
             >
 
-
               <!-- ======================================= -->
               <!-- PRODUCTO -->
               <!-- ======================================= -->
@@ -391,7 +301,6 @@
               <td>
 
                 <div class="product-info">
-
 
                   <div class="product-image">
 
@@ -401,7 +310,6 @@
                       [alt]="producto.nombre"
                       class="product-thumb"
                     >
-
 
                     <div
                       *ngIf="!producto.imagen_url"
@@ -413,7 +321,6 @@
                     </div>
 
                   </div>
-
 
                   <div class="product-copy">
 
@@ -431,7 +338,6 @@
 
               </td>
 
-
               <!-- ======================================= -->
               <!-- CATEGORÍA -->
               <!-- ======================================= -->
@@ -448,7 +354,6 @@
                 </span>
 
               </td>
-
 
               <!-- ======================================= -->
               <!-- VARIACIONES -->
@@ -470,7 +375,6 @@
 
                   </span>
 
-
                   <span
                     *ngIf="
                       !producto.variaciones ||
@@ -486,64 +390,6 @@
                 </div>
 
               </td>
-
-
-              <!-- ======================================= -->
-              <!-- PRECIO -->
-              <!-- ======================================= -->
-
-              <td>
-
-                <div class="price-cell">
-
-                  <small>
-                    Desde
-                  </small>
-
-                  <strong>
-
-                    S/
-                    {{
-                      obtenerPrecioMinimo(producto)
-                        | number:'1.2-2'
-                    }}
-
-                  </strong>
-
-                </div>
-
-              </td>
-
-
-              <!-- ======================================= -->
-              <!-- STOCK -->
-              <!-- ======================================= -->
-
-              <td>
-
-                <div
-                  class="stock-cell"
-                  [class.no-stock]="
-                    obtenerStockTotal(producto) <= 0
-                  "
-                >
-
-                  <strong>
-
-                    {{
-                      obtenerStockTotal(producto)
-                    }}
-
-                  </strong>
-
-                  <span>
-                    und.
-                  </span>
-
-                </div>
-
-              </td>
-
 
               <!-- ======================================= -->
               <!-- SECTORES -->
@@ -565,7 +411,6 @@
 
                   </span>
 
-
                   <span
                     *ngIf="
                       !producto.sectores ||
@@ -581,7 +426,6 @@
                 </div>
 
               </td>
-
 
               <!-- ======================================= -->
               <!-- ESTADO -->
@@ -613,7 +457,6 @@
 
               </td>
 
-
               <!-- ======================================= -->
               <!-- ACCIONES -->
               <!-- ======================================= -->
@@ -621,7 +464,6 @@
               <td>
 
                 <div class="row-actions">
-
 
                   <a
                     [routerLink]="[
@@ -636,7 +478,6 @@
                     <i class="bi bi-pencil"></i>
 
                   </a>
-
 
                   <button
                     type="button"
@@ -681,7 +522,6 @@
 
       </div>
 
-
       <!-- =============================================== -->
       <!-- SIN RESULTADOS -->
       <!-- =============================================== -->
@@ -720,7 +560,6 @@
       </div>
 
     </section>
-
 
     <!-- ================================================= -->
     <!-- LOADING -->

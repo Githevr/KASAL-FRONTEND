@@ -1,17 +1,22 @@
-
 @if (!esRutaAdmin) {
-  <!-- NAVBAR DE LA TIENDA -->
+
+  <!-- NAVBAR DEL CATÁLOGO PÚBLICO -->
   <app-navbar></app-navbar>
+
 }
 
+
+<!-- CONTENIDO PRINCIPAL -->
 <main>
+
   <router-outlet></router-outlet>
+
 </main>
 
+
 @if (!esRutaAdmin) {
-  <!-- FOOTER DE LA TIENDA -->
+
+  <!-- FOOTER DEL CATÁLOGO PÚBLICO -->
   <app-footer></app-footer>
 
-  <!-- CARRITO DE COTIZACIONES -->
-  <app-carrito></app-carrito>
 }

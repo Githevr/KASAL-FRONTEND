@@ -515,8 +515,7 @@
 .field input,
 .field select,
 .field textarea,
-.variation-field input,
-.money-input input {
+.variation-field input {
   width: 100%;
 
   border: 1px solid var(--border-strong);
@@ -565,8 +564,7 @@
 
 .field input::placeholder,
 .field textarea::placeholder,
-.variation-field input::placeholder,
-.money-input input::placeholder {
+.variation-field input::placeholder::placeholder {
   color: #afb3b9;
 }
 
@@ -574,8 +572,7 @@
 .field input:focus,
 .field select:focus,
 .field textarea:focus,
-.variation-field input:focus,
-.money-input input:focus {
+.variation-field input:focus:focus {
   border-color: #b48827;
 
   box-shadow:
@@ -711,10 +708,8 @@
   display: grid;
 
   grid-template-columns:
-    minmax(75px, 0.65fr)
-    minmax(150px, 1.45fr)
-    minmax(120px, 1fr)
-    minmax(90px, 0.75fr)
+    minmax(130px, 1.3fr)
+    minmax(150px, 1.5fr)
     68px
     38px;
 
@@ -755,8 +750,7 @@
 }
 
 
-.variation-field input,
-.money-input {
+.variation-field input {
   height: 39px;
 }
 
@@ -765,56 +759,6 @@
   border-radius: 7px;
 
   padding: 0 10px;
-}
-
-
-.money-input {
-  display: flex;
-  align-items: center;
-
-  overflow: hidden;
-
-  border: 1px solid var(--border-strong);
-  border-radius: 7px;
-
-  background: #ffffff;
-
-  transition:
-    border-color 0.18s ease,
-    box-shadow 0.18s ease;
-}
-
-
-.money-input:focus-within {
-  border-color: #b48827;
-
-  box-shadow:
-    0 0 0 3px rgba(244, 178, 35, 0.12);
-}
-
-
-.money-input span {
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-
-  padding-left: 10px;
-
-  color: #73777d;
-
-  font-size: 12px;
-  font-weight: 700;
-}
-
-
-.money-input input {
-  height: 100%;
-
-  border: 0;
-  box-shadow: none !important;
-
-  padding: 0 9px 0 5px;
 }
 
 
@@ -2136,23 +2080,6 @@
 
 
 /* =========================================================
-   NUMBER INPUT
-   ========================================================= */
-
-input[type='number'] {
-  appearance: textfield;
-  -moz-appearance: textfield;
-}
-
-
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
-  margin: 0;
-  -webkit-appearance: none;
-}
-
-
-/* =========================================================
    ACCESIBILIDAD
    ========================================================= */
 
@@ -2184,10 +2111,8 @@ textarea:focus-visible {
   .variation-header,
   .variation-row {
     grid-template-columns:
-      70px
-      minmax(125px, 1.25fr)
-      minmax(105px, 0.9fr)
-      80px
+      minmax(110px, 1.2fr)
+      minmax(125px, 1.4fr)
       55px
       34px;
 
@@ -2300,8 +2225,7 @@ textarea:focus-visible {
   }
 
 
-  .variation-field,
-  .money-input {
+  .variation-field {
     width: 100%;
   }
 
