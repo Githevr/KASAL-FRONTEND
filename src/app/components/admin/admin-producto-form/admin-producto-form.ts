@@ -1,61 +1,21 @@
 import {
-
-  ChangeDetectorRef,
-
-  Component,
-
-  OnDestroy,
-
-  OnInit
-
+ ChangeDetectorRef,Component, OnDestroy, OnInit
 } from '@angular/core';
 
-import {
-
-  CommonModule
-
+import { CommonModule
 } from '@angular/common';
 
-import {
-
-  FormsModule
-
+import { FormsModule
 } from '@angular/forms';
 
-import {
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
-  ActivatedRoute,
-
-  Router,
-
-  RouterLink
-
-} from '@angular/router';
-
-import {
-
-  forkJoin
-
+import { forkJoin
 } from 'rxjs';
 
-import {
+import { environment } from '../../../../environments/environment';
 
-  environment
-
-} from '../../../../environments/environment';
-
-import {
-
-  AdminProductosService,
-
-  AdminCategoria,
-
-  AdminSectorFormulario,
-
-  AdminProducto,
-
-  NuevoProducto
-
+import {  AdminProductosService,  AdminCategoria,  AdminSectorFormulario, AdminProducto,  NuevoProducto
 } from '../../../services/admin-productos';
 
 @Component({
@@ -263,6 +223,26 @@ export class AdminProductoFormComponent
       ChangeDetectorRef
 
   ) {}
+
+get esSuministros(): boolean {
+    return this.categorias.some(
+      categoria =>
+        categoria.slug === 'suministros' &&
+        Number(categoria.id) === Number(this.producto.categoria_id)
+    );
+  }
+
+  // ===================================================
+// IDENTIFICAR EPPS
+// ===================================================
+
+get esEpps(): boolean {
+  return this.categorias.some(
+    categoria =>
+      categoria.slug === 'epps' &&
+      Number(categoria.id) === Number(this.producto.categoria_id)
+  );
+}
 
   // =====================================================
 
@@ -1704,26 +1684,22 @@ export class AdminProductoFormComponent
 
     }
 
-    // ===================================================
+   // ===================================================
+// SECTORES
+// ===================================================
 
-    // SECTORES
-
     // ===================================================
+// SECTORES
+// ===================================================
 
     if (
-
+      !this.esSuministros &&
+      !this.esEpps &&
       this.producto.sectores.length === 0
-
     ) {
-
-      this.error =
-
-        'Selecciona al menos un sector.';
-
+      this.error = 'Selecciona al menos un sector.';
       return;
-
     }
-
     // ===================================================
 
     // VARIACIONES
@@ -1836,12 +1812,9 @@ const variacionInvalida = this.producto.variaciones.some(
 
         ),
 
-      sectores:
-
-        this.producto.sectores
-
-          .map(Number),
-
+      sectores: (this.esSuministros || this.esEpps)
+  ? []
+  : this.producto.sectores.map(Number),
       variaciones:
 
         this.producto.variaciones

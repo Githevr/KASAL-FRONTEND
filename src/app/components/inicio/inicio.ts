@@ -15,25 +15,27 @@ export class InicioComponent implements OnInit {
   // Carrusel publicitario de la página de inicio.
   banners = [
     {
-      imagen: 'images/banners/banner-botas-horizontal.png',
+      imagen: 'images/banners/banner-bo2.jpeg',
       alt: 'Botas de seguridad industrial'
     },
     {
-      imagen: 'images/banners/banner-casco-horizontal.png',
+      imagen: 'images/banners/NITRON.png',
       alt: 'Cascos de seguridad industrial'
     },
     {
-      imagen: 'images/banners/banner-lentes-horizontal.png',
+      imagen: 'images/banners/ALPINE.png',
       alt: 'Lentes de protección industrial'
     },
     {
-      imagen: 'images/banners/banner-maquina-horizontal.png',
+      imagen: 'images/banners/mascarilla-kn95.png',
       alt: 'Equipos industriales'
     },
     {
-      imagen: 'images/banners/banner-mascarilla-horizontal.png',
+      imagen: 'images/banners/tapones.png',
       alt: 'Mascarillas de protección'
     }
+
+    
   ];
 
   bannerActual = 0;

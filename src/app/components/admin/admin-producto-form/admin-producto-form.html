@@ -502,7 +502,10 @@
         <!-- PUBLICACIÓN -->
         <!-- ================================================= -->
 
-        <section class="form-card compact-card">
+        <section
+          *ngIf="!esSuministros && !esEpps"
+          class="form-card compact-card"
+        >
 
           <div class="side-heading">
 
@@ -1341,17 +1344,18 @@
           </div>
 
 
-          <div class="summary-row">
+          <div
+          *ngIf="!esSuministros && !esEpps"
+          class="summary-row"
+        >
+          <span>
+            Sectores
+          </span>
 
-            <span>
-              Sectores
-            </span>
-
-            <strong>
-              {{ producto.sectores.length }}
-            </strong>
-
-          </div>
+          <strong>
+            {{ producto.sectores.length }}
+          </strong>
+        </div>
 
 
           <div class="summary-row">

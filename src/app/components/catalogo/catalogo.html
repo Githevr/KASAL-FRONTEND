@@ -331,9 +331,10 @@
 
     <!-- FILTROS POR SECTOR -->
 
-    <div
-      class="d-flex gap-2 overflow-x-auto pb-3 mb-4 scrollbar-hidden"
-    >
+      <div
+        *ngIf="categoriaActiva !== 'suministros' && categoriaActiva !== 'epps'"
+        class="d-flex gap-2 overflow-x-auto pb-3 mb-4 scrollbar-hidden"
+      >
 
       <button
         *ngFor="let cat of sectores"
