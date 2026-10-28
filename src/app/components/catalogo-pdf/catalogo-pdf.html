@@ -1,60 +1,76 @@
-
 <section class="catalogo-pdf-page">
-
   <div class="container">
 
     <div class="catalogo-pdf-header">
-
       <span class="catalogo-pdf-etiqueta">
         KASAL INVERSIONES SAC
       </span>
 
-      <h1>CATÁLOGO DIGITAL</h1>
+      <h1>NUESTROS CATÁLOGOS DIGITALES</h1>
 
       <p>
-        Explora nuestro catálogo de seguridad y protección
-        industrial. Consulta los productos y sus
-        características técnicas.
+        Explora nuestros catálogos de seguridad industrial,
+        suministros  consumibles. Consulta nuestros productos
+        y sus características técnicas.
       </p>
+    </div>
 
-      <div class="catalogo-pdf-acciones">
+    <!-- TARJETAS DE CATÁLOGOS -->
+    <div class="catalogos-opciones">
+
+      <div
+        class="catalogo-opcion"
+        *ngFor="let catalogo of catalogos"
+        [class.seleccionado]="pdfUrl === catalogo.url"
+      >
+
+        <h2>{{ catalogo.nombre }}</h2>
+
+        <p>{{ catalogo.descripcion }}</p>
+
+        <span>{{ catalogo.paginas }} páginas</span>
+
+        <button
+          type="button"
+          (click)="pdfUrl = catalogo.url"
+        >
+          Ver aquí
+        </button>
 
         <a
-          [href]="pdfUrl"
+          [href]="catalogo.url"
           target="_blank"
           rel="noopener noreferrer"
-          class="btn-ver-pdf"
         >
-          <i class="bi bi-file-earmark-pdf"></i>
-          Ver catálogo PDF
+          Abrir PDF
         </a>
 
         <a
-          [href]="pdfUrl"
-          download="KASAL-INVERSIONES.pdf"
-          class="btn-descargar-pdf"
+          [href]="catalogo.url"
+          [attr.download]="catalogo.archivo"
         >
-          <i class="bi bi-download"></i>
-          Descargar catálogo
+          Descargar
         </a>
 
       </div>
 
     </div>
 
+    <!-- VISOR DEL PDF SELECCIONADO -->
     <div class="catalogo-pdf-visor">
-    <iframe
-        src="/catalogos/KASAL-INVERSIONES.pdf#toolbar=1&navpanes=0"
-        title="Catálogo de KASAL INVERSIONES SAC"
-        loading="eager"
+
+      <iframe
+      [src]="pdfUrlSegura"
+      title="Catálogo digital KASAL INVERSIONES SAC"
+      loading="lazy"
     ></iframe>
+
     </div>
 
     <p class="catalogo-pdf-ayuda">
       Si tu navegador no muestra el documento,
-      utiliza el botón «Ver catálogo PDF».
+      utiliza el botón «Abrir PDF».
     </p>
 
   </div>
-
 </section>

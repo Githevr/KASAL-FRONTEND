@@ -1,77 +1,39 @@
-import {
-
-  ChangeDetectorRef,
-
-  Component,
-
-  OnInit
-
+import {  ChangeDetectorRef, Component,  OnInit
 } from '@angular/core';
 
 import {
-
-  CommonModule
-
+ CommonModule
 } from '@angular/common';
 
-import {
-
-  ActivatedRoute,
-
-  RouterLink
-
+import { ActivatedRoute, RouterLink
 } from '@angular/router';
 
-import {
-
-  ProductoService
-
+import { ProductoService
 } from '../../services/producto';
 
-import {
-
-  CategoriaService,
-
-  Categoria
-
+import { CategoriaService,  Categoria
 } from '../../services/categoria';
 
-import {
-
-  CarritoService
-
+import { CarritoService
 } from '../../services/carrito';
 
-import {
-
-  Producto
-
+import { Producto
 } from '../../models/producto';
 
-import {
-
-  environment
-
+import { environment
 } from '../../../environments/environment';
 
+import { CatalogoPdfComponent } from '../catalogo-pdf/catalogo-pdf';
 @Component({
-
   selector: 'app-catalogo',
-
   standalone: true,
-
   imports: [
-
     CommonModule,
-
-    RouterLink
-
+    RouterLink,
+    CatalogoPdfComponent
   ],
-
   templateUrl: './catalogo.html',
-
   styleUrl: './catalogo.css'
-
 })
 
 export class CatalogoComponent implements OnInit {
